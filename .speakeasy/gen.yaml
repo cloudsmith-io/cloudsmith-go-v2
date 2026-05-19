@@ -1,0 +1,69 @@
+configVersion: 2.0.0
+generation:
+  sdkClassName: Cloudsmith
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    nameResolutionFeb2025: true
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+    securityFeb2025: true
+    sharedErrorComponentsApr2025: true
+    sharedNestedComponentsJan2026: true
+    nameOverrideFeb2026: true
+  auth:
+    oAuth2ClientCredentialsEnabled: true
+    oAuth2PasswordEnabled: true
+    hoistGlobalSecurity: true
+  inferSSEOverload: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: body
+  versioningStrategy: automatic
+  persistentEdits:
+    enabled: "true"
+  tests:
+    generateTests: true
+    generateNewTests: true
+    skipResponseBodyAssertions: false
+go:
+  version: 1.1.1
+  additionalDependencies: {}
+  baseErrorName: SDKError
+  clientServerStatusCodesAsErrors: true
+  defaultErrorName: APIError
+  enableCustomCodeRegions: false
+  enableSkipDeserialization: false
+  flattenGlobalSecurity: true
+  forwardCompatibleEnumsByDefault: true
+  forwardCompatibleUnionsByDefault: tagged-and-untagged
+  imports:
+    option: openapi
+    paths:
+      callbacks: models/callbacks
+      errors: models/apierrors
+      operations: models/operations
+      shared: models/components
+      webhooks: models/webhooks
+  includeEmptyObjects: true
+  inferUnionDiscriminators: true
+  inputModelSuffix: input
+  license:
+    name: Apache License 2.0
+    shortName: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  maxMethodParams: 4
+  methodArguments: infer-optional-args
+  modulePath: github.com/cloudsmith-io/cloudsmith-go-v2
+  multipartArrayFormat: standard
+  nullableOptionalWrapper: true
+  outputModelSuffix: output
+  respectRequiredFields: false
+  respectTitlesForPrimitiveUnionMembers: true
+  responseFormat: envelope-http
+  sdkPackageName: cloudsmith
+  unionStrategy: populated-fields

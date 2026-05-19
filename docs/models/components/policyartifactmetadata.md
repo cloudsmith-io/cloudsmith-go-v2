@@ -1,0 +1,12 @@
+# PolicyArtifactMetadata
+
+Minimal read-only serializer for generic metadata entries in policy input.
+
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Content`                                                                                                           | `any`                                                                                                               | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |
+| `SourceKind`                                                                                                        | [components.SourceKindEnum](../../models/components/sourcekindenum.md)                                              | :heavy_check_mark:                                                                                                  | * `UNKNOWN` - Unknown<br/>* `SYSTEM` - System<br/>* `UPSTREAM` - Upstream<br/>* `CUSTOM` - Custom<br/>* `THIRD_PARTY` - Third Party |
+| `SourceIdentity`                                                                                                    | `string`                                                                                                            | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |

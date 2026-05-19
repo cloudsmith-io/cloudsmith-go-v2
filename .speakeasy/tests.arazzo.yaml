@@ -1,0 +1,547 @@
+arazzo: 1.0.1
+info:
+  title: Test Suite
+  summary: Created from /Users/iduffy/projects/cloudsmith-go-v2/.speakeasy/temp/overlay_UrlVHEzXed.yaml
+  version: 0.0.1
+sourceDescriptions:
+  - name: /Users/iduffy/projects/cloudsmith-go-v2/.speakeasy/temp/overlay_UrlVHEzXed.yaml
+    url: https://TBD.com
+    type: openapi
+workflows:
+  - workflowId: metadata_packages_list
+    steps:
+      - stepId: test
+        operationId: metadata_packages_list
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[]}
+            type: simple
+    x-speakeasy-test-group: metadata
+    x-speakeasy-test-rebuild: true
+  - workflowId: metadata_packages_create
+    steps:
+      - stepId: test
+        operationId: metadata_packages_create
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload:
+            content: <value>
+            content_type: <value>
+            source_identity: <value>
+        successCriteria:
+          - condition: $statusCode == 201
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","source_identity":"<value>"}
+            type: simple
+    x-speakeasy-test-group: metadata
+    x-speakeasy-test-rebuild: true
+  - workflowId: metadata_packages_retrieve
+    steps:
+      - stepId: test
+        operationId: metadata_packages_retrieve
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+          - name: slug_perm
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","classification":"GENERIC","source_kind":"THIRD_PARTY","source_identity":"<value>","is_canonical":false,"source_table":"<value>","created_at":"2024-08-04T09:44:08.732Z"}
+            type: simple
+    x-speakeasy-test-group: metadata
+    x-speakeasy-test-rebuild: true
+  - workflowId: metadata_packages_partial_update
+    steps:
+      - stepId: test
+        operationId: metadata_packages_partial_update
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+          - name: slug_perm
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","source_identity":"<value>"}
+            type: simple
+    x-speakeasy-test-group: metadata
+    x-speakeasy-test-rebuild: true
+  - workflowId: packages_metadata_list
+    steps:
+      - stepId: test
+        operationId: packages_metadata_list
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[]}
+            type: simple
+    x-speakeasy-test-group: packages
+    x-speakeasy-test-rebuild: true
+  - workflowId: packages_metadata_create
+    steps:
+      - stepId: test
+        operationId: packages_metadata_create
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload:
+            content: <value>
+            content_type: <value>
+            source_identity: <value>
+        successCriteria:
+          - condition: $statusCode == 201
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","source_identity":"<value>"}
+            type: simple
+    x-speakeasy-test-group: packages
+    x-speakeasy-test-rebuild: true
+  - workflowId: packages_metadata_retrieve
+    steps:
+      - stepId: test
+        operationId: packages_metadata_retrieve
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+          - name: slug_perm
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","classification":"SBOM","source_kind":"THIRD_PARTY","source_identity":"<value>","is_canonical":false,"source_table":"<value>","created_at":"2024-06-14T17:08:09.532Z"}
+            type: simple
+    x-speakeasy-test-group: packages
+    x-speakeasy-test-rebuild: true
+  - workflowId: packages_metadata_partial_update
+    steps:
+      - stepId: test
+        operationId: packages_metadata_partial_update
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+          - name: slug_perm
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","source_identity":"<value>"}
+            type: simple
+    x-speakeasy-test-group: packages
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_list-PoliciesNamedFooOrBar
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: page
+            in: query
+            value: 694333
+          - name: query
+            in: query
+            value: 'name: foo OR name: bar'
+          - name: sort
+            in: query
+            value: -created_at
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"created_at":"2025-07-27T20:51:05.736Z","name":"<value>","rego":"<value>","read_only":true,"slug_perm":"<value>","updated_at":"2024-02-06T23:49:45.490Z","version":814179}]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_list-`version`Descending,`updatedAt`Ascending
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: page
+            in: query
+            value: 475392
+          - name: sort
+            in: query
+            value: -version,updated_at
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"created_at":"2025-07-27T20:51:05.736Z","name":"<value>","rego":"<value>","read_only":true,"slug_perm":"<value>","updated_at":"2024-02-06T23:49:45.490Z","version":814179}]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_list
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: page
+            in: query
+            value: 849692
+          - name: sort
+            in: query
+            value: -created_at
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"created_at":"2025-07-27T20:51:05.736Z","name":"<value>","rego":"<value>","read_only":true,"slug_perm":"<value>","updated_at":"2024-02-06T23:49:45.490Z","version":814179}]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_create
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_create
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload:
+            name: <value>
+            rego: <value>
+        successCriteria:
+          - condition: $statusCode == 201
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"created_at":"2026-01-16T04:49:37.899Z","name":"<value>","rego":"<value>","read_only":false,"slug_perm":"<value>","updated_at":"2026-08-05T02:22:13.921Z","version":416950}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_retrieve
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_retrieve
+        parameters:
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"created_at":"2024-02-25T01:47:43.113Z","name":"<value>","rego":"<value>","read_only":false,"slug_perm":"<value>","updated_at":"2026-03-28T21:06:43.659Z","version":355598}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_update
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_update
+        parameters:
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload:
+            name: <value>
+            rego: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"created_at":"2025-06-13T11:53:09.193Z","name":"<value>","rego":"<value>","read_only":false,"slug_perm":"<value>","updated_at":"2024-08-22T06:15:17.414Z","version":780036}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_partial_update
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_partial_update
+        parameters:
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"created_at":"2025-05-15T07:54:42.171Z","name":"<value>","rego":"<value>","read_only":true,"slug_perm":"<value>","updated_at":"2026-07-30T00:14:05.439Z","version":222414}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_actions_list
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_actions_list
+        parameters:
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_actions_create
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_actions_create
+        parameters:
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 201
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"action_type":"SetPackageState","slug_perm":"<value>","created_at":"2026-01-26T13:02:30.955Z","updated_at":"2024-07-14T00:26:02.146Z","effect":"<value>","package_state":"DELETED"}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_actions_retrieve
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_actions_retrieve
+        parameters:
+          - name: action
+            in: path
+            value: <value>
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"action_type":"SetPackageState","slug_perm":"<value>","created_at":"2026-12-26T16:15:13.417Z","updated_at":"2025-12-22T23:44:49.910Z","effect":"<value>","package_state":"HIDDEN"}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_actions_update
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_actions_update
+        parameters:
+          - name: action
+            in: path
+            value: <value>
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"action_type":"SetPackageState","slug_perm":"<value>","created_at":"2025-01-01T06:02:52.023Z","updated_at":"2025-12-30T15:47:39.800Z","effect":"<value>","package_state":"HIDDEN"}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_actions_partial_update
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_actions_partial_update
+        parameters:
+          - name: action
+            in: path
+            value: <value>
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"action_type":"SetPackageState","slug_perm":"<value>","created_at":"2025-06-01T09:48:19.072Z","updated_at":"2026-05-29T01:18:47.337Z","effect":"<value>","package_state":"AVAILABLE"}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_simulate_list
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_simulate_list
+        parameters:
+          - name: policy
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_decision_logs_v1_list-ReverseChronologicalOrder(theDefault)
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_decision_logs_v1_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: created_after
+            in: query
+            value: "2025-02-17T14:08:57.543Z"
+          - name: sort
+            in: query
+            value: -id
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"id":"<id>","actions":{"key":"<value>","key1":"<value>","key2":"<value>"},"correlation_id":"cc20ef83-023e-4b49-bd56-4d6c7483b88a","ended_at":"2026-10-21T00:37:41.737Z","match":false,"package_format":"<value>","package_name":"<value>","package_slug":"<value>","package_slug_perm":"<value>","package_version":"<value>","policy_is_terminal":false,"policy_name":"<value>","policy_precedence":731170,"policy_slug_perm":"<value>","policy_version":125110,"repository_name":"<value>","repository_slug":"<value>","repository_slug_perm":"<value>","started_at":"2024-09-16T10:22:51.075Z"}]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_decision_logs_v1_list-ChronologicalOrder
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_decision_logs_v1_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: created_after
+            in: query
+            value: "2024-11-12T13:20:12.290Z"
+          - name: sort
+            in: query
+            value: id
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"id":"<id>","actions":{"key":"<value>","key1":"<value>","key2":"<value>"},"correlation_id":"cc20ef83-023e-4b49-bd56-4d6c7483b88a","ended_at":"2026-10-21T00:37:41.737Z","match":false,"package_format":"<value>","package_name":"<value>","package_slug":"<value>","package_slug_perm":"<value>","package_version":"<value>","policy_is_terminal":false,"policy_name":"<value>","policy_precedence":731170,"policy_slug_perm":"<value>","policy_version":125110,"repository_name":"<value>","repository_slug":"<value>","repository_slug_perm":"<value>","started_at":"2024-09-16T10:22:51.075Z"}]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_decision_logs_v1_list
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_decision_logs_v1_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: created_after
+            in: query
+            value: "2024-04-19T12:20:32.132Z"
+          - name: sort
+            in: query
+            value: -id
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"id":"<id>","actions":{"key":"<value>","key1":"<value>","key2":"<value>"},"correlation_id":"cc20ef83-023e-4b49-bd56-4d6c7483b88a","ended_at":"2026-10-21T00:37:41.737Z","match":false,"package_format":"<value>","package_name":"<value>","package_slug":"<value>","package_slug_perm":"<value>","package_version":"<value>","policy_is_terminal":false,"policy_name":"<value>","policy_precedence":731170,"policy_slug_perm":"<value>","policy_version":125110,"repository_name":"<value>","repository_slug":"<value>","repository_slug_perm":"<value>","started_at":"2024-09-16T10:22:51.075Z"}]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_decision_logs_v1_retrieve
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_decision_logs_v1_retrieve
+        parameters:
+          - name: decision_log_id
+            in: path
+            value: <id>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"correlation_id":"5d0374a7-0667-42d5-bbd3-e230e41cdfa4","policy":{"created_at":"2026-11-11T07:45:14.285Z","name":"<value>","rego":"<value>","read_only":false,"slug_perm":"<value>","updated_at":"2025-04-09T19:29:36.919Z","version":526642},"started_at":"2025-11-01T03:46:01.833Z","ended_at":"2026-09-27T14:35:11.388Z","policy_input":{"v0":{"package":{"format":"HuggingfacePackage","architectures":[{"name":"<value>"}],"files":[{"file_extension":"<value>","oid":"<id>","size":537019,"path":"/opt"}],"is_local":false,"last_downloaded_at":"2026-09-23T00:43:31.883Z","license":{"raw_license_file_contents":{"sha256":"<value>","raw_text":"<value>"},"oss_license":{"full_name":"Karl Rau","license_text":"<value>","spdx_identifier":"<value>"},"source":"AUTOMATIC","match":"UNKNOWN","similarity":326595,"override":"IGNORED"},"num_files":382506,"package_type":"OTHER","security_scan_status":"UNSUPPORTED_PACKAGE","slug":"<value>","tags":[{"name":"<value>","source":"MANUAL","tag_type":"SOME_VERSION"}]},"repository":{"ecdsa_keys":[{"fingerprint_short":"<value>","fingerprint":"<value>","public_key":"<value>"}],"gpg_keys":[{"comment":"Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support","fingerprint_short":"<value>","fingerprint":"<value>","public_key":"<value>"}],"name":"<value>","open_source_license":null,"repository_type":"PRIVATE","storage_region":"<value>"},"workspace":{"name":"<value>","slug":"<value>","slug_perm":"<value>"}}},"policy_output":"<value>","actions":[{"action_type":"RemovePackageTags","slug_perm":"<value>","created_at":"2025-04-14T10:55:17.857Z","updated_at":"2026-12-10T21:36:06.359Z","effect":"<value>","tags":["<value 1>"]}],"parsed_actions":"<value>"}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
