@@ -1,0 +1,97 @@
+# .gitignore
+.speakeasy/reports
+.env.local
+# --- Secrets & environment ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# --- Speakeasy ---
+**/.speakeasy/temp/
+**/.speakeasy/logs/
+.speakeasy/reports/
+# --- Go ---
+# Test binaries built with `go test -c`
+*.test
+# Output of `go test -cover`
+*.out
+coverage.txt
+coverage.html
+# Profiling output
+*.prof
+*.pprof
+# Compiled binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+# Vendor dir (we use go modules, don't commit vendored deps)
+/vendor/
+# Go workspace files (local-only)
+go.work
+go.work.sum
+# --- Build artifacts ---
+/bin/
+/dist/
+/build/
+# --- Editors / IDEs ---
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*.swn
+*~
+.nova/
+.fleet/
+.zed/
+.history/
+.project
+.classpath
+.settings/
+# --- AI tooling (local config only — don't leak personal setup into a public repo) ---
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.cursor/
+.cursorrules
+.windsurf/
+.aider*
+.continue/
+.codeium/
+.github/copilot-*
+# --- mise / asdf local overrides ---
+.mise.local.toml
+.tool-versions.local
+.envrc
+.direnv/
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+Icon?
+# --- Linux ---
+.Trash-*
+.directory
+.nfs*
+# --- Windows ---
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+# --- Logs & backups ---
+*.log
+*.bak
+*.orig
+*.tmp

@@ -1,0 +1,41 @@
+speakeasyVersion: 1.764.1
+sources:
+    Cloudsmith API:
+        sourceNamespace: cloudsmith-api
+        sourceRevisionDigest: sha256:46d5b622bf0b5aeef6f4aa5aaecf2d759bbdbeff5482c1382c34f65c764468a3
+        sourceBlobDigest: sha256:0831bfd68fc1d91fdd6744a28b398be46108a1990ed41480b42e9c20efa085ef
+        tags:
+            - latest
+targets:
+    go:
+        source: Cloudsmith API
+        sourceNamespace: cloudsmith-api
+        sourceRevisionDigest: sha256:46d5b622bf0b5aeef6f4aa5aaecf2d759bbdbeff5482c1382c34f65c764468a3
+        sourceBlobDigest: sha256:0831bfd68fc1d91fdd6744a28b398be46108a1990ed41480b42e9c20efa085ef
+        codeSamplesNamespace: cloudsmith-api-go-code-samples
+        codeSamplesRevisionDigest: sha256:c887d0ea7e92dba521480c49bd32cae958e3ae1f1e83eda65edd3fa525a668f2
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        Cloudsmith API:
+            inputs:
+                - location: https://api.cloudsmith.io/v2/openapi
+            overlays:
+                - location: .speakeasy/overlays/cloudsmith-v2.yaml
+                - location: .speakeasy/overlays/cloudsmith-retries.yaml
+                - location: .speakeasy/overlays/cloudsmith-pagination.yaml
+                - location: .speakeasy/overlays/cloudsmith-auth.yaml
+            registry:
+                location: registry.speakeasyapi.dev/cloudsmith/default/cloudsmith-api
+    targets:
+        go:
+            target: go
+            source: Cloudsmith API
+            output: .
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/cloudsmith/default/cloudsmith-api-go-code-samples
+                labelOverride:
+                    fixedValue: Go (SDK)
+                blocking: false

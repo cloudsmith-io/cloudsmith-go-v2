@@ -1,0 +1,15 @@
+overlay: 1.0.0
+info:
+    title: Cloudsmith v2 namespace
+    version: 1.0.0
+    description: |
+      * Drop the discriminator on PolicyHuggingfaceCard — Speakeasy's Go
+        generator collides the explicit discriminator value "Unknown" with
+        its auto-generated union "unknown" sentinel, producing a duplicate
+        CardTypeUnknown constant. Removing the discriminator leaves oneOf
+        intact (Speakeasy still tries each variant on deserialize) at the
+        cost of slightly slower runtime type detection. Track and revert
+        when Speakeasy fixes the collision.
+actions:
+    - target: $.components.schemas.PolicyHuggingfaceCard.discriminator
+      remove: true
