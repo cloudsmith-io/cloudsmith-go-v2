@@ -1,0 +1,118 @@
+package cloudsmith_test
+
+import (
+	"context"
+	"io"
+	"net/http"
+	"strings"
+	"testing"
+
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
+	"github.com/stretchr/testify/assert"
+)
+
+type headerRecorder struct {
+	header http.Header
+}
+
+func (r *headerRecorder) Do(req *http.Request) (*http.Response, error) {
+	r.header = req.Header.Clone()
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(`{}`)),
+		Request:    req,
+	}, nil
+}
+
+type urlRecorder struct {
+	requestURL string
+}
+
+func (r *urlRecorder) Do(req *http.Request) (*http.Response, error) {
+	r.requestURL = req.URL.String()
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(`{}`)),
+		Request:    req,
+	}, nil
+}
+
+type pagetotalInnerClient struct{ called bool }
+
+func (c *pagetotalInnerClient) Do(req *http.Request) (*http.Response, error) {
+	c.called = true
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header: http.Header{
+			"Content-Type":          []string{"application/json"},
+			"X-Pagination-Pagetotal": []string{"3"},
+		},
+		Body:    io.NopCloser(strings.NewReader(`{}`)),
+		Request: req,
+	}, nil
+}
+
+func minimalMetadataListRequest() operations.PackagesMetadataListRequest {
+	return operations.PackagesMetadataListRequest{PackageSlugPerm: "test-pkg"}
+}
+
+func TestNew_SetsAPIKeyFromEnv(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_KEY", "env-key")
+	t.Setenv("CLOUDSMITH_API_HOST", "https://api.example.com")
+
+	recorder := &headerRecorder{}
+	sdk := cloudsmith.New(cloudsmith.WithClient(recorder))
+	_, _ = sdk.Packages.PackagesMetadataList(context.Background(), minimalMetadataListRequest())
+
+	assert.Equal(t, "env-key", recorder.header.Get("X-Api-Key"))
+}
+
+func TestNew_ExplicitSecurityOverridesEnv(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_KEY", "env-key")
+	t.Setenv("CLOUDSMITH_API_HOST", "https://api.example.com")
+
+	recorder := &headerRecorder{}
+	sdk := cloudsmith.New(
+		cloudsmith.WithSecurity("explicit-key"),
+		cloudsmith.WithClient(recorder),
+	)
+	_, _ = sdk.Packages.PackagesMetadataList(context.Background(), minimalMetadataListRequest())
+
+	assert.Equal(t, "explicit-key", recorder.header.Get("X-Api-Key"))
+}
+
+func TestNew_NoCredentials(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_KEY", "")
+	t.Setenv("CLOUDSMITH_API_HOST", "https://api.example.com")
+
+	recorder := &headerRecorder{}
+	sdk := cloudsmith.New(cloudsmith.WithClient(recorder))
+	_, _ = sdk.Packages.PackagesMetadataList(context.Background(), minimalMetadataListRequest())
+
+	assert.Empty(t, recorder.header.Get("X-Api-Key"))
+}
+
+func TestNew_PaginatedClientWrapsPagetotal(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_KEY", "key")
+	t.Setenv("CLOUDSMITH_API_HOST", "https://api.example.com")
+
+	inner := &pagetotalInnerClient{}
+	sdk := cloudsmith.New(cloudsmith.WithClient(inner))
+	_, _ = sdk.Packages.PackagesMetadataList(context.Background(), minimalMetadataListRequest())
+
+	assert.True(t, inner.called)
+}
+
+func TestNew_SetsServerURLFromEnv(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_HOST", "https://api.example.com")
+	t.Setenv("CLOUDSMITH_API_KEY", "test-key")
+
+	recorder := &urlRecorder{}
+	sdk := cloudsmith.New(cloudsmith.WithClient(recorder))
+	_, _ = sdk.Packages.PackagesMetadataList(context.Background(), minimalMetadataListRequest())
+
+	assert.Contains(t, recorder.requestURL, "api.example.com")
+}
