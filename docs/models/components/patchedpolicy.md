@@ -1,0 +1,13 @@
+# PatchedPolicy
+
+
+## Fields
+
+| Field                                                                   | Type                                                                    | Required                                                                | Description                                                             |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `Description`                                                           | optionalnullable.OptionalNullable[`string`]                             | :heavy_minus_sign:                                                      | The description of the Policy.                                          |
+| `Name`                                                                  | `*string`                                                               | :heavy_minus_sign:                                                      | The name of the Policy.                                                 |
+| `Rego`                                                                  | `*string`                                                               | :heavy_minus_sign:                                                      | The rego code which constitutes the Policy logic.                       |
+| `Enabled`                                                               | `*bool`                                                                 | :heavy_minus_sign:                                                      | If true, the policy is enabled.                                         |
+| `IsTerminal`                                                            | `*bool`                                                                 | :heavy_minus_sign:                                                      | If true and the policy matches, no further policies are evaluated.      |
+| `Precedence`                                                            | `*int64`                                                                | :heavy_minus_sign:                                                      | The order in which this policy is evaluated relative to other policies. |

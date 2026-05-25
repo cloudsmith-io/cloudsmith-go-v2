@@ -1,0 +1,10 @@
+# MetadataPackagesPartialUpdateRequest
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `PackageSlugPerm`                                                                                   | `string`                                                                                            | :heavy_check_mark:                                                                                  | The `slug_perm` of the package.                                                                     |
+| `SlugPerm`                                                                                          | `string`                                                                                            | :heavy_check_mark:                                                                                  | The `slug_perm` of the metadata entry.                                                              |
+| `Body`                                                                                              | [*components.PatchedArtifactMetadataWrite](../../models/components/patchedartifactmetadatawrite.md) | :heavy_minus_sign:                                                                                  | N/A                                                                                                 |
