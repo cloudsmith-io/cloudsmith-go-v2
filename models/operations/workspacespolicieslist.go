@@ -12,7 +12,7 @@ type WorkspacesPoliciesListRequest struct {
 	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
-	// A search string to limit results by name. Legal fields are: `name`. Boolean operators may be used to construct intricate queries. Omitting boolean operators is interpreted as an implicit `AND`.
+	// A search string to limit results by name. Legal fields are: `name`, `enabled`. Boolean operators may be used to construct intricate queries. Omitting boolean operators is interpreted as an implicit `AND`.
 	Query *string `queryParam:"style=form,explode=true,name=query"`
 	// A comma-separated string of fields to sort by. Legal fields are: `created_at`, `enabled`, `name`, `precedence`, `version`, `updated_at`. Descending order can be expressed by prepending `-` to a field name.
 	Sort *string `default:"-created_at" queryParam:"style=form,explode=true,name=sort"`
