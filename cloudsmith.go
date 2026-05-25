@@ -132,9 +132,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Cloudsmith {
 	sdk := &Cloudsmith{
-		SDKVersion: "1.0.4",
+		SDKVersion: "1.0.5",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/go 1.0.4 2.886.0 1.1184.1 (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
+			UserAgent:  "speakeasy-sdk/go 1.0.5 2.886.0 1.1184.1 (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
