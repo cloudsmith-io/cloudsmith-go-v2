@@ -7,13 +7,17 @@ package cloudsmith
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/config"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/hooks"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/pagination"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/resolvers"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/retry"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -142,10 +146,34 @@ func New(opts ...SDKOption) *Cloudsmith {
 		opt(sdk)
 	}
 
-	// Use WithClient to override the default client if you would like to customize the timeout
+	if sdk.sdkConfiguration.Security == nil {
+		cred, err := resolvers.DefaultCredentialProviderChain().Resolve(context.Background())
+		if err == nil {
+			sdk.sdkConfiguration.Security = func(_ context.Context) (interface{}, error) {
+				return cred, nil
+			}
+		} else if !errors.Is(err, resolvers.ErrNoCredentials) {
+			captured := err
+			sdk.sdkConfiguration.Security = func(_ context.Context) (interface{}, error) {
+				return nil, captured
+			}
+		}
+	}
+
+	if sdk.sdkConfiguration.ServerURL == "" {
+		if url, err := resolvers.DefaultEndpointProviderChain().Resolve(context.Background()); err == nil {
+			normalized := strings.TrimRight(url, "/")
+			if !strings.HasSuffix(normalized, "/v2") {
+				normalized += "/v2"
+			}
+			sdk.sdkConfiguration.ServerURL = normalized + "/"
+		}
+	}
+
 	if sdk.sdkConfiguration.Client == nil {
 		sdk.sdkConfiguration.Client = &http.Client{Timeout: 60 * time.Second}
 	}
+	sdk.sdkConfiguration.Client = pagination.NewPaginatedClient(sdk.sdkConfiguration.Client)
 
 	currentServerURL, _ := sdk.sdkConfiguration.GetServerDetails()
 	serverURL := currentServerURL
@@ -159,3 +187,4 @@ func New(opts ...SDKOption) *Cloudsmith {
 
 	return sdk
 }
+
