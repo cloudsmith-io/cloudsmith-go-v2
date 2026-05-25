@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: fa09069b-9ac8-46b5-9c53-1b755611b6b3
 management:
-  docChecksum: e1e98016cf3357bf1bda2d2c87e0b222
-  docVersion: 1.1184.0 (v2)
+  docChecksum: 6f4ce647f23d06ecc685b5d31737d0fb
+  docVersion: 1.1184.1 (v2)
   speakeasyVersion: 1.764.1
   generationVersion: 2.885.1
-  releaseVersion: 1.0.0
-  configChecksum: 0914a71ea273f758eb64b3cbf1b64064
+  releaseVersion: 1.0.1
+  configChecksum: a0f2c13b1527ddeced6bb49a649cd75e
 persistentEdits:
-  generation_id: 418c4f75-9120-45cf-a856-97e159699a78
-  pristine_commit_hash: 99d70e28a1a46c825a630e9ed4b3cc647c658886
-  pristine_tree_hash: 34323d59da0dfbf395d56e892aff33b4a4055283
+  generation_id: 7a9ae1ca-102b-47cd-8b03-432d9a934dfe
+  pristine_commit_hash: 404a10b3051b6b0384ff3cc56b6fcefa4bfc7dda
+  pristine_tree_hash: 4faf99a81e7dc41e9421bbfcd7940a08a49f8943
 features:
   go:
     additionalDependencies: 0.1.0
@@ -43,8 +43,8 @@ trackedFiles:
     pristine_git_object: 4daa52d05091c86dc9ebe79779688d7e466a2ce3
   cloudsmith.go:
     id: b5bdaee6b3ef
-    last_write_checksum: sha1:97e9c17138aeeaaea89536a808c1547404944af6
-    pristine_git_object: 597d4504ea44cc0a3edfebb0d5d900e4fd2a4f82
+    last_write_checksum: sha1:39015d93fffcfb75f81fcbced7ada9567feb8104
+    pristine_git_object: aa937aeae68ee8f44ae0759f5620fadba75def4b
   docs/models/apierrors/errordetail.md:
     id: eba17ad0da24
     last_write_checksum: sha1:41d4c1b384c51449538ba7ed1b79487e0e5299e9
