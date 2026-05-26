@@ -29,11 +29,11 @@ jobs:
             -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
             "${ACTIONS_ID_TOKEN_REQUEST_URL}")
           CLOUDSMITH_TOKEN=$(curl -sSf \
-            -X POST "https://api.cloudsmith.io/v1/oidc/cloudsmith/" \
+            -X POST "https://${{ secrets.CLOUDSMITH_API_HOST }}/openid/${{ secrets.CLOUDSMITH_ORG }}/" \
             -H "Content-Type: application/json" \
             -d "{\"oidc_token\":\"$(echo "${OIDC_TOKEN}" | jq -r '.value')\",\"service_slug\":\"cloudsmith-go-v2\"}" \
             | jq -r '.token')
-          echo "GOPROXY=https://token:${CLOUDSMITH_TOKEN}@${{ secrets.CLOUDSMITH_GOPROXY_DOMAIN }}/cloudsmith/meta/,direct" >> "${GITHUB_ENV}"
+          echo "GOPROXY=https://token:${CLOUDSMITH_TOKEN}@${{ secrets.CLOUDSMITH_GOPROXY_DOMAIN }}/${{ secrets.CLOUDSMITH_ORG }}/meta/" >> "${GITHUB_ENV}"
 
       - name: Cache Go modules and build cache
         uses: actions/cache@v4
@@ -41,9 +41,14 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum', 'mise.toml') }}
+          key: ${{ runner.os }}-go-v2-${{ hashFiles('**/go.sum', 'mise.toml') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ runner.os }}-go-v2-
+
+      - name: Start mock server
+        run: |
+          cd tests/mockserver && go run . &
+          until curl -sf http://localhost:18080/_mockserver/health; do sleep 1; done
 
       - name: Build
         run: go build ./...
