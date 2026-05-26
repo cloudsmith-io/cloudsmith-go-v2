@@ -4,117 +4,21 @@
 package tests
 
 import (
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/types"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func TestPackages_PackagesMetadataList(t *testing.T) {
-	ctx := context.Background()
-
-	testHTTPClient := createTestHTTPClient("packages_metadata_list")
-
-	s := cloudsmith.New(
-		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
-		cloudsmith.WithClient(testHTTPClient),
-		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-	)
-
-	res, err := s.Packages.PackagesMetadataList(ctx, operations.PackagesMetadataListRequest{
-		PackageSlugPerm: "<value>",
-	})
-	require.NoError(t, err)
-	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
-	assert.NotNil(t, res.PaginatedArtifactMetadataReadList)
-	assert.Equal(t, &components.PaginatedArtifactMetadataReadList{
-		Results: []components.ArtifactMetadataRead{},
-	}, res.PaginatedArtifactMetadataReadList)
-
+	t.Skip("incomplete test found please make sure to address the following errors: [`workflow step packages_metadata_list.test referencing operation packages_metadata_list not found in document`]")
 }
 
 func TestPackages_PackagesMetadataCreate(t *testing.T) {
-	ctx := context.Background()
-
-	testHTTPClient := createTestHTTPClient("packages_metadata_create")
-
-	s := cloudsmith.New(
-		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
-		cloudsmith.WithClient(testHTTPClient),
-		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-	)
-
-	res, err := s.Packages.PackagesMetadataCreate(ctx, "<value>", components.ArtifactMetadataWriteInput{
-		Content:        "<value>",
-		ContentType:    "<value>",
-		SourceIdentity: "<value>",
-	})
-	require.NoError(t, err)
-	assert.Equal(t, 201, res.HTTPMeta.Response.StatusCode)
-	assert.NotNil(t, res.ArtifactMetadataWrite)
-	assert.Equal(t, &components.ArtifactMetadataWrite{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
-		ContentType:    "<value>",
-		SourceIdentity: "<value>",
-	}, res.ArtifactMetadataWrite)
-
+	t.Skip("incomplete test found please make sure to address the following errors: [`workflow step packages_metadata_create.test referencing operation packages_metadata_create not found in document`]")
 }
 
 func TestPackages_PackagesMetadataRetrieve(t *testing.T) {
-	ctx := context.Background()
-
-	testHTTPClient := createTestHTTPClient("packages_metadata_retrieve")
-
-	s := cloudsmith.New(
-		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
-		cloudsmith.WithClient(testHTTPClient),
-		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-	)
-
-	res, err := s.Packages.PackagesMetadataRetrieve(ctx, "<value>", "<value>")
-	require.NoError(t, err)
-	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
-	assert.NotNil(t, res.ArtifactMetadataRead)
-	assert.Equal(t, &components.ArtifactMetadataRead{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
-		ContentType:    "<value>",
-		Classification: components.ClassificationEnumSbom,
-		SourceKind:     components.SourceKindEnumThirdParty,
-		SourceIdentity: "<value>",
-		IsCanonical:    false,
-		SourceTable:    "<value>",
-		CreatedAt:      types.MustTimeFromString("2024-06-14T17:08:09.532Z"),
-	}, res.ArtifactMetadataRead)
-
+	t.Skip("incomplete test found please make sure to address the following errors: [`workflow step packages_metadata_retrieve.test referencing operation packages_metadata_retrieve not found in document`]")
 }
 
 func TestPackages_PackagesMetadataPartialUpdate(t *testing.T) {
-	ctx := context.Background()
-
-	testHTTPClient := createTestHTTPClient("packages_metadata_partial_update")
-
-	s := cloudsmith.New(
-		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
-		cloudsmith.WithClient(testHTTPClient),
-		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-	)
-
-	res, err := s.Packages.PackagesMetadataPartialUpdate(ctx, "<value>", "<value>", nil)
-	require.NoError(t, err)
-	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
-	assert.NotNil(t, res.ArtifactMetadataWrite)
-	assert.Equal(t, &components.ArtifactMetadataWrite{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
-		ContentType:    "<value>",
-		SourceIdentity: "<value>",
-	}, res.ArtifactMetadataWrite)
-
+	t.Skip("incomplete test found please make sure to address the following errors: [`workflow step packages_metadata_partial_update.test referencing operation packages_metadata_partial_update not found in document`]")
 }

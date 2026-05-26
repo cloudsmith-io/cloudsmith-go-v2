@@ -483,6 +483,8 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 		}
 	case httpRes.StatusCode == 401:
 		fallthrough
+	case httpRes.StatusCode == 402:
+		fallthrough
 	case httpRes.StatusCode == 403:
 		fallthrough
 	case httpRes.StatusCode == 404:
@@ -987,6 +989,8 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 		}
 	case httpRes.StatusCode == 401:
 		fallthrough
+	case httpRes.StatusCode == 402:
+		fallthrough
 	case httpRes.StatusCode == 403:
 		fallthrough
 	case httpRes.StatusCode == 404:
@@ -1216,6 +1220,8 @@ func (s *Metadata) MetadataPackagesDestroy(ctx context.Context, packageSlugPerm 
 	case httpRes.StatusCode == 204:
 		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 401:
+		fallthrough
+	case httpRes.StatusCode == 402:
 		fallthrough
 	case httpRes.StatusCode == 403:
 		fallthrough

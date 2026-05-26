@@ -9,7 +9,7 @@ import (
 	"mockserver/internal/sdk/models/components"
 )
 
-// MetadataPackagesListClassification - Filter results by metadata classification.
+// Classification - Filter results by metadata classification.
 //
 // * `UNKNOWN` - Unknown
 // * `INTRINSIC` - Intrinsic
@@ -17,21 +17,21 @@ import (
 // * `PROVENANCE` - Provenance
 // * `SBOM` - SBOM
 // * `GENERIC` - Generic
-type MetadataPackagesListClassification string
+type Classification string
 
 const (
-	MetadataPackagesListClassificationUnknown    MetadataPackagesListClassification = "UNKNOWN"
-	MetadataPackagesListClassificationIntrinsic  MetadataPackagesListClassification = "INTRINSIC"
-	MetadataPackagesListClassificationSecurity   MetadataPackagesListClassification = "SECURITY"
-	MetadataPackagesListClassificationProvenance MetadataPackagesListClassification = "PROVENANCE"
-	MetadataPackagesListClassificationSbom       MetadataPackagesListClassification = "SBOM"
-	MetadataPackagesListClassificationGeneric    MetadataPackagesListClassification = "GENERIC"
+	ClassificationUnknown    Classification = "UNKNOWN"
+	ClassificationIntrinsic  Classification = "INTRINSIC"
+	ClassificationSecurity   Classification = "SECURITY"
+	ClassificationProvenance Classification = "PROVENANCE"
+	ClassificationSbom       Classification = "SBOM"
+	ClassificationGeneric    Classification = "GENERIC"
 )
 
-func (e MetadataPackagesListClassification) ToPointer() *MetadataPackagesListClassification {
+func (e Classification) ToPointer() *Classification {
 	return &e
 }
-func (e *MetadataPackagesListClassification) UnmarshalJSON(data []byte) error {
+func (e *Classification) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -48,34 +48,34 @@ func (e *MetadataPackagesListClassification) UnmarshalJSON(data []byte) error {
 	case "SBOM":
 		fallthrough
 	case "GENERIC":
-		*e = MetadataPackagesListClassification(v)
+		*e = Classification(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MetadataPackagesListClassification: %v", v)
+		return fmt.Errorf("invalid value for Classification: %v", v)
 	}
 }
 
-// MetadataPackagesListSourceKind - Filter results by metadata source kind.
+// SourceKind - Filter results by metadata source kind.
 //
 // * `UNKNOWN` - Unknown
 // * `SYSTEM` - System
 // * `UPSTREAM` - Upstream
 // * `CUSTOM` - Custom
 // * `THIRD_PARTY` - Third Party
-type MetadataPackagesListSourceKind string
+type SourceKind string
 
 const (
-	MetadataPackagesListSourceKindUnknown    MetadataPackagesListSourceKind = "UNKNOWN"
-	MetadataPackagesListSourceKindSystem     MetadataPackagesListSourceKind = "SYSTEM"
-	MetadataPackagesListSourceKindUpstream   MetadataPackagesListSourceKind = "UPSTREAM"
-	MetadataPackagesListSourceKindCustom     MetadataPackagesListSourceKind = "CUSTOM"
-	MetadataPackagesListSourceKindThirdParty MetadataPackagesListSourceKind = "THIRD_PARTY"
+	SourceKindUnknown    SourceKind = "UNKNOWN"
+	SourceKindSystem     SourceKind = "SYSTEM"
+	SourceKindUpstream   SourceKind = "UPSTREAM"
+	SourceKindCustom     SourceKind = "CUSTOM"
+	SourceKindThirdParty SourceKind = "THIRD_PARTY"
 )
 
-func (e MetadataPackagesListSourceKind) ToPointer() *MetadataPackagesListSourceKind {
+func (e SourceKind) ToPointer() *SourceKind {
 	return &e
 }
-func (e *MetadataPackagesListSourceKind) UnmarshalJSON(data []byte) error {
+func (e *SourceKind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -90,10 +90,10 @@ func (e *MetadataPackagesListSourceKind) UnmarshalJSON(data []byte) error {
 	case "CUSTOM":
 		fallthrough
 	case "THIRD_PARTY":
-		*e = MetadataPackagesListSourceKind(v)
+		*e = SourceKind(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MetadataPackagesListSourceKind: %v", v)
+		return fmt.Errorf("invalid value for SourceKind: %v", v)
 	}
 }
 
@@ -106,7 +106,7 @@ type MetadataPackagesListRequest struct {
 	// * `PROVENANCE` - Provenance
 	// * `SBOM` - SBOM
 	// * `GENERIC` - Generic
-	Classification *MetadataPackagesListClassification `queryParam:"style=form,explode=true,name=classification"`
+	Classification *Classification `queryParam:"style=form,explode=true,name=classification"`
 	// The `slug_perm` of the package.
 	PackageSlugPerm string `pathParam:"style=simple,explode=false,name=package_slug_perm"`
 	// A page number within the paginated result set.
@@ -120,10 +120,10 @@ type MetadataPackagesListRequest struct {
 	// * `UPSTREAM` - Upstream
 	// * `CUSTOM` - Custom
 	// * `THIRD_PARTY` - Third Party
-	SourceKind *MetadataPackagesListSourceKind `queryParam:"style=form,explode=true,name=source_kind"`
+	SourceKind *SourceKind `queryParam:"style=form,explode=true,name=source_kind"`
 }
 
-func (o *MetadataPackagesListRequest) GetClassification() *MetadataPackagesListClassification {
+func (o *MetadataPackagesListRequest) GetClassification() *Classification {
 	if o == nil {
 		return nil
 	}
@@ -151,7 +151,7 @@ func (o *MetadataPackagesListRequest) GetPageSize() *int64 {
 	return o.PageSize
 }
 
-func (o *MetadataPackagesListRequest) GetSourceKind() *MetadataPackagesListSourceKind {
+func (o *MetadataPackagesListRequest) GetSourceKind() *SourceKind {
 	if o == nil {
 		return nil
 	}
