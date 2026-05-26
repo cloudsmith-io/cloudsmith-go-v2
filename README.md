@@ -136,14 +136,6 @@ func main() {
 * [MetadataPackagesDestroy](docs/sdks/metadata/README.md#metadatapackagesdestroy) - Delete a package metadata entry
 * [MetadataValidateCreate](docs/sdks/metadata/README.md#metadatavalidatecreate) - Validate a metadata payload
 
-### [Packages](docs/sdks/packages/README.md)
-
-* [PackagesMetadataList](docs/sdks/packages/README.md#packagesmetadatalist) - List metadata for a package
-* [PackagesMetadataCreate](docs/sdks/packages/README.md#packagesmetadatacreate) - Attach metadata to a package
-* [PackagesMetadataRetrieve](docs/sdks/packages/README.md#packagesmetadataretrieve) - Retrieve a package metadata entry
-* [PackagesMetadataPartialUpdate](docs/sdks/packages/README.md#packagesmetadatapartialupdate) - Update a package metadata entry
-* [PackagesMetadataDestroy](docs/sdks/packages/README.md#packagesmetadatadestroy) - Delete a package metadata entry
-
 ### [Workspaces](docs/sdks/workspaces/README.md)
 
 * [WorkspacesPoliciesList](docs/sdks/workspaces/README.md#workspacespolicieslist) - List policies.
