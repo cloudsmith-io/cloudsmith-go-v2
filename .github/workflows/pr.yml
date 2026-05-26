@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -21,6 +22,18 @@ jobs:
         with:
           cache: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Cloudsmith GOPROXY
+        run: |
+          OIDC_TOKEN=$(curl -sSf \
+            -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}")
+          CLOUDSMITH_TOKEN=$(curl -sSf \
+            -X POST "https://api.cloudsmith.io/v1/oidc/cloudsmith/" \
+            -H "Content-Type: application/json" \
+            -d "{\"oidc_token\":\"$(echo "${OIDC_TOKEN}" | jq -r '.value')\",\"service_slug\":\"cloudsmith-go-v2\"}" \
+            | jq -r '.token')
+          echo "GOPROXY=https://token:${CLOUDSMITH_TOKEN}@${{ secrets.CLOUDSMITH_GOPROXY_DOMAIN }}/cloudsmith/meta/,direct" >> "${GITHUB_ENV}"
 
       - name: Cache Go modules and build cache
         uses: actions/cache@v4
