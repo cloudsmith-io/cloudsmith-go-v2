@@ -119,10 +119,10 @@ func main() {
 
 ### Errors
 
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 401, 403, 404, 422    | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
+| Error Type              | Status Code             | Content Type            |
+| ----------------------- | ----------------------- | ----------------------- |
+| apierrors.ErrorDetail   | 401, 402, 403, 404, 422 | application/json        |
+| apierrors.APIError      | 4XX, 5XX                | \*/\*                   |
 
 ## MetadataPackagesRetrieve
 
@@ -226,10 +226,10 @@ func main() {
 
 ### Errors
 
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 401, 403, 404, 422    | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
+| Error Type              | Status Code             | Content Type            |
+| ----------------------- | ----------------------- | ----------------------- |
+| apierrors.ErrorDetail   | 401, 402, 403, 404, 422 | application/json        |
+| apierrors.APIError      | 4XX, 5XX                | \*/\*                   |
 
 ## MetadataPackagesDestroy
 
@@ -281,7 +281,7 @@ func main() {
 
 | Error Type            | Status Code           | Content Type          |
 | --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 401, 403, 404         | application/json      |
+| apierrors.ErrorDetail | 401, 402, 403, 404    | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
 ## MetadataValidateCreate
