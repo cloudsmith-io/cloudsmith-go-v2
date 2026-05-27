@@ -3,7 +3,7 @@
 
 package cloudsmith
 
-// Generated from OpenAPI doc version 1.1185.3 (v2) and generator version 2.888.0
+// Generated from OpenAPI doc version 1.1185.3 (v2) and generator version 2.886.0
 
 import (
 	"context"
@@ -131,9 +131,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Cloudsmith {
 	sdk := &Cloudsmith{
-		SDKVersion: "1.1.6",
+		SDKVersion: "1.1.7",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/go 1.1.6 2.888.0 1.1185.3 (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
+			UserAgent:  "speakeasy-sdk/go 1.1.7 2.886.0 1.1185.3 (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
