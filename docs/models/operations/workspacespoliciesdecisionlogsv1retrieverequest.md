@@ -1,0 +1,10 @@
+# WorkspacesPoliciesDecisionLogsV1RetrieveRequest
+
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `DecisionLogID`                                                                             | `string`                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `Fields`                                                                                    | `*string`                                                                                   | :heavy_minus_sign:                                                                          | Comma-separated fields to include in the response (e.g. `id,correlation_id,policy_output`). |
+| `Workspace`                                                                                 | `string`                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |

@@ -1,0 +1,23 @@
+overlay: 1.0.0
+info:
+  title: Cloudsmith default retry policy
+  version: 0.0.1
+actions:
+  - target: $
+    description: |
+      Apply a global retry policy mirroring the reference SDK's RetryPolicy:
+      max 3 attempts, exponential backoff base=1s cap=30s, retry on 429 and 5xx,
+      respect the Retry-After header. Speakeasy's generated retry helper applies
+      this only to operations without their own x-speakeasy-retries override.
+    update:
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 1000
+          maxInterval: 30000
+          maxElapsedTime: 60000
+          exponent: 2
+        statusCodes:
+          - "429"
+          - 5XX
+        retryConnectionErrors: true

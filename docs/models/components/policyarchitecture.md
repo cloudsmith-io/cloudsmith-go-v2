@@ -1,0 +1,11 @@
+# PolicyArchitecture
+
+The package architecture for policy purposes.
+
+
+## Fields
+
+| Field                                       | Type                                        | Required                                    | Description                                 |
+| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+| `Description`                               | optionalnullable.OptionalNullable[`string`] | :heavy_minus_sign:                          | N/A                                         |
+| `Name`                                      | `string`                                    | :heavy_check_mark:                          | N/A                                         |

@@ -1,0 +1,71 @@
+name: Generate SDK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.author.email != 'vftbot@cloudsmith.io'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.CLOUDSMITH_BOT_SSH_KEY }}
+
+      - name: Install mise tools (Go, Speakeasy)
+        uses: jdx/mise-action@v4
+        with:
+          cache: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Cloudsmith GOPROXY
+        run: |
+          set -o pipefail
+          OIDC_TOKEN=$(curl -sSf \
+            -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}")
+          CLOUDSMITH_TOKEN=$(curl -sSf \
+            -X POST "https://${{ secrets.CLOUDSMITH_API_HOST }}/openid/${{ secrets.CLOUDSMITH_ORG }}/" \
+            -H "Content-Type: application/json" \
+            -d "{\"oidc_token\":\"$(echo "${OIDC_TOKEN}" | jq -r '.value')\",\"service_slug\":\"cloudsmith-go-v2-github-action\"}" \
+            | jq -r '.token')
+          echo "GOPROXY=https://token:${CLOUDSMITH_TOKEN}@${{ secrets.CLOUDSMITH_GOPROXY_DOMAIN }}/${{ secrets.CLOUDSMITH_GOPROXY_REPO }}/" >> "${GITHUB_ENV}"
+
+      - name: Cache Go modules and build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum', 'mise.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Run Speakeasy generation
+        env:
+          SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
+        run: speakeasy run
+
+      - name: Commit generated SDKs
+        env:
+          CLOUDSMITH_BOT_SSH_KEY: ${{ secrets.CLOUDSMITH_BOT_SSH_KEY }}
+        run: |
+          signing_key="$RUNNER_TEMP/cloudsmith-bot-signing-key"
+          printf '%s\n' "$CLOUDSMITH_BOT_SSH_KEY" > "$signing_key"
+          chmod 600 "$signing_key"
+          ssh-keygen -y -f "$signing_key" > "$signing_key.pub"
+          git config --global user.name "Cloudsmith Bot"
+          git config --global user.email "vftbot@cloudsmith.io"
+          git config --global gpg.format ssh
+          git config --global user.signingkey "$signing_key.pub"
+          git config --global commit.gpgsign true
+          git add -A
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "ci: regenerate SDKs"
+          git push origin HEAD:main

@@ -1,0 +1,20 @@
+overlay: 1.0.0
+info:
+  title: Cloudsmith global authentication
+  version: 1.0.0
+  description: |
+    Hoist the per-operation `security` blocks into a single root-level
+    `security` so the generated SDKs configure auth once at construction
+    instead of requiring a Security argument on every method call. The
+    Cloudsmith v2 namespace is uniform on `apikey` + `basic` and has no
+    anonymous endpoints, so a blanket hoist is safe.
+    Reference: https://www.speakeasy.com/docs/sdks/customize/authentication/configuration#global-security
+actions:
+  - target: $
+    update:
+      security:
+        - apikey: []
+  - target: $.paths.*.*.security
+    remove: true
+  - target: $.components.securitySchemes.basic
+    remove: true

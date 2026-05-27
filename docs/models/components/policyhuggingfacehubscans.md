@@ -1,0 +1,16 @@
+# PolicyHuggingfaceHubScans
+
+Per file security-scans from Huggingface Hub for a model or dataset that has been cached into Cloudsmith.
+
+
+## Fields
+
+| Field                                                                         | Type                                                                          | Required                                                                      | Description                                                                   |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `Path`                                                                        | `string`                                                                      | :heavy_check_mark:                                                            | N/A                                                                           |
+| `Status`                                                                      | [components.StatusEnum](../../models/components/statusenum.md)                | :heavy_check_mark:                                                            | * `UNSAFE` - Unsafe<br/>* `UNKNOWN` - Unknown<br/>* `QUEUED` - Queued<br/>* `SAFE` - Safe |
+| `UpdatedAt`                                                                   | [time.Time](https://pkg.go.dev/time#Time)                                     | :heavy_check_mark:                                                            | N/A                                                                           |
+| `Clamav`                                                                      | [*components.ClamAVScan](../../models/components/clamavscan.md)               | :heavy_check_mark:                                                            | The Clam anti-virus scan information from Huggingface Hub.                    |
+| `Jfrog`                                                                       | [*components.JfrogScan](../../models/components/jfrogscan.md)                 | :heavy_check_mark:                                                            | The Jfrog model-scan information from Huggingface Hub.                        |
+| `ProtectAi`                                                                   | [*components.ProtectAIScan](../../models/components/protectaiscan.md)         | :heavy_check_mark:                                                            | The Protect AI model-scan information from Huggingface Hub.                   |
+| `Pickle`                                                                      | [*components.PickleScan](../../models/components/picklescan.md)               | :heavy_check_mark:                                                            | The Pickle Import scan information from Huggingface Hub.                      |

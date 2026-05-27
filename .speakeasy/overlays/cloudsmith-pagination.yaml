@@ -1,0 +1,40 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Cloudsmith pagination
+  version: 1.0.0
+  description: |
+    The Cloudsmith API conveys total page count via the X-Pagination-Pagetotal
+    response header rather than the body. Speakeasy's pagination plugin only
+    reads body fields, so cloudsmith-go ships an AfterSuccess hook
+    (internal/hooks/pagetotal.go) that copies that header into a synthetic
+    `pagetotal` body field on JSON responses. This overlay declares the
+    synthetic field on paginated response schemas and configures
+    x-speakeasy-pagination so generated SDKs expose Next()-style iteration
+    on list endpoints. Marking `page` as required is also necessary for
+    the Go target to generate pagination code.
+actions:
+  - target: $["components"]["schemas"]["PaginatedPolicyList"]["properties"]
+    update:
+      pagetotal:
+        type: integer
+        description: |
+          Total number of pages. Synthesised from the X-Pagination-Pagetotal
+          header by the SDK; not a field returned by the server.
+  - target: $["paths"]["/workspaces/{workspace}/policies/"]["get"]["parameters"][?(@.name=="page")]
+    update:
+      required: true
+  - target: $["paths"]["/workspaces/{workspace}/policies/"]["get"]
+    update:
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: page
+            in: parameters
+            type: page
+          - name: page_size
+            in: parameters
+            type: limit
+        outputs:
+          results: $.results
+          numPages: $.pagetotal
