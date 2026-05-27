@@ -119,45 +119,6 @@ func main() {
 }
 
 ```
-
-### Environment Variables
-
-When no explicit option is provided to `New()`, the SDK falls back to the following environment variables:
-
-| Variable               | Purpose                                                                                              |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| `CLOUDSMITH_API_KEY`   | API key used for authentication when `WithSecurity(...)` is not passed.                              |
-| `CLOUDSMITH_API_HOST`  | Base API host used when `WithServerURL(...)` / `WithServerIndex(...)` is not passed. The value is normalized and `/v2/` is appended if not already present. |
-
-Explicit options always take precedence over environment variables; the variables are only consulted as a fallback. With both variables set, the client can be constructed with no options:
-
-```go
-package main
-
-import (
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
-	"log"
-)
-
-func main() {
-	ctx := context.Background()
-
-	// Reads CLOUDSMITH_API_KEY and CLOUDSMITH_API_HOST from the environment.
-	s := cloudsmith.New()
-
-	res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
-		PackageSlugPerm: "<value>",
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	if res.PaginatedArtifactMetadataReadList != nil {
-		// handle response
-	}
-}
-```
 <!-- End Authentication [security] -->
 
 <!-- Start Available Resources and Operations [operations] -->

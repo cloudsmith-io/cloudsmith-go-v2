@@ -2,8 +2,8 @@ speakeasyVersion: 1.767.0
 sources:
     Cloudsmith API:
         sourceNamespace: cloudsmith-api
-        sourceRevisionDigest: sha256:fcc432dff367fad8e832c09ada03bb968c91505d50c7311b3275c597718187c5
-        sourceBlobDigest: sha256:89b5b0ff80da03c9da6d6c3a575e50a3507e131168575bb6cfc7d5f546d9e8a9
+        sourceRevisionDigest: sha256:58133ebdf45cee89d6db4eed9e6466c4db03f5bde0204f3d40058398814d95e9
+        sourceBlobDigest: sha256:c22e15a89dfd8f1849fd13ec22c45faad05dab222201b2c284da012c41d6ae76
         tags:
             - latest
             - main
@@ -11,10 +11,10 @@ targets:
     go:
         source: Cloudsmith API
         sourceNamespace: cloudsmith-api
-        sourceRevisionDigest: sha256:fcc432dff367fad8e832c09ada03bb968c91505d50c7311b3275c597718187c5
-        sourceBlobDigest: sha256:89b5b0ff80da03c9da6d6c3a575e50a3507e131168575bb6cfc7d5f546d9e8a9
+        sourceRevisionDigest: sha256:58133ebdf45cee89d6db4eed9e6466c4db03f5bde0204f3d40058398814d95e9
+        sourceBlobDigest: sha256:c22e15a89dfd8f1849fd13ec22c45faad05dab222201b2c284da012c41d6ae76
         codeSamplesNamespace: cloudsmith-api-go-code-samples
-        codeSamplesRevisionDigest: sha256:bc8ea3ba76619a43887484f1e4690d49036737789223420fd2bee0fc5c5b4032
+        codeSamplesRevisionDigest: sha256:d24acc1d38d492122b76562efcb2dac209c6673d730f2289e4e0a0fe53025636
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
