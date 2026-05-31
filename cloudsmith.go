@@ -17,7 +17,6 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/retry"
 	"net/http"
-	"strings"
 	"time"
 )
 
@@ -160,14 +159,8 @@ func New(opts ...SDKOption) *Cloudsmith {
 		}
 	}
 
-	if sdk.sdkConfiguration.ServerURL == "" {
-		if url, err := resolvers.DefaultEndpointProviderChain().Resolve(context.Background()); err == nil {
-			normalized := strings.TrimRight(url, "/")
-			if !strings.HasSuffix(normalized, "/v2") {
-				normalized += "/v2"
-			}
-			sdk.sdkConfiguration.ServerURL = normalized + "/"
-		}
+	if url, err := resolvers.DefaultEndpointProviderChain(sdk.sdkConfiguration.ServerURL).Resolve(context.Background()); err == nil {
+		sdk.sdkConfiguration.ServerURL = url
 	}
 
 	if sdk.sdkConfiguration.Client == nil {

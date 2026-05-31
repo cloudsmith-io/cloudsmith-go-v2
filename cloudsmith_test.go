@@ -151,3 +151,50 @@ func TestNew_SetsServerURLFromEnv_LegacyV1PathReplacedWithV2(t *testing.T) {
 	assert.Contains(t, recorder.requestURL, "api.example.com/v2/")
 	assert.NotContains(t, recorder.requestURL, "/v1")
 }
+
+func TestNew_NormalizesExplicitServerURL(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_HOST", "")
+	t.Setenv("CLOUDSMITH_API_KEY", "test-key")
+
+	recorder := &urlRecorder{}
+	sdk := cloudsmith.New(
+		cloudsmith.WithServerURL("https://explicit.example.com"),
+		cloudsmith.WithClient(recorder),
+	)
+	_, err := sdk.Metadata.MetadataPackagesList(context.Background(), minimalMetadataListRequest())
+	require.NoError(t, err)
+
+	assert.Contains(t, recorder.requestURL, "explicit.example.com/v2/")
+}
+
+func TestNew_NormalizesExplicitServerURL_LegacyV1PathReplacedWithV2(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_HOST", "")
+	t.Setenv("CLOUDSMITH_API_KEY", "test-key")
+
+	recorder := &urlRecorder{}
+	sdk := cloudsmith.New(
+		cloudsmith.WithServerURL("https://explicit.example.com/v1"),
+		cloudsmith.WithClient(recorder),
+	)
+	_, err := sdk.Metadata.MetadataPackagesList(context.Background(), minimalMetadataListRequest())
+	require.NoError(t, err)
+
+	assert.Contains(t, recorder.requestURL, "explicit.example.com/v2/")
+	assert.NotContains(t, recorder.requestURL, "/v1")
+}
+
+func TestNew_ExplicitServerURLTakesPrecedenceOverEnv(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_HOST", "https://env.example.com")
+	t.Setenv("CLOUDSMITH_API_KEY", "test-key")
+
+	recorder := &urlRecorder{}
+	sdk := cloudsmith.New(
+		cloudsmith.WithServerURL("https://explicit.example.com"),
+		cloudsmith.WithClient(recorder),
+	)
+	_, err := sdk.Metadata.MetadataPackagesList(context.Background(), minimalMetadataListRequest())
+	require.NoError(t, err)
+
+	assert.Contains(t, recorder.requestURL, "explicit.example.com/v2/")
+	assert.NotContains(t, recorder.requestURL, "env.example.com")
+}

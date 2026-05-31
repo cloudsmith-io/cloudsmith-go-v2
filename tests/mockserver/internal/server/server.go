@@ -65,7 +65,7 @@ func NewServer(ctx context.Context, opts ...ServerOption) (*Server, error) {
 
 	result.server = &http.Server{
 		Addr:     result.address,
-		Handler:  logging.HTTPLoggerHandler(result.logger, result.mux),
+		Handler:  logging.HTTPLoggerHandler(result.logger, stripV2Prefix(result.mux)),
 		ErrorLog: slog.NewLogLogger(result.logger.Handler(), slog.LevelError),
 	}
 
@@ -115,6 +115,23 @@ func (s *Server) Serve(ctx context.Context) error {
 	}
 
 	return fmt.Errorf("error running server: %w", err)
+}
+
+// stripV2Prefix lets the mock accept the /v2-anchored URLs the SDK produces
+// (the SDK normalizes every server URL to end in /v2/) while the generated
+// handlers remain registered at the OpenAPI operation paths (root-relative).
+// A bare "/v2" maps to "/"; "/v2/..." maps to "/..."; anything else is left
+// untouched so root-relative requests still match.
+func stripV2Prefix(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.URL.Path == "/v2":
+			r.URL.Path = "/"
+		case strings.HasPrefix(r.URL.Path, "/v2/"):
+			r.URL.Path = strings.TrimPrefix(r.URL.Path, "/v2")
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 // Shutdown gracefully stops the server.

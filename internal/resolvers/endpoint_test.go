@@ -71,11 +71,48 @@ func TestEnvEndpointProvider_HostSet(t *testing.T) {
 	assert.Equal(t, "https://api.example.com", url)
 }
 
-func TestEnvEndpointProvider_LegacyV1PathStripped(t *testing.T) {
+func TestEnvEndpointProvider_ReturnsHostUnnormalized(t *testing.T) {
 	t.Setenv("CLOUDSMITH_API_HOST", "https://api.example.com/v1")
 	url, err := resolvers.EnvEndpointProvider{}.Resolve(context.Background())
 	require.NoError(t, err)
-	assert.Equal(t, "https://api.example.com", url)
+	assert.Equal(t, "https://api.example.com/v1", url)
+}
+
+func TestStaticEndpointProvider_URLSet(t *testing.T) {
+	url, err := resolvers.StaticEndpointProvider{URL: "https://explicit.example.com"}.Resolve(context.Background())
+	require.NoError(t, err)
+	assert.Equal(t, "https://explicit.example.com", url)
+}
+
+func TestStaticEndpointProvider_URLEmpty(t *testing.T) {
+	_, err := resolvers.StaticEndpointProvider{}.Resolve(context.Background())
+	assert.ErrorIs(t, err, resolvers.ErrNoEndpoint)
+}
+
+func TestDefaultEndpointProviderChain_ExplicitURLTakesPrecedence(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_HOST", "https://env.example.com")
+	url, err := resolvers.DefaultEndpointProviderChain("https://explicit.example.com").Resolve(context.Background())
+	require.NoError(t, err)
+	assert.Equal(t, "https://explicit.example.com/v2/", url)
+}
+
+func TestDefaultEndpointProviderChain_EmptyExplicitURLFallsThroughToEnv(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_HOST", "https://env.example.com")
+	url, err := resolvers.DefaultEndpointProviderChain("").Resolve(context.Background())
+	require.NoError(t, err)
+	assert.Equal(t, "https://env.example.com/v2/", url)
+}
+
+func TestDefaultEndpointProviderChain_NormalizesLegacyV1Path(t *testing.T) {
+	url, err := resolvers.DefaultEndpointProviderChain("https://explicit.example.com/v1").Resolve(context.Background())
+	require.NoError(t, err)
+	assert.Equal(t, "https://explicit.example.com/v2/", url)
+}
+
+func TestDefaultEndpointProviderChain_NoEndpointAvailable(t *testing.T) {
+	t.Setenv("CLOUDSMITH_API_HOST", "")
+	_, err := resolvers.DefaultEndpointProviderChain("").Resolve(context.Background())
+	assert.ErrorIs(t, err, resolvers.ErrNoEndpoint)
 }
 
 func TestEnvEndpointProvider_HostEmpty(t *testing.T) {
