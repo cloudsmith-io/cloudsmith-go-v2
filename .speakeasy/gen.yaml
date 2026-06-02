@@ -51,7 +51,7 @@ go:
       webhooks: models/webhooks
   includeEmptyObjects: true
   inferUnionDiscriminators: true
-  inputModelSuffix: input
+  inputModelSuffix: request
   license:
     name: Apache License 2.0
     shortName: Apache-2.0
@@ -61,7 +61,7 @@ go:
   modulePath: github.com/cloudsmith-io/cloudsmith-go-v2
   multipartArrayFormat: standard
   nullableOptionalWrapper: true
-  outputModelSuffix: output
+  outputModelSuffix: response
   respectRequiredFields: false
   respectTitlesForPrimitiveUnionMembers: true
   responseFormat: envelope-http
