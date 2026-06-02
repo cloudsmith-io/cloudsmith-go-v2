@@ -130,7 +130,7 @@ func TestWorkspaces_WorkspacesPoliciesCreate(t *testing.T) {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Workspaces.WorkspacesPoliciesCreate(ctx, "<value>", components.PolicyInput1{
+	res, err := s.Workspaces.WorkspacesPoliciesCreate(ctx, "<value>", components.PolicyRequest{
 		Name: "<value>",
 		Rego: "<value>",
 	})
@@ -187,7 +187,7 @@ func TestWorkspaces_WorkspacesPoliciesUpdate(t *testing.T) {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Workspaces.WorkspacesPoliciesUpdate(ctx, "<value>", "<value>", components.PolicyInput1{
+	res, err := s.Workspaces.WorkspacesPoliciesUpdate(ctx, "<value>", "<value>", components.PolicyRequest{
 		Name: "<value>",
 		Rego: "<value>",
 	})
@@ -569,7 +569,7 @@ func TestWorkspaces_WorkspacesPoliciesDecisionLogsV1Retrieve(t *testing.T) {
 		},
 		StartedAt: types.MustTimeFromString("2025-11-01T03:46:01.833Z"),
 		EndedAt:   types.MustTimeFromString("2026-09-27T14:35:11.388Z"),
-		PolicyInput: components.PolicyInput2{
+		PolicyInput: components.PolicyInput{
 			V0: components.PolicyInputV0{
 				Package: components.CreatePolicyPolymorphicPackageHuggingfacePackage(
 					components.PolicyHuggingfacePackageTyped{

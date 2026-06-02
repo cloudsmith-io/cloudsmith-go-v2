@@ -307,7 +307,7 @@ func (s *Workspaces) WorkspacesPoliciesList(ctx context.Context, request operati
 }
 
 // WorkspacesPoliciesCreate - Create a policy.
-func (s *Workspaces) WorkspacesPoliciesCreate(ctx context.Context, workspace string, body components.PolicyInput1, opts ...operations.Option) (*operations.WorkspacesPoliciesCreateResponse, error) {
+func (s *Workspaces) WorkspacesPoliciesCreate(ctx context.Context, workspace string, body components.PolicyRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesCreateResponse, error) {
 	request := operations.WorkspacesPoliciesCreateRequest{
 		Workspace: workspace,
 		Body:      body,
@@ -773,7 +773,7 @@ func (s *Workspaces) WorkspacesPoliciesRetrieve(ctx context.Context, policy stri
 }
 
 // WorkspacesPoliciesUpdate - Update a policy.
-func (s *Workspaces) WorkspacesPoliciesUpdate(ctx context.Context, policy string, workspace string, body components.PolicyInput1, opts ...operations.Option) (*operations.WorkspacesPoliciesUpdateResponse, error) {
+func (s *Workspaces) WorkspacesPoliciesUpdate(ctx context.Context, policy string, workspace string, body components.PolicyRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesUpdateResponse, error) {
 	request := operations.WorkspacesPoliciesUpdateRequest{
 		Policy:    policy,
 		Workspace: workspace,
@@ -1644,7 +1644,7 @@ func (s *Workspaces) WorkspacesPoliciesActionsList(ctx context.Context, policy s
 }
 
 // WorkspacesPoliciesActionsCreate - Create an action for a policy.
-func (s *Workspaces) WorkspacesPoliciesActionsCreate(ctx context.Context, policy string, workspace string, body *components.PolicyActionInput, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsCreateResponse, error) {
+func (s *Workspaces) WorkspacesPoliciesActionsCreate(ctx context.Context, policy string, workspace string, body *components.PolicyActionRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsCreateResponse, error) {
 	request := operations.WorkspacesPoliciesActionsCreateRequest{
 		Policy:    policy,
 		Workspace: workspace,
@@ -2112,7 +2112,7 @@ func (s *Workspaces) WorkspacesPoliciesActionsRetrieve(ctx context.Context, acti
 }
 
 // WorkspacesPoliciesActionsUpdate - Update an action for a policy.
-func (s *Workspaces) WorkspacesPoliciesActionsUpdate(ctx context.Context, action string, policy string, workspace string, body *components.PolicyActionInput, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsUpdateResponse, error) {
+func (s *Workspaces) WorkspacesPoliciesActionsUpdate(ctx context.Context, action string, policy string, workspace string, body *components.PolicyActionRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsUpdateResponse, error) {
 	request := operations.WorkspacesPoliciesActionsUpdateRequest{
 		Action:    action,
 		Policy:    policy,

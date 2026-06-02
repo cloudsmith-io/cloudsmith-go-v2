@@ -1,4 +1,4 @@
-# ArtifactMetadataWriteInput
+# ArtifactMetadataWriteRequest
 
 Serializer for POST create and PATCH update on artifact metadata.
 
