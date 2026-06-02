@@ -282,7 +282,7 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 
 // MetadataPackagesCreate - Attach metadata to a package
 // Attach arbitrary metadata to a package.
-func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteInput, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
+func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteRequest, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
 	request := operations.MetadataPackagesCreateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		Body:            body,

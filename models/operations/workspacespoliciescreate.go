@@ -10,8 +10,8 @@ import (
 
 type WorkspacesPoliciesCreateRequest struct {
 	// The `name` of the Workspace.
-	Workspace string                  `pathParam:"style=simple,explode=false,name=workspace"`
-	Body      components.PolicyInput1 `request:"mediaType=application/json"`
+	Workspace string                   `pathParam:"style=simple,explode=false,name=workspace"`
+	Body      components.PolicyRequest `request:"mediaType=application/json"`
 }
 
 func (w *WorkspacesPoliciesCreateRequest) GetWorkspace() string {
@@ -21,9 +21,9 @@ func (w *WorkspacesPoliciesCreateRequest) GetWorkspace() string {
 	return w.Workspace
 }
 
-func (w *WorkspacesPoliciesCreateRequest) GetBody() components.PolicyInput1 {
+func (w *WorkspacesPoliciesCreateRequest) GetBody() components.PolicyRequest {
 	if w == nil {
-		return components.PolicyInput1{}
+		return components.PolicyRequest{}
 	}
 	return w.Body
 }

@@ -1,4 +1,4 @@
-# RemovePackageTagsPolicyActionTypedInput
+# AddPackageTagsPolicyActionTypedRequest
 
 
 ## Fields

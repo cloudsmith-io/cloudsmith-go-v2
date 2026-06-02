@@ -1,4 +1,4 @@
-# SetPackageStatePolicyActionTypedInput
+# SetPackageStatePolicyActionTypedRequest
 
 
 ## Fields

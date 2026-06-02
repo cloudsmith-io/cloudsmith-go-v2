@@ -16,8 +16,8 @@ type PolicyDecisionLog struct {
 	StartedAt     time.Time `json:"started_at"`
 	EndedAt       time.Time `json:"ended_at"`
 	// Serializer for policy input.
-	PolicyInput  PolicyInput2 `json:"policy_input"`
-	PolicyOutput any          `json:"policy_output"`
+	PolicyInput  PolicyInput `json:"policy_input"`
+	PolicyOutput any         `json:"policy_output"`
 	// The actions configured against the policy.
 	Actions []PolicyAction `json:"actions"`
 	// The actions which were invoked on this package.
@@ -70,9 +70,9 @@ func (p *PolicyDecisionLog) GetEndedAt() time.Time {
 	return p.EndedAt
 }
 
-func (p *PolicyDecisionLog) GetPolicyInput() PolicyInput2 {
+func (p *PolicyDecisionLog) GetPolicyInput() PolicyInput {
 	if p == nil {
-		return PolicyInput2{}
+		return PolicyInput{}
 	}
 	return p.PolicyInput
 }

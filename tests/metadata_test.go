@@ -49,7 +49,7 @@ func TestMetadata_MetadataPackagesCreate(t *testing.T) {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesCreate(ctx, "<value>", components.ArtifactMetadataWriteInput{
+	res, err := s.Metadata.MetadataPackagesCreate(ctx, "<value>", components.ArtifactMetadataWriteRequest{
 		Content:        "<value>",
 		ContentType:    "<value>",
 		SourceIdentity: "<value>",

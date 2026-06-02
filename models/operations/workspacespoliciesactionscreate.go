@@ -11,8 +11,8 @@ type WorkspacesPoliciesActionsCreateRequest struct {
 	// The `slug_perm` (identifier) of the Policy.
 	Policy string `pathParam:"style=simple,explode=false,name=policy"`
 	// The `name` of the Workspace.
-	Workspace string                        `pathParam:"style=simple,explode=false,name=workspace"`
-	Body      *components.PolicyActionInput `request:"mediaType=application/json"`
+	Workspace string                          `pathParam:"style=simple,explode=false,name=workspace"`
+	Body      *components.PolicyActionRequest `request:"mediaType=application/json"`
 }
 
 func (w *WorkspacesPoliciesActionsCreateRequest) GetPolicy() string {
@@ -29,30 +29,30 @@ func (w *WorkspacesPoliciesActionsCreateRequest) GetWorkspace() string {
 	return w.Workspace
 }
 
-func (w *WorkspacesPoliciesActionsCreateRequest) GetBody() *components.PolicyActionInput {
+func (w *WorkspacesPoliciesActionsCreateRequest) GetBody() *components.PolicyActionRequest {
 	if w == nil {
 		return nil
 	}
 	return w.Body
 }
 
-func (w *WorkspacesPoliciesActionsCreateRequest) GetBodySetPackageState() *components.SetPackageStatePolicyActionTypedInput {
+func (w *WorkspacesPoliciesActionsCreateRequest) GetBodySetPackageState() *components.SetPackageStatePolicyActionTypedRequest {
 	if v := w.GetBody(); v != nil {
-		return v.SetPackageStatePolicyActionTypedInput
+		return v.SetPackageStatePolicyActionTypedRequest
 	}
 	return nil
 }
 
-func (w *WorkspacesPoliciesActionsCreateRequest) GetBodyAddPackageTags() *components.AddPackageTagsPolicyActionTypedInput {
+func (w *WorkspacesPoliciesActionsCreateRequest) GetBodyAddPackageTags() *components.AddPackageTagsPolicyActionTypedRequest {
 	if v := w.GetBody(); v != nil {
-		return v.AddPackageTagsPolicyActionTypedInput
+		return v.AddPackageTagsPolicyActionTypedRequest
 	}
 	return nil
 }
 
-func (w *WorkspacesPoliciesActionsCreateRequest) GetBodyRemovePackageTags() *components.RemovePackageTagsPolicyActionTypedInput {
+func (w *WorkspacesPoliciesActionsCreateRequest) GetBodyRemovePackageTags() *components.RemovePackageTagsPolicyActionTypedRequest {
 	if v := w.GetBody(); v != nil {
-		return v.RemovePackageTagsPolicyActionTypedInput
+		return v.RemovePackageTagsPolicyActionTypedRequest
 	}
 	return nil
 }

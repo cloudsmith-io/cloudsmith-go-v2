@@ -10,8 +10,8 @@ import (
 
 type MetadataPackagesCreateRequest struct {
 	// The `slug_perm` of the package.
-	PackageSlugPerm string                                `pathParam:"style=simple,explode=false,name=package_slug_perm"`
-	Body            components.ArtifactMetadataWriteInput `request:"mediaType=application/json"`
+	PackageSlugPerm string                                  `pathParam:"style=simple,explode=false,name=package_slug_perm"`
+	Body            components.ArtifactMetadataWriteRequest `request:"mediaType=application/json"`
 }
 
 func (m *MetadataPackagesCreateRequest) GetPackageSlugPerm() string {
@@ -21,9 +21,9 @@ func (m *MetadataPackagesCreateRequest) GetPackageSlugPerm() string {
 	return m.PackageSlugPerm
 }
 
-func (m *MetadataPackagesCreateRequest) GetBody() components.ArtifactMetadataWriteInput {
+func (m *MetadataPackagesCreateRequest) GetBody() components.ArtifactMetadataWriteRequest {
 	if m == nil {
-		return components.ArtifactMetadataWriteInput{}
+		return components.ArtifactMetadataWriteRequest{}
 	}
 	return m.Body
 }

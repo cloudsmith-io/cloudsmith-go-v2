@@ -1,4 +1,4 @@
-# PolicyInput2
+# PolicyInput
 
 Serializer for policy input.
 
