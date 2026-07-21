@@ -255,10 +255,10 @@ The country your workspace is based in.
 
 ## Supported Types
 
-### CountryEnum
+### PolicyWorkspaceCountryEnum
 
 ```go
-country := components.CreateCountryCountryEnum(components.CountryEnum{/* values here */})
+country := components.CreateCountryPolicyWorkspaceCountryEnum(components.PolicyWorkspaceCountryEnum{/* values here */})
 ```
 
 ### BlankEnum
@@ -279,8 +279,8 @@ Use the `Type` field to determine which variant is active, then access the corre
 
 ```go
 switch country.Type {
-	case components.CountryTypeCountryEnum:
-		// country.CountryEnum is populated
+	case components.CountryTypePolicyWorkspaceCountryEnum:
+		// country.PolicyWorkspaceCountryEnum is populated
 	case components.CountryTypeBlankEnum:
 		// country.BlankEnum is populated
 	case components.CountryTypeAny:

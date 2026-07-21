@@ -8,10 +8,10 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 )
 
-// Package - Identifies the affected code library or command provided by the package.
+// PolicyOSVAffectedPackage - Identifies the affected code library or command provided by the package.
 //
 // The OSV package field is described in detail at https://ossf.github.io/osv-schema/#affectedpackage-field.
-type Package struct {
+type PolicyOSVAffectedPackage struct {
 	// The overall library ecosystem which package belongs to.
 	Ecosystem string `json:"ecosystem"`
 	// The library within the overall ecosystem. Note that the semantics of this field depend on the ecosystem.
@@ -20,21 +20,21 @@ type Package struct {
 	Purl *string `json:"purl"`
 }
 
-func (p *Package) GetEcosystem() string {
+func (p *PolicyOSVAffectedPackage) GetEcosystem() string {
 	if p == nil {
 		return ""
 	}
 	return p.Ecosystem
 }
 
-func (p *Package) GetName() string {
+func (p *PolicyOSVAffectedPackage) GetName() string {
 	if p == nil {
 		return ""
 	}
 	return p.Name
 }
 
-func (p *Package) GetPurl() *string {
+func (p *PolicyOSVAffectedPackage) GetPurl() *string {
 	if p == nil {
 		return nil
 	}
@@ -49,7 +49,7 @@ type PolicyOSVAffected struct {
 	DatabaseSpecific optionalnullable.OptionalNullable[any] `json:"database_specific,omitzero"`
 	// A JSON object holding additional information about the vulnerability as defined by the ecosystem for which the record applies. The meaning of the values within the object is entirely defined by the ecosystem. For example, the Go ecosystem includes here information about the affected functions and which modules the packages were found in, along with severity in the Go project-specific severity scale. Note that this is a single field with key “ecosystem_specific”, which itself contains a JSON object with unspecified fields.
 	EcosystemSpecific optionalnullable.OptionalNullable[any] `json:"ecosystem_specific,omitzero"`
-	Package           *Package                               `json:"package"`
+	Package           *PolicyOSVAffectedPackage              `json:"package"`
 	// The affected object’s ranges field is a JSON array of objects describing the affected ranges of versions. In the range object, the type property is required. It specifies the type of version range being recorded and defines the interpretation of the events object’s introduced, fixed, and any type-specific fields. The ranges object’s events field is a JSON array of objects. Each object describes a single version that either introduces a vulnerability, fixes a vulnerability, describes the last known affected version, or sets an upper limit on the range being described.
 	Ranges   optionalnullable.OptionalNullable[any]      `json:"ranges,omitzero"`
 	Severity []PolicyOSVSeverity                         `json:"severity"`
@@ -81,7 +81,7 @@ func (p *PolicyOSVAffected) GetEcosystemSpecific() optionalnullable.OptionalNull
 	return p.EcosystemSpecific
 }
 
-func (p *PolicyOSVAffected) GetPackage() *Package {
+func (p *PolicyOSVAffected) GetPackage() *PolicyOSVAffectedPackage {
 	if p == nil {
 		return nil
 	}

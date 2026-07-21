@@ -30,6 +30,11 @@ Each log contains:
 No actions associated with the policy are executed. Instead, the endpoint reports what would happen to each package if the policy were active.
 * [WorkspacesPoliciesDecisionLogsV1List](#workspacespoliciesdecisionlogsv1list) - List policy evaluation decision logs.
 * [WorkspacesPoliciesDecisionLogsV1Retrieve](#workspacespoliciesdecisionlogsv1retrieve) - Retrieve the full decision log JSON from S3.
+* [WorkspacesPoliciesDecisionLogsV1FacetsList](#workspacespoliciesdecisionlogsv1facetslist) - Internal endpoint that returns counts of policy decision logs grouped by a
+single dimension. Used to populate the Policy Decision Logs filter dropdowns in
+the web app with the full set of entities that had activity in the timeframe.
+
+Excluded from the public OpenAPI spec in prd; visible in dev/stg.
 
 ## WorkspacesPoliciesList
 
@@ -168,7 +173,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesCreate(ctx, "<value>", components.PolicyInput1{
+    res, err := s.Workspaces.WorkspacesPoliciesCreate(ctx, "<value>", components.PolicyRequest{
         Name: "<value>",
         Rego: "<value>",
     })
@@ -183,12 +188,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                          | Type                                                               | Required                                                           | Description                                                        |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| `ctx`                                                              | [context.Context](https://pkg.go.dev/context#Context)              | :heavy_check_mark:                                                 | The context to use for the request.                                |
-| `workspace`                                                        | `string`                                                           | :heavy_check_mark:                                                 | The `name` of the Workspace.                                       |
-| `body`                                                             | [components.PolicyInput1](../../models/components/policyinput1.md) | :heavy_check_mark:                                                 | N/A                                                                |
-| `opts`                                                             | [][operations.Option](../../models/operations/option.md)           | :heavy_minus_sign:                                                 | The options for this request.                                      |
+| Parameter                                                            | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `ctx`                                                                | [context.Context](https://pkg.go.dev/context#Context)                | :heavy_check_mark:                                                   | The context to use for the request.                                  |
+| `workspace`                                                          | `string`                                                             | :heavy_check_mark:                                                   | The `name` of the Workspace.                                         |
+| `body`                                                               | [components.PolicyRequest](../../models/components/policyrequest.md) | :heavy_check_mark:                                                   | N/A                                                                  |
+| `opts`                                                               | [][operations.Option](../../models/operations/option.md)             | :heavy_minus_sign:                                                   | The options for this request.                                        |
 
 ### Response
 
@@ -277,7 +282,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesUpdate(ctx, "<value>", "<value>", components.PolicyInput1{
+    res, err := s.Workspaces.WorkspacesPoliciesUpdate(ctx, "<value>", "<value>", components.PolicyRequest{
         Name: "<value>",
         Rego: "<value>",
     })
@@ -292,13 +297,13 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                          | Type                                                               | Required                                                           | Description                                                        |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| `ctx`                                                              | [context.Context](https://pkg.go.dev/context#Context)              | :heavy_check_mark:                                                 | The context to use for the request.                                |
-| `policy`                                                           | `string`                                                           | :heavy_check_mark:                                                 | The `slug_perm` (identifier) of the Policy.                        |
-| `workspace`                                                        | `string`                                                           | :heavy_check_mark:                                                 | The `name` of the Workspace.                                       |
-| `body`                                                             | [components.PolicyInput1](../../models/components/policyinput1.md) | :heavy_check_mark:                                                 | N/A                                                                |
-| `opts`                                                             | [][operations.Option](../../models/operations/option.md)           | :heavy_minus_sign:                                                 | The options for this request.                                      |
+| Parameter                                                            | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `ctx`                                                                | [context.Context](https://pkg.go.dev/context#Context)                | :heavy_check_mark:                                                   | The context to use for the request.                                  |
+| `policy`                                                             | `string`                                                             | :heavy_check_mark:                                                   | The `slug_perm` (identifier) of the Policy.                          |
+| `workspace`                                                          | `string`                                                             | :heavy_check_mark:                                                   | The `name` of the Workspace.                                         |
+| `body`                                                               | [components.PolicyRequest](../../models/components/policyrequest.md) | :heavy_check_mark:                                                   | N/A                                                                  |
+| `opts`                                                               | [][operations.Option](../../models/operations/option.md)             | :heavy_minus_sign:                                                   | The options for this request.                                        |
 
 ### Response
 
@@ -515,13 +520,13 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                                     | Type                                                                          | Required                                                                      | Description                                                                   |
-| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `ctx`                                                                         | [context.Context](https://pkg.go.dev/context#Context)                         | :heavy_check_mark:                                                            | The context to use for the request.                                           |
-| `policy`                                                                      | `string`                                                                      | :heavy_check_mark:                                                            | The `slug_perm` (identifier) of the Policy.                                   |
-| `workspace`                                                                   | `string`                                                                      | :heavy_check_mark:                                                            | The `name` of the Workspace.                                                  |
-| `body`                                                                        | [*components.PolicyActionInput](../../models/components/policyactioninput.md) | :heavy_minus_sign:                                                            | N/A                                                                           |
-| `opts`                                                                        | [][operations.Option](../../models/operations/option.md)                      | :heavy_minus_sign:                                                            | The options for this request.                                                 |
+| Parameter                                                                         | Type                                                                              | Required                                                                          | Description                                                                       |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `ctx`                                                                             | [context.Context](https://pkg.go.dev/context#Context)                             | :heavy_check_mark:                                                                | The context to use for the request.                                               |
+| `policy`                                                                          | `string`                                                                          | :heavy_check_mark:                                                                | The `slug_perm` (identifier) of the Policy.                                       |
+| `workspace`                                                                       | `string`                                                                          | :heavy_check_mark:                                                                | The `name` of the Workspace.                                                      |
+| `body`                                                                            | [*components.PolicyActionRequest](../../models/components/policyactionrequest.md) | :heavy_minus_sign:                                                                | N/A                                                                               |
+| `opts`                                                                            | [][operations.Option](../../models/operations/option.md)                          | :heavy_minus_sign:                                                                | The options for this request.                                                     |
 
 ### Response
 
@@ -644,14 +649,14 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                                     | Type                                                                          | Required                                                                      | Description                                                                   |
-| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `ctx`                                                                         | [context.Context](https://pkg.go.dev/context#Context)                         | :heavy_check_mark:                                                            | The context to use for the request.                                           |
-| `action`                                                                      | `string`                                                                      | :heavy_check_mark:                                                            | The `slug_perm` (identifier) of the Action.                                   |
-| `policy`                                                                      | `string`                                                                      | :heavy_check_mark:                                                            | The `slug_perm` (identifier) of the Policy.                                   |
-| `workspace`                                                                   | `string`                                                                      | :heavy_check_mark:                                                            | The `name` of the Workspace.                                                  |
-| `body`                                                                        | [*components.PolicyActionInput](../../models/components/policyactioninput.md) | :heavy_minus_sign:                                                            | N/A                                                                           |
-| `opts`                                                                        | [][operations.Option](../../models/operations/option.md)                      | :heavy_minus_sign:                                                            | The options for this request.                                                 |
+| Parameter                                                                         | Type                                                                              | Required                                                                          | Description                                                                       |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `ctx`                                                                             | [context.Context](https://pkg.go.dev/context#Context)                             | :heavy_check_mark:                                                                | The context to use for the request.                                               |
+| `action`                                                                          | `string`                                                                          | :heavy_check_mark:                                                                | The `slug_perm` (identifier) of the Action.                                       |
+| `policy`                                                                          | `string`                                                                          | :heavy_check_mark:                                                                | The `slug_perm` (identifier) of the Policy.                                       |
+| `workspace`                                                                       | `string`                                                                          | :heavy_check_mark:                                                                | The `name` of the Workspace.                                                      |
+| `body`                                                                            | [*components.PolicyActionRequest](../../models/components/policyactionrequest.md) | :heavy_minus_sign:                                                                | N/A                                                                               |
+| `opts`                                                                            | [][operations.Option](../../models/operations/option.md)                          | :heavy_minus_sign:                                                                | The options for this request.                                                     |
 
 ### Response
 
@@ -984,6 +989,80 @@ func main() {
 ### Response
 
 **[*operations.WorkspacesPoliciesDecisionLogsV1RetrieveResponse](../../models/operations/workspacespoliciesdecisionlogsv1retrieveresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| apierrors.APIError | 4XX, 5XX           | \*/\*              |
+
+## WorkspacesPoliciesDecisionLogsV1FacetsList
+
+Internal endpoint that returns counts of policy decision logs grouped by a
+single dimension. Used to populate the Policy Decision Logs filter dropdowns in
+the web app with the full set of entities that had activity in the timeframe.
+
+Excluded from the public OpenAPI spec in prd; visible in dev/stg.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="workspaces_policies_decision_logs_v1_facets_list" method="get" path="/workspaces/{workspace}/policies/decision-logs-v1/facets/" -->
+```go
+package main
+
+import(
+	"context"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/types"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
+	"log"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := cloudsmith.New(
+        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1FacetsList(ctx, operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest{
+        CreatedAfter: types.MustTimeFromString("2026-07-12T18:06:56.305Z"),
+        GroupBy: operations.WorkspacesPoliciesDecisionLogsV1FacetsListGroupByRepository,
+        Workspace: "<value>",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.PolicyDecisionLogV1FacetsResponse != nil {
+        switch res.PolicyDecisionLogV1FacetsResponse.Type {
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsPackageResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsPackageResponse is populated
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsRepositoryResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsRepositoryResponse is populated
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsPackageFormatResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsPackageFormatResponse is populated
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsPolicyResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsPolicyResponse is populated
+            default:
+                // Unknown type - use res.PolicyDecisionLogV1FacetsResponse.GetUnknownRaw() for raw JSON
+        }
+
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                                                    | Type                                                                                                                                         | Required                                                                                                                                     | Description                                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ctx`                                                                                                                                        | [context.Context](https://pkg.go.dev/context#Context)                                                                                        | :heavy_check_mark:                                                                                                                           | The context to use for the request.                                                                                                          |
+| `request`                                                                                                                                    | [operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest](../../models/operations/workspacespoliciesdecisionlogsv1facetslistrequest.md) | :heavy_check_mark:                                                                                                                           | The request object to use for the request.                                                                                                   |
+| `opts`                                                                                                                                       | [][operations.Option](../../models/operations/option.md)                                                                                     | :heavy_minus_sign:                                                                                                                           | The options for this request.                                                                                                                |
+
+### Response
+
+**[*operations.WorkspacesPoliciesDecisionLogsV1FacetsListResponse](../../models/operations/workspacespoliciesdecisionlogsv1facetslistresponse.md), error**
 
 ### Errors
 

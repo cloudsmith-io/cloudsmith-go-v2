@@ -1,0 +1,10 @@
+# WorkspacesRepositoriesPackagesValidateUploadRpmCreateRequest
+
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `Repository`                                                                   | `string`                                                                       | :heavy_check_mark:                                                             | The `slug` of the repository within the workspace.                             |
+| `Workspace`                                                                    | `string`                                                                       | :heavy_check_mark:                                                             | The `slug` of the workspace.                                                   |
+| `Body`                                                                         | [components.RpmPackageUploadV2](../../models/components/rpmpackageuploadv2.md) | :heavy_check_mark:                                                             | N/A                                                                            |

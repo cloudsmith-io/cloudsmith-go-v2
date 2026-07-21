@@ -12,8 +12,8 @@ type WorkspacesPoliciesUpdateRequest struct {
 	// The `slug_perm` (identifier) of the Policy.
 	Policy string `pathParam:"style=simple,explode=false,name=policy"`
 	// The `name` of the Workspace.
-	Workspace string                  `pathParam:"style=simple,explode=false,name=workspace"`
-	Body      components.PolicyInput1 `request:"mediaType=application/json"`
+	Workspace string                   `pathParam:"style=simple,explode=false,name=workspace"`
+	Body      components.PolicyRequest `request:"mediaType=application/json"`
 }
 
 func (w *WorkspacesPoliciesUpdateRequest) GetPolicy() string {
@@ -30,9 +30,9 @@ func (w *WorkspacesPoliciesUpdateRequest) GetWorkspace() string {
 	return w.Workspace
 }
 
-func (w *WorkspacesPoliciesUpdateRequest) GetBody() components.PolicyInput1 {
+func (w *WorkspacesPoliciesUpdateRequest) GetBody() components.PolicyRequest {
 	if w == nil {
-		return components.PolicyInput1{}
+		return components.PolicyRequest{}
 	}
 	return w.Body
 }

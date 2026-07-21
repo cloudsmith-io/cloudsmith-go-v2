@@ -64,7 +64,6 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_list",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -282,7 +281,7 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 
 // MetadataPackagesCreate - Attach metadata to a package
 // Attach arbitrary metadata to a package.
-func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteInput, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
+func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteRequest, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
 	request := operations.MetadataPackagesCreateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		Body:            body,
@@ -317,7 +316,6 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_create",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Body", "json", `request:"mediaType=application/json"`)
@@ -575,7 +573,6 @@ func (s *Metadata) MetadataPackagesRetrieve(ctx context.Context, packageSlugPerm
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_retrieve",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -823,7 +820,6 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_partial_update",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Body", "json", `request:"mediaType=application/json"`)
@@ -1081,7 +1077,6 @@ func (s *Metadata) MetadataPackagesDestroy(ctx context.Context, packageSlugPerm 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_destroy",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1306,7 +1301,6 @@ func (s *Metadata) MetadataValidateCreate(ctx context.Context, request component
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_validate_create",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)

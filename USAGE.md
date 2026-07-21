@@ -16,13 +16,13 @@ func main() {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
-		PackageSlugPerm: "<value>",
+	res, err := s.Analytics.AnalyticsLogsClientList(ctx, operations.AnalyticsLogsClientListRequest{
+		Workspace: "<value>",
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	if res.PaginatedArtifactMetadataReadList != nil {
+	if res.PaginatedLogsResponseList != nil {
 		// handle response
 	}
 }
