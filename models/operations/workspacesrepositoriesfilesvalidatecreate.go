@@ -11,8 +11,8 @@ type WorkspacesRepositoriesFilesValidateCreateRequest struct {
 	// The `slug` of the repository within the workspace.
 	Repository string `pathParam:"style=simple,explode=false,name=repository"`
 	// The `slug` of the workspace.
-	Workspace string                                `pathParam:"style=simple,explode=false,name=workspace"`
-	Body      components.PackageFileUploadV2Request `request:"mediaType=application/json"`
+	Workspace string                         `pathParam:"style=simple,explode=false,name=workspace"`
+	Body      components.PackageFileUploadV2 `request:"mediaType=application/json"`
 }
 
 func (w *WorkspacesRepositoriesFilesValidateCreateRequest) GetRepository() string {
@@ -29,9 +29,9 @@ func (w *WorkspacesRepositoriesFilesValidateCreateRequest) GetWorkspace() string
 	return w.Workspace
 }
 
-func (w *WorkspacesRepositoriesFilesValidateCreateRequest) GetBody() components.PackageFileUploadV2Request {
+func (w *WorkspacesRepositoriesFilesValidateCreateRequest) GetBody() components.PackageFileUploadV2 {
 	if w == nil {
-		return components.PackageFileUploadV2Request{}
+		return components.PackageFileUploadV2{}
 	}
 	return w.Body
 }

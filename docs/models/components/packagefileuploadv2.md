@@ -1,4 +1,4 @@
-# PackageFileUploadV2Request
+# PackageFileUploadV2
 
 Request/response body for the v2 file-upload create/validate endpoints.
 

@@ -46,13 +46,13 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.Files.Create(ctx, "<value>", "<value>", components.PackageFileUploadV2Request{
+    res, err := s.Experimental.Files.Create(ctx, "<value>", "<value>", components.PackageFileUploadV2{
         Filename: "example.file",
     })
     if err != nil {
         log.Fatal(err)
     }
-    if res.PackageFileUploadV2 != nil {
+    if res.PackageFileUploadInfoV2 != nil {
         // handle response
     }
 }
@@ -60,13 +60,13 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                                                      | Type                                                                                           | Required                                                                                       | Description                                                                                    |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                          | [context.Context](https://pkg.go.dev/context#Context)                                          | :heavy_check_mark:                                                                             | The context to use for the request.                                                            |
-| `repository`                                                                                   | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the repository within the workspace.                                             |
-| `workspace`                                                                                    | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the workspace.                                                                   |
-| `body`                                                                                         | [components.PackageFileUploadV2Request](../../models/components/packagefileuploadv2request.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |
-| `opts`                                                                                         | [][operations.Option](../../models/operations/option.md)                                       | :heavy_minus_sign:                                                                             | The options for this request.                                                                  |
+| Parameter                                                                        | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `ctx`                                                                            | [context.Context](https://pkg.go.dev/context#Context)                            | :heavy_check_mark:                                                               | The context to use for the request.                                              |
+| `repository`                                                                     | `string`                                                                         | :heavy_check_mark:                                                               | The `slug` of the repository within the workspace.                               |
+| `workspace`                                                                      | `string`                                                                         | :heavy_check_mark:                                                               | The `slug` of the workspace.                                                     |
+| `body`                                                                           | [components.PackageFileUploadV2](../../models/components/packagefileuploadv2.md) | :heavy_check_mark:                                                               | N/A                                                                              |
+| `opts`                                                                           | [][operations.Option](../../models/operations/option.md)                         | :heavy_minus_sign:                                                               | The options for this request.                                                    |
 
 ### Response
 
@@ -277,7 +277,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.Files.Validate(ctx, "<value>", "<value>", components.PackageFileUploadV2Request{
+    res, err := s.Experimental.Files.Validate(ctx, "<value>", "<value>", components.PackageFileUploadV2{
         Filename: "example.file",
     })
     if err != nil {
@@ -291,13 +291,13 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                                                      | Type                                                                                           | Required                                                                                       | Description                                                                                    |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                          | [context.Context](https://pkg.go.dev/context#Context)                                          | :heavy_check_mark:                                                                             | The context to use for the request.                                                            |
-| `repository`                                                                                   | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the repository within the workspace.                                             |
-| `workspace`                                                                                    | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the workspace.                                                                   |
-| `body`                                                                                         | [components.PackageFileUploadV2Request](../../models/components/packagefileuploadv2request.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |
-| `opts`                                                                                         | [][operations.Option](../../models/operations/option.md)                                       | :heavy_minus_sign:                                                                             | The options for this request.                                                                  |
+| Parameter                                                                        | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `ctx`                                                                            | [context.Context](https://pkg.go.dev/context#Context)                            | :heavy_check_mark:                                                               | The context to use for the request.                                              |
+| `repository`                                                                     | `string`                                                                         | :heavy_check_mark:                                                               | The `slug` of the repository within the workspace.                               |
+| `workspace`                                                                      | `string`                                                                         | :heavy_check_mark:                                                               | The `slug` of the workspace.                                                     |
+| `body`                                                                           | [components.PackageFileUploadV2](../../models/components/packagefileuploadv2.md) | :heavy_check_mark:                                                               | N/A                                                                              |
+| `opts`                                                                           | [][operations.Option](../../models/operations/option.md)                         | :heavy_minus_sign:                                                               | The options for this request.                                                    |
 
 ### Response
 

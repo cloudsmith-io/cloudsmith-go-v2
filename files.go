@@ -34,7 +34,7 @@ func newFiles(rootSDK *Cloudsmith, sdkConfig config.SDKConfiguration, hooks *hoo
 // Create - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 //
 // Requests upload URLs for a new package file.
-func (s *Files) Create(ctx context.Context, repository string, workspace string, body components.PackageFileUploadV2Request, opts ...operations.Option) (*operations.WorkspacesRepositoriesFilesCreateResponse, error) {
+func (s *Files) Create(ctx context.Context, repository string, workspace string, body components.PackageFileUploadV2, opts ...operations.Option) (*operations.WorkspacesRepositoriesFilesCreateResponse, error) {
 	request := operations.WorkspacesRepositoriesFilesCreateRequest{
 		Repository: repository,
 		Workspace:  workspace,
@@ -220,12 +220,12 @@ func (s *Files) Create(ctx context.Context, repository string, workspace string,
 				return nil, err
 			}
 
-			var out components.PackageFileUploadV2Response
+			var out components.PackageFileUploadInfoV2
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PackageFileUploadV2 = &out
+			res.PackageFileUploadInfoV2 = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1012,7 +1012,7 @@ func (s *Files) GetInfo(ctx context.Context, request operations.WorkspacesReposi
 // Validate - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 //
 // Validates parameters used to request a file upload.
-func (s *Files) Validate(ctx context.Context, repository string, workspace string, body components.PackageFileUploadV2Request, opts ...operations.Option) (*operations.WorkspacesRepositoriesFilesValidateCreateResponse, error) {
+func (s *Files) Validate(ctx context.Context, repository string, workspace string, body components.PackageFileUploadV2, opts ...operations.Option) (*operations.WorkspacesRepositoriesFilesValidateCreateResponse, error) {
 	request := operations.WorkspacesRepositoriesFilesValidateCreateRequest{
 		Repository: repository,
 		Workspace:  workspace,

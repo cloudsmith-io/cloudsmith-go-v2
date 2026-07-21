@@ -12,8 +12,8 @@ type WorkspacesRepositoriesFilesCreateRequest struct {
 	// The `slug` of the repository within the workspace.
 	Repository string `pathParam:"style=simple,explode=false,name=repository"`
 	// The `slug` of the workspace.
-	Workspace string                                `pathParam:"style=simple,explode=false,name=workspace"`
-	Body      components.PackageFileUploadV2Request `request:"mediaType=application/json"`
+	Workspace string                         `pathParam:"style=simple,explode=false,name=workspace"`
+	Body      components.PackageFileUploadV2 `request:"mediaType=application/json"`
 }
 
 func (w *WorkspacesRepositoriesFilesCreateRequest) GetRepository() string {
@@ -30,9 +30,9 @@ func (w *WorkspacesRepositoriesFilesCreateRequest) GetWorkspace() string {
 	return w.Workspace
 }
 
-func (w *WorkspacesRepositoriesFilesCreateRequest) GetBody() components.PackageFileUploadV2Request {
+func (w *WorkspacesRepositoriesFilesCreateRequest) GetBody() components.PackageFileUploadV2 {
 	if w == nil {
-		return components.PackageFileUploadV2Request{}
+		return components.PackageFileUploadV2{}
 	}
 	return w.Body
 }
@@ -40,7 +40,7 @@ func (w *WorkspacesRepositoriesFilesCreateRequest) GetBody() components.PackageF
 type WorkspacesRepositoriesFilesCreateResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
 	// Upload URLs for the new package file.
-	PackageFileUploadV2 *components.PackageFileUploadV2Response
+	PackageFileUploadInfoV2 *components.PackageFileUploadInfoV2
 }
 
 func (w WorkspacesRepositoriesFilesCreateResponse) MarshalJSON() ([]byte, error) {
@@ -61,9 +61,9 @@ func (w *WorkspacesRepositoriesFilesCreateResponse) GetHTTPMeta() components.HTT
 	return w.HTTPMeta
 }
 
-func (w *WorkspacesRepositoriesFilesCreateResponse) GetPackageFileUploadV2() *components.PackageFileUploadV2Response {
+func (w *WorkspacesRepositoriesFilesCreateResponse) GetPackageFileUploadInfoV2() *components.PackageFileUploadInfoV2 {
 	if w == nil {
 		return nil
 	}
-	return w.PackageFileUploadV2
+	return w.PackageFileUploadInfoV2
 }

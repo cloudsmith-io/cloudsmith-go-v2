@@ -256,7 +256,7 @@ func main() {
 
 | Error Type            | Status Code           | Content Type          |
 | --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 400, 404              | application/json      |
+| apierrors.ErrorDetail | 404, 422              | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
 ## Get
