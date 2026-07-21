@@ -38,7 +38,6 @@ func (s *Analytics) GetClientLogs(ctx context.Context, request operations.Analyt
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
-		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
 	for _, opt := range opts {
@@ -82,12 +81,7 @@ func (s *Analytics) GetClientLogs(ctx context.Context, request operations.Analyt
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	if o.AcceptHeaderOverride != nil {
-		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
-	} else {
-		req.Header.Set("Accept", "application/json;q=1, text/csv;q=0")
-	}
-
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
@@ -264,13 +258,6 @@ func (s *Analytics) GetClientLogs(ctx context.Context, request operations.Analyt
 			}
 
 			res.PaginatedLogsResponseList = &out
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `text/csv`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			res.Body = rawBody
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -308,7 +295,6 @@ func (s *Analytics) GetLogs(ctx context.Context, request operations.AnalyticsLog
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
-		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
 	for _, opt := range opts {
@@ -352,12 +338,7 @@ func (s *Analytics) GetLogs(ctx context.Context, request operations.AnalyticsLog
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	if o.AcceptHeaderOverride != nil {
-		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
-	} else {
-		req.Header.Set("Accept", "application/json;q=1, text/csv;q=0")
-	}
-
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
@@ -534,13 +515,6 @@ func (s *Analytics) GetLogs(ctx context.Context, request operations.AnalyticsLog
 			}
 
 			res.PaginatedPackageLogsResponseList = &out
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `text/csv`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			res.Body = rawBody
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
