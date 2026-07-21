@@ -84,7 +84,7 @@ type PackageV2 struct {
 	// The URL of this package in the v2 API.
 	SelfURL string `json:"self_url"`
 	// The URL to download the primary package file.
-	CdnURL string `json:"cdn_url"`
+	CdnURL *string `json:"cdn_url"`
 	// The URL to download the primary package file's signature.
 	SignatureURL *string `json:"signature_url"`
 	Name         *string `json:"name"`
@@ -150,9 +150,9 @@ func (p *PackageV2) GetSelfURL() string {
 	return p.SelfURL
 }
 
-func (p *PackageV2) GetCdnURL() string {
+func (p *PackageV2) GetCdnURL() *string {
 	if p == nil {
-		return ""
+		return nil
 	}
 	return p.CdnURL
 }
