@@ -31,7 +31,7 @@
 * `GENERIC` - Generic
 * `VSX` - VSX
 * `MCP` - MCP
-* `DEFAULT` - Default
+* `NIX` - Nix
 
 ## Example Usage
 
@@ -79,4 +79,4 @@ value := operations.PackageFormatDeb
 | `PackageFormatGeneric`     | GENERIC                    |
 | `PackageFormatVsx`         | VSX                        |
 | `PackageFormatMcp`         | MCP                        |
-| `PackageFormatDefault`     | DEFAULT                    |
+| `PackageFormatNix`         | NIX                        |

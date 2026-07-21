@@ -23,6 +23,7 @@ type AcceptHeaderEnum string
 
 const (
 	AcceptHeaderEnumApplicationJson      AcceptHeaderEnum = "application/json"
+	AcceptHeaderEnumTextCsv              AcceptHeaderEnum = "text/csv"
 	AcceptHeaderEnumWildcardRootWildcard AcceptHeaderEnum = "*/*"
 )
 

@@ -4,161 +4,11 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 	"time"
 )
-
-// PackageFormat - * `DEB` - Debian
-// * `RPM` - RedHat
-// * `RUBY` - Ruby
-// * `PYTHON` - Python
-// * `MAVEN` - Maven
-// * `BOWER` - Bower
-// * `DOCKER` - Docker
-// * `RAW` - Raw
-// * `CHOCOLATEY` - Chocolatey
-// * `NPM` - npm
-// * `NUGET` - NuGet
-// * `VAGRANT` - Vagrant
-// * `COMPOSER` - Composer
-// * `ALPINE` - Alpine
-// * `HELM` - Helm
-// * `CONAN` - Conan
-// * `CARGO` - Cargo
-// * `LUAROCKS` - LuaRocks
-// * `CRAN` - CRAN
-// * `GO` - Go
-// * `DART` - Dart
-// * `COCOAPODS` - CocoaPods
-// * `TERRAFORM` - Terraform
-// * `P2` - P2
-// * `CONDA` - Conda
-// * `HEX` - Hex
-// * `SWIFT` - Swift
-// * `HUGGINGFACE` - HuggingFace
-// * `GENERIC` - Generic
-// * `VSX` - VSX
-// * `MCP` - MCP
-// * `DEFAULT` - Default
-type PackageFormat string
-
-const (
-	PackageFormatDeb         PackageFormat = "DEB"
-	PackageFormatRpm         PackageFormat = "RPM"
-	PackageFormatRuby        PackageFormat = "RUBY"
-	PackageFormatPython      PackageFormat = "PYTHON"
-	PackageFormatMaven       PackageFormat = "MAVEN"
-	PackageFormatBower       PackageFormat = "BOWER"
-	PackageFormatDocker      PackageFormat = "DOCKER"
-	PackageFormatRaw         PackageFormat = "RAW"
-	PackageFormatChocolatey  PackageFormat = "CHOCOLATEY"
-	PackageFormatNpm         PackageFormat = "NPM"
-	PackageFormatNuget       PackageFormat = "NUGET"
-	PackageFormatVagrant     PackageFormat = "VAGRANT"
-	PackageFormatComposer    PackageFormat = "COMPOSER"
-	PackageFormatAlpine      PackageFormat = "ALPINE"
-	PackageFormatHelm        PackageFormat = "HELM"
-	PackageFormatConan       PackageFormat = "CONAN"
-	PackageFormatCargo       PackageFormat = "CARGO"
-	PackageFormatLuarocks    PackageFormat = "LUAROCKS"
-	PackageFormatCran        PackageFormat = "CRAN"
-	PackageFormatGo          PackageFormat = "GO"
-	PackageFormatDart        PackageFormat = "DART"
-	PackageFormatCocoapods   PackageFormat = "COCOAPODS"
-	PackageFormatTerraform   PackageFormat = "TERRAFORM"
-	PackageFormatP2          PackageFormat = "P2"
-	PackageFormatConda       PackageFormat = "CONDA"
-	PackageFormatHex         PackageFormat = "HEX"
-	PackageFormatSwift       PackageFormat = "SWIFT"
-	PackageFormatHuggingface PackageFormat = "HUGGINGFACE"
-	PackageFormatGeneric     PackageFormat = "GENERIC"
-	PackageFormatVsx         PackageFormat = "VSX"
-	PackageFormatMcp         PackageFormat = "MCP"
-	PackageFormatDefault     PackageFormat = "DEFAULT"
-)
-
-func (e PackageFormat) ToPointer() *PackageFormat {
-	return &e
-}
-func (e *PackageFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "DEB":
-		fallthrough
-	case "RPM":
-		fallthrough
-	case "RUBY":
-		fallthrough
-	case "PYTHON":
-		fallthrough
-	case "MAVEN":
-		fallthrough
-	case "BOWER":
-		fallthrough
-	case "DOCKER":
-		fallthrough
-	case "RAW":
-		fallthrough
-	case "CHOCOLATEY":
-		fallthrough
-	case "NPM":
-		fallthrough
-	case "NUGET":
-		fallthrough
-	case "VAGRANT":
-		fallthrough
-	case "COMPOSER":
-		fallthrough
-	case "ALPINE":
-		fallthrough
-	case "HELM":
-		fallthrough
-	case "CONAN":
-		fallthrough
-	case "CARGO":
-		fallthrough
-	case "LUAROCKS":
-		fallthrough
-	case "CRAN":
-		fallthrough
-	case "GO":
-		fallthrough
-	case "DART":
-		fallthrough
-	case "COCOAPODS":
-		fallthrough
-	case "TERRAFORM":
-		fallthrough
-	case "P2":
-		fallthrough
-	case "CONDA":
-		fallthrough
-	case "HEX":
-		fallthrough
-	case "SWIFT":
-		fallthrough
-	case "HUGGINGFACE":
-		fallthrough
-	case "GENERIC":
-		fallthrough
-	case "VSX":
-		fallthrough
-	case "MCP":
-		fallthrough
-	case "DEFAULT":
-		*e = PackageFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PackageFormat: %v", v)
-	}
-}
 
 type WorkspacesPoliciesDecisionLogsV1ListRequest struct {
 	// Filter by `correlation_id`.
@@ -170,13 +20,13 @@ type WorkspacesPoliciesDecisionLogsV1ListRequest struct {
 	// Filter by whether the policy matched the package.
 	Match optionalnullable.OptionalNullable[bool] `queryParam:"style=form,explode=true,name=match"`
 	// Type of package formats by which to filter logs (e.g. Nuget, Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
-	PackageFormat []PackageFormat `queryParam:"style=form,explode=true,name=package_format"`
+	PackageFormat []components.PackageFormatEnum `queryParam:"style=form,explode=true,name=package_format"`
 	// Filter by package name.
 	PackageName *string `queryParam:"style=form,explode=true,name=package_name"`
 	// Filter by package identifier (`slug_perm`).
 	PackageSlugPerm *string `queryParam:"style=form,explode=true,name=package_slug_perm"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// Filter by policy identifier (`slug_perm`).
@@ -227,7 +77,7 @@ func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetMatch() optionalnullabl
 	return w.Match
 }
 
-func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageFormat() []PackageFormat {
+func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageFormat() []components.PackageFormatEnum {
 	if w == nil {
 		return nil
 	}
@@ -248,9 +98,9 @@ func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageSlugPerm() *stri
 	return w.PackageSlugPerm
 }
 
-func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPage() *int64 {
+func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPage() int64 {
 	if w == nil {
-		return nil
+		return 0
 	}
 	return w.Page
 }
@@ -296,6 +146,8 @@ func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetWorkspace() string {
 type WorkspacesPoliciesDecisionLogsV1ListResponse struct {
 	HTTPMeta                                components.HTTPMetadata `json:"-"`
 	PaginatedPolicyDecisionLogV1SummaryList *components.PaginatedPolicyDecisionLogV1SummaryList
+
+	Next func() (*WorkspacesPoliciesDecisionLogsV1ListResponse, error)
 }
 
 func (w WorkspacesPoliciesDecisionLogsV1ListResponse) MarshalJSON() ([]byte, error) {

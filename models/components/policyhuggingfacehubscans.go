@@ -31,8 +31,8 @@ type PolicyHuggingfaceHubScans struct {
 	// * `UNKNOWN` - Unknown
 	// * `QUEUED` - Queued
 	// * `SAFE` - Safe
-	Status    StatusEnum `json:"status"`
-	UpdatedAt time.Time  `json:"updated_at"`
+	Status    ScanSummaryEnum `json:"status"`
+	UpdatedAt time.Time       `json:"updated_at"`
 	// The Clam anti-virus scan information from Huggingface Hub.
 	Clamav *ClamAVScan `json:"clamav"`
 	// The Jfrog model-scan information from Huggingface Hub.
@@ -61,9 +61,9 @@ func (p *PolicyHuggingfaceHubScans) GetPath() string {
 	return p.Path
 }
 
-func (p *PolicyHuggingfaceHubScans) GetStatus() StatusEnum {
+func (p *PolicyHuggingfaceHubScans) GetStatus() ScanSummaryEnum {
 	if p == nil {
-		return StatusEnum("")
+		return ScanSummaryEnum("")
 	}
 	return p.Status
 }

@@ -1,0 +1,9 @@
+# WorkspacesRepositoriesFilesCreateResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `PackageFileUploadV2`                                                                             | [*components.PackageFileUploadV2Response](../../models/components/packagefileuploadv2response.md) | :heavy_minus_sign:                                                                                | Upload URLs for the new package file.                                                             |

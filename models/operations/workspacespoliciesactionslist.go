@@ -10,7 +10,7 @@ import (
 
 type WorkspacesPoliciesActionsListRequest struct {
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// The `slug_perm` (identifier) of the Policy.
@@ -19,9 +19,9 @@ type WorkspacesPoliciesActionsListRequest struct {
 	Workspace string `pathParam:"style=simple,explode=false,name=workspace"`
 }
 
-func (w *WorkspacesPoliciesActionsListRequest) GetPage() *int64 {
+func (w *WorkspacesPoliciesActionsListRequest) GetPage() int64 {
 	if w == nil {
-		return nil
+		return 0
 	}
 	return w.Page
 }
@@ -50,6 +50,8 @@ func (w *WorkspacesPoliciesActionsListRequest) GetWorkspace() string {
 type WorkspacesPoliciesActionsListResponse struct {
 	HTTPMeta                  components.HTTPMetadata `json:"-"`
 	PaginatedPolicyActionList *components.PaginatedPolicyActionList
+
+	Next func() (*WorkspacesPoliciesActionsListResponse, error)
 }
 
 func (w WorkspacesPoliciesActionsListResponse) MarshalJSON() ([]byte, error) {
