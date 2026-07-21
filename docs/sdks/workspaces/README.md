@@ -30,6 +30,11 @@ Each log contains:
 No actions associated with the policy are executed. Instead, the endpoint reports what would happen to each package if the policy were active.
 * [WorkspacesPoliciesDecisionLogsV1List](#workspacespoliciesdecisionlogsv1list) - List policy evaluation decision logs.
 * [WorkspacesPoliciesDecisionLogsV1Retrieve](#workspacespoliciesdecisionlogsv1retrieve) - Retrieve the full decision log JSON from S3.
+* [WorkspacesPoliciesDecisionLogsV1FacetsList](#workspacespoliciesdecisionlogsv1facetslist) - Internal endpoint that returns counts of policy decision logs grouped by a
+single dimension. Used to populate the Policy Decision Logs filter dropdowns in
+the web app with the full set of entities that had activity in the timeframe.
+
+Excluded from the public OpenAPI spec in prd; visible in dev/stg.
 
 ## WorkspacesPoliciesList
 
@@ -438,12 +443,24 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesActionsList(ctx, "<value>", "<value>", nil, nil)
+    res, err := s.Workspaces.WorkspacesPoliciesActionsList(ctx, 452996, "<value>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedPolicyActionList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -453,9 +470,9 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
+| `page`                                                   | `int64`                                                  | :heavy_check_mark:                                       | A page number within the paginated result set.           |
 | `policy`                                                 | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the Policy.              |
 | `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `name` of the Workspace.                             |
-| `page`                                                   | `*int64`                                                 | :heavy_minus_sign:                                       | A page number within the paginated result set.           |
 | `pageSize`                                               | `*int64`                                                 | :heavy_minus_sign:                                       | Number of results to return per page.                    |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
 
@@ -817,6 +834,7 @@ func main() {
     )
 
     res, err := s.Workspaces.WorkspacesPoliciesSimulateList(ctx, operations.WorkspacesPoliciesSimulateListRequest{
+        Page: 439618,
         Policy: "<value>",
         Workspace: "<value>",
     })
@@ -824,7 +842,19 @@ func main() {
         log.Fatal(err)
     }
     if res.PaginatedPolicyDecisionLogList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -874,6 +904,7 @@ func main() {
 
     res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1List(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
         CreatedAfter: types.MustTimeFromString("2024-11-12T13:20:12.290Z"),
+        Page: 583225,
         Sort: cloudsmith.Pointer("id"),
         Workspace: "<value>",
     })
@@ -881,7 +912,19 @@ func main() {
         log.Fatal(err)
     }
     if res.PaginatedPolicyDecisionLogV1SummaryList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -908,13 +951,26 @@ func main() {
 
     res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1List(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
         CreatedAfter: types.MustTimeFromString("2025-02-17T14:08:57.543Z"),
+        Page: 377363,
         Workspace: "<value>",
     })
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedPolicyDecisionLogV1SummaryList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -984,6 +1040,80 @@ func main() {
 ### Response
 
 **[*operations.WorkspacesPoliciesDecisionLogsV1RetrieveResponse](../../models/operations/workspacespoliciesdecisionlogsv1retrieveresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| apierrors.APIError | 4XX, 5XX           | \*/\*              |
+
+## WorkspacesPoliciesDecisionLogsV1FacetsList
+
+Internal endpoint that returns counts of policy decision logs grouped by a
+single dimension. Used to populate the Policy Decision Logs filter dropdowns in
+the web app with the full set of entities that had activity in the timeframe.
+
+Excluded from the public OpenAPI spec in prd; visible in dev/stg.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="workspaces_policies_decision_logs_v1_facets_list" method="get" path="/workspaces/{workspace}/policies/decision-logs-v1/facets/" -->
+```go
+package main
+
+import(
+	"context"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/types"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
+	"log"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := cloudsmith.New(
+        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1FacetsList(ctx, operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest{
+        CreatedAfter: types.MustTimeFromString("2026-07-12T18:06:56.305Z"),
+        GroupBy: operations.GroupByRepository,
+        Workspace: "<value>",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.PolicyDecisionLogV1FacetsResponse != nil {
+        switch res.PolicyDecisionLogV1FacetsResponse.Type {
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsPackageResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsPackageResponse is populated
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsRepositoryResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsRepositoryResponse is populated
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsPackageFormatResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsPackageFormatResponse is populated
+            case components.PolicyDecisionLogV1FacetsResponseTypePolicyDecisionLogV1FacetsPolicyResponse:
+                // res.PolicyDecisionLogV1FacetsResponse.PolicyDecisionLogV1FacetsPolicyResponse is populated
+            default:
+                // Unknown type - use res.PolicyDecisionLogV1FacetsResponse.GetUnknownRaw() for raw JSON
+        }
+
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                                                    | Type                                                                                                                                         | Required                                                                                                                                     | Description                                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ctx`                                                                                                                                        | [context.Context](https://pkg.go.dev/context#Context)                                                                                        | :heavy_check_mark:                                                                                                                           | The context to use for the request.                                                                                                          |
+| `request`                                                                                                                                    | [operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest](../../models/operations/workspacespoliciesdecisionlogsv1facetslistrequest.md) | :heavy_check_mark:                                                                                                                           | The request object to use for the request.                                                                                                   |
+| `opts`                                                                                                                                       | [][operations.Option](../../models/operations/option.md)                                                                                     | :heavy_minus_sign:                                                                                                                           | The options for this request.                                                                                                                |
+
+### Response
+
+**[*operations.WorkspacesPoliciesDecisionLogsV1FacetsListResponse](../../models/operations/workspacespoliciesdecisionlogsv1facetslistresponse.md), error**
 
 ### Errors
 

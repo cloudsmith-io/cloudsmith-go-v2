@@ -1,0 +1,9 @@
+# WorkspacesRepositoriesFilesCompleteCreateResponse
+
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                            | :heavy_check_mark:                                                                            | N/A                                                                                           |
+| `PackageFileUploadResultV2`                                                                   | [*components.PackageFileUploadResultV2](../../models/components/packagefileuploadresultv2.md) | :heavy_minus_sign:                                                                            | The completed file upload.                                                                    |

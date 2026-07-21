@@ -1,0 +1,9 @@
+# WorkspacesPoliciesDecisionLogsV1FacetsListResponse
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                            | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `PolicyDecisionLogV1FacetsResponse`                                                                           | [*components.PolicyDecisionLogV1FacetsResponse](../../models/components/policydecisionlogv1facetsresponse.md) | :heavy_minus_sign:                                                                                            | N/A                                                                                                           |

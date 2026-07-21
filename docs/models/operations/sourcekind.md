@@ -1,7 +1,5 @@
 # SourceKind
 
-Filter results by metadata source kind.
-
 * `UNKNOWN` - Unknown
 * `SYSTEM` - System
 * `UPSTREAM` - Upstream

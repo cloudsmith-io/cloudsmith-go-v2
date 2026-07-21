@@ -1,0 +1,9 @@
+# AnalyticsLogsPackageListResponse
+
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                  | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                          | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
+| `PaginatedPackageLogsResponseList`                                                                          | [*components.PaginatedPackageLogsResponseList](../../models/components/paginatedpackagelogsresponselist.md) | :heavy_minus_sign:                                                                                          | N/A                                                                                                         |

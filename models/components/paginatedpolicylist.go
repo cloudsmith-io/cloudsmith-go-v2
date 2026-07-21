@@ -5,10 +5,6 @@ package components
 
 type PaginatedPolicyList struct {
 	Results []Policy `json:"results"`
-	// Total number of pages. Synthesised from the X-Pagination-Pagetotal
-	// header by the SDK; not a field returned by the server.
-	//
-	Pagetotal *int64 `json:"pagetotal,omitzero"`
 }
 
 func (p *PaginatedPolicyList) GetResults() []Policy {
@@ -16,11 +12,4 @@ func (p *PaginatedPolicyList) GetResults() []Policy {
 		return []Policy{}
 	}
 	return p.Results
-}
-
-func (p *PaginatedPolicyList) GetPagetotal() *int64 {
-	if p == nil {
-		return nil
-	}
-	return p.Pagetotal
 }

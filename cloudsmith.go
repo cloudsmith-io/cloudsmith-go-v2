@@ -3,7 +3,7 @@
 
 package cloudsmith
 
-// Generated from OpenAPI doc version 1.1193.0 (v2) and generator version 2.892.5
+// Generated from OpenAPI doc version dev (v2) and generator version 2.884.4
 
 import (
 	"context"
@@ -19,7 +19,7 @@ import (
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
-	"https://api.cloudsmith.io/v2/",
+	"https://iduffy.cloudsmith.sh/api/v2/",
 }
 
 // HTTPClient provides an interface for supplying the SDK with a custom HTTP client
@@ -52,9 +52,14 @@ func Pointer[T any](v T) *T { return &v }
 //
 // https://help.cloudsmith.io/reference/introduction - Cloudsmith API Reference
 type Cloudsmith struct {
-	SDKVersion string
-	Metadata   *Metadata
-	Workspaces *Workspaces
+	SDKVersion      string
+	Analytics       *Analytics
+	Metadata        *Metadata
+	Packages        *Packages
+	User            *User
+	Vulnerabilities *Vulnerabilities
+	Workspaces      *Workspaces
+	Experimental    *Experimental
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -131,9 +136,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Cloudsmith {
 	sdk := &Cloudsmith{
-		SDKVersion: "1.1.9",
+		SDKVersion: "1.2.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/go 1.1.9 2.892.5 1.1193.0 (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
+			UserAgent:  "speakeasy-sdk/go 1.2.0 2.884.4 dev (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -154,8 +159,13 @@ func New(opts ...SDKOption) *Cloudsmith {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
+	sdk.Analytics = newAnalytics(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Metadata = newMetadata(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Packages = newPackages(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.User = newUser(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Vulnerabilities = newVulnerabilities(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Workspaces = newWorkspaces(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Experimental = newExperimental(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }
