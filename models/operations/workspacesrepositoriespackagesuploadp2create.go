@@ -41,7 +41,8 @@ func (w *WorkspacesRepositoriesPackagesUploadP2CreateRequest) GetBody() componen
 // #endregion class-body-workspacesrepositoriespackagesuploadp2createrequest
 
 type WorkspacesRepositoriesPackagesUploadP2CreateResponse struct {
-	HTTPMeta  components.HTTPMetadata `json:"-"`
+	HTTPMeta components.HTTPMetadata `json:"-"`
+	// The package was created.
 	PackageV2 *components.PackageV2
 }
 

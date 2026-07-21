@@ -38,7 +38,8 @@ func (w *WorkspacesRepositoriesFilesCompleteCreateRequest) GetWorkspace() string
 }
 
 type WorkspacesRepositoriesFilesCompleteCreateResponse struct {
-	HTTPMeta                  components.HTTPMetadata `json:"-"`
+	HTTPMeta components.HTTPMetadata `json:"-"`
+	// The completed file upload.
 	PackageFileUploadResultV2 *components.PackageFileUploadResultV2
 }
 

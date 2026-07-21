@@ -38,7 +38,8 @@ func (w *WorkspacesRepositoriesFilesCreateRequest) GetBody() components.PackageF
 }
 
 type WorkspacesRepositoriesFilesCreateResponse struct {
-	HTTPMeta            components.HTTPMetadata `json:"-"`
+	HTTPMeta components.HTTPMetadata `json:"-"`
+	// Upload URLs for the new package file.
 	PackageFileUploadV2 *components.PackageFileUploadV2Response
 }
 

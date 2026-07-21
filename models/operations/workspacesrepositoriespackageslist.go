@@ -75,7 +75,8 @@ func (w *WorkspacesRepositoriesPackagesListRequest) GetWorkspace() string {
 }
 
 type WorkspacesRepositoriesPackagesListResponse struct {
-	HTTPMeta               components.HTTPMetadata `json:"-"`
+	HTTPMeta components.HTTPMetadata `json:"-"`
+	// A page of packages in the repository.
 	PaginatedPackageV2List *components.PaginatedPackageV2List
 }
 

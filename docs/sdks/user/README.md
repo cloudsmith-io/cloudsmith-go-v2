@@ -4,10 +4,10 @@
 
 ### Available Operations
 
-* [UserPreferencesRetrieve](#userpreferencesretrieve) - Retrieve the current user's preferences.
-* [UserPreferencesSave](#userpreferencessave) - Save the current user's preferences. The supplied object fully replaces the stored preferences.
+* [GetPreferences](#getpreferences) - Retrieve the current user's preferences.
+* [SavePreferences](#savepreferences) - Save the current user's preferences. The supplied object fully replaces the stored preferences.
 
-## UserPreferencesRetrieve
+## GetPreferences
 
 Retrieve the current user's preferences.
 
@@ -30,7 +30,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.User.UserPreferencesRetrieve(ctx)
+    res, err := s.User.GetPreferences(ctx)
     if err != nil {
         log.Fatal(err)
     }
@@ -57,7 +57,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## UserPreferencesSave
+## SavePreferences
 
 Save the current user's preferences. The supplied object fully replaces the stored preferences.
 
@@ -80,7 +80,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.User.UserPreferencesSave(ctx, nil)
+    res, err := s.User.SavePreferences(ctx, nil)
     if err != nil {
         log.Fatal(err)
     }

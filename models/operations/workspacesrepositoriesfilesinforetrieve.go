@@ -56,7 +56,8 @@ func (w *WorkspacesRepositoriesFilesInfoRetrieveRequest) GetWorkspace() string {
 }
 
 type WorkspacesRepositoriesFilesInfoRetrieveResponse struct {
-	HTTPMeta               components.HTTPMetadata `json:"-"`
+	HTTPMeta components.HTTPMetadata `json:"-"`
+	// Information needed to perform the multipart upload.
 	PackageFilePartsUpload *components.PackageFilePartsUpload
 }
 

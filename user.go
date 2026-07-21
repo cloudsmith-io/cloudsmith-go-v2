@@ -32,8 +32,8 @@ func newUser(rootSDK *Cloudsmith, sdkConfig config.SDKConfiguration, hooks *hook
 	}
 }
 
-// UserPreferencesRetrieve - Retrieve the current user's preferences.
-func (s *User) UserPreferencesRetrieve(ctx context.Context, opts ...operations.Option) (*operations.UserPreferencesRetrieveResponse, error) {
+// GetPreferences - Retrieve the current user's preferences.
+func (s *User) GetPreferences(ctx context.Context, opts ...operations.Option) (*operations.UserPreferencesRetrieveResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -243,8 +243,8 @@ func (s *User) UserPreferencesRetrieve(ctx context.Context, opts ...operations.O
 
 }
 
-// UserPreferencesSave - Save the current user's preferences. The supplied object fully replaces the stored preferences.
-func (s *User) UserPreferencesSave(ctx context.Context, request *components.UserPreferences, opts ...operations.Option) (*operations.UserPreferencesSaveResponse, error) {
+// SavePreferences - Save the current user's preferences. The supplied object fully replaces the stored preferences.
+func (s *User) SavePreferences(ctx context.Context, request *components.UserPreferences, opts ...operations.Option) (*operations.UserPreferencesSaveResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,

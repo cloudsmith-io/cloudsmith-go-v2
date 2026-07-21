@@ -4,12 +4,11 @@
 
 ### Available Operations
 
-* [PackagesVulnerabilitiesOsvRepoSummaryList](#packagesvulnerabilitiesosvreposummarylist) - API to provide OSV vulnerability data for a specific repo.
-* [PackagesVulnerabilitiesOsvNamespaceSummaryList](#packagesvulnerabilitiesosvnamespacesummarylist) - API to provide OSV vulnerability data for a specific namespace.
-* [PackagesVulnerabilitiesOsvList](#packagesvulnerabilitiesosvlist) - API to provide OSV vulnerability data for a specific package.
-* [PackagesVulnerabilitiesOsvCountsList](#packagesvulnerabilitiesosvcountslist) - API to provide OSV severity counts for a specific package.
+* [OsvSummary](#osvsummary) - API to provide OSV vulnerability data for a specific repo.
+* [GetOsvNamespaceSummary](#getosvnamespacesummary) - API to provide OSV vulnerability data for a specific namespace.
+* [GetOsvCounts](#getosvcounts) - API to provide OSV severity counts for a specific package.
 
-## PackagesVulnerabilitiesOsvRepoSummaryList
+## OsvSummary
 
 API to provide OSV vulnerability data for a specific repo.
 
@@ -33,7 +32,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Packages.PackagesVulnerabilitiesOsvRepoSummaryList(ctx, operations.PackagesVulnerabilitiesOsvRepoSummaryListRequest{
+    res, err := s.Packages.OsvSummary(ctx, operations.PackagesVulnerabilitiesOsvRepoSummaryListRequest{
         Owner: "<value>",
         Repo: "<value>",
     })
@@ -64,7 +63,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## PackagesVulnerabilitiesOsvNamespaceSummaryList
+## GetOsvNamespaceSummary
 
 API to provide OSV vulnerability data for a specific namespace.
 
@@ -88,7 +87,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Packages.PackagesVulnerabilitiesOsvNamespaceSummaryList(ctx, operations.PackagesVulnerabilitiesOsvNamespaceSummaryListRequest{
+    res, err := s.Packages.GetOsvNamespaceSummary(ctx, operations.PackagesVulnerabilitiesOsvNamespaceSummaryListRequest{
         Owner: "<value>",
     })
     if err != nil {
@@ -118,61 +117,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## PackagesVulnerabilitiesOsvList
-
-API to provide OSV vulnerability data for a specific package.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="packages_vulnerabilities_osv_list" method="get" path="/packages/{package_slug_perm}/vulnerabilities/osv/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Packages.PackagesVulnerabilitiesOsvList(ctx, operations.PackagesVulnerabilitiesOsvListRequest{
-        PackageSlugPerm: "<value>",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PaginatedWebOSVVulnerabilityList != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                                                                            | Type                                                                                                                 | Required                                                                                                             | Description                                                                                                          |
-| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                                                | [context.Context](https://pkg.go.dev/context#Context)                                                                | :heavy_check_mark:                                                                                                   | The context to use for the request.                                                                                  |
-| `request`                                                                                                            | [operations.PackagesVulnerabilitiesOsvListRequest](../../models/operations/packagesvulnerabilitiesosvlistrequest.md) | :heavy_check_mark:                                                                                                   | The request object to use for the request.                                                                           |
-| `opts`                                                                                                               | [][operations.Option](../../models/operations/option.md)                                                             | :heavy_minus_sign:                                                                                                   | The options for this request.                                                                                        |
-
-### Response
-
-**[*operations.PackagesVulnerabilitiesOsvListResponse](../../models/operations/packagesvulnerabilitiesosvlistresponse.md), error**
-
-### Errors
-
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| apierrors.APIError | 4XX, 5XX           | \*/\*              |
-
-## PackagesVulnerabilitiesOsvCountsList
+## GetOsvCounts
 
 API to provide OSV severity counts for a specific package.
 
@@ -195,7 +140,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Packages.PackagesVulnerabilitiesOsvCountsList(ctx, "<value>", cloudsmith.Pointer(true))
+    res, err := s.Packages.GetOsvCounts(ctx, "<value>", cloudsmith.Pointer(true))
     if err != nil {
         log.Fatal(err)
     }

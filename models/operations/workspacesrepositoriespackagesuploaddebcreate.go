@@ -38,7 +38,8 @@ func (w *WorkspacesRepositoriesPackagesUploadDebCreateRequest) GetBody() compone
 }
 
 type WorkspacesRepositoriesPackagesUploadDebCreateResponse struct {
-	HTTPMeta  components.HTTPMetadata `json:"-"`
+	HTTPMeta components.HTTPMetadata `json:"-"`
+	// The package was created.
 	PackageV2 *components.PackageV2
 }
 

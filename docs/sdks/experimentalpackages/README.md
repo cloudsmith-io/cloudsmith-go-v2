@@ -1,499 +1,194 @@
-# Experimental
+# Experimental.Packages
 
 ## Overview
 
 ### Available Operations
 
-* [WorkspacesRepositoriesFilesCreate](#workspacesrepositoriesfilescreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Requests upload URLs for a new package file.
-* [WorkspacesRepositoriesFilesAbortCreate](#workspacesrepositoriesfilesabortcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Aborts a multipart file upload.
-* [WorkspacesRepositoriesFilesCompleteCreate](#workspacesrepositoriesfilescompletecreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Completes a multipart file upload.
-* [WorkspacesRepositoriesFilesInfoRetrieve](#workspacesrepositoriesfilesinforetrieve) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Returns information needed to perform a multipart file upload.
-* [WorkspacesRepositoriesFilesValidateCreate](#workspacesrepositoriesfilesvalidatecreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Validates parameters used to request a file upload.
-* [WorkspacesRepositoriesPackagesList](#workspacesrepositoriespackageslist) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [List](#list) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Lists packages in a repository.
-* [WorkspacesRepositoriesPackagesRetrieve](#workspacesrepositoriespackagesretrieve) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [GetPackage](#getpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Retrieves a single package.
-* [WorkspacesRepositoriesPackagesDestroy](#workspacesrepositoriespackagesdestroy) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [DeletePackage](#deletepackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Deletes a package.
-* [WorkspacesRepositoriesPackagesUploadAlpineCreate](#workspacesrepositoriespackagesuploadalpinecreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadAlpinePackage](#uploadalpinepackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Alpine package
-* [WorkspacesRepositoriesPackagesUploadCargoCreate](#workspacesrepositoriespackagesuploadcargocreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadCargo](#uploadcargo) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Cargo package
-* [WorkspacesRepositoriesPackagesUploadCocoapodsCreate](#workspacesrepositoriespackagesuploadcocoapodscreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadCocoapodsPackage](#uploadcocoapodspackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new CocoaPods package
-* [WorkspacesRepositoriesPackagesUploadComposerCreate](#workspacesrepositoriespackagesuploadcomposercreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadComposerPackage](#uploadcomposerpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Composer package
-* [WorkspacesRepositoriesPackagesUploadConanCreate](#workspacesrepositoriespackagesuploadconancreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadConan](#uploadconan) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Conan package
-* [WorkspacesRepositoriesPackagesUploadCondaCreate](#workspacesrepositoriespackagesuploadcondacreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadCondaPackage](#uploadcondapackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Conda package
-* [WorkspacesRepositoriesPackagesUploadCranCreate](#workspacesrepositoriespackagesuploadcrancreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadCranPackage](#uploadcranpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new CRAN package
-* [WorkspacesRepositoriesPackagesUploadDartCreate](#workspacesrepositoriespackagesuploaddartcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadDartPackage](#uploaddartpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Dart package
-* [WorkspacesRepositoriesPackagesUploadDebCreate](#workspacesrepositoriespackagesuploaddebcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadDebPackage](#uploaddebpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Debian package
-* [WorkspacesRepositoriesPackagesUploadDockerCreate](#workspacesrepositoriespackagesuploaddockercreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadDockerPackage](#uploaddockerpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Docker package
-* [WorkspacesRepositoriesPackagesUploadGenericCreate](#workspacesrepositoriespackagesuploadgenericcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadGeneric](#uploadgeneric) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Generic package
-* [WorkspacesRepositoriesPackagesUploadGoCreate](#workspacesrepositoriespackagesuploadgocreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadGo](#uploadgo) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Go package
-* [WorkspacesRepositoriesPackagesUploadHelmCreate](#workspacesrepositoriespackagesuploadhelmcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadHelm](#uploadhelm) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Helm package
-* [WorkspacesRepositoriesPackagesUploadHexCreate](#workspacesrepositoriespackagesuploadhexcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadHex](#uploadhex) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Hex package
-* [WorkspacesRepositoriesPackagesUploadHuggingfaceCreate](#workspacesrepositoriespackagesuploadhuggingfacecreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadHuggingFace](#uploadhuggingface) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new HuggingFace package
-* [WorkspacesRepositoriesPackagesUploadLuarocksCreate](#workspacesrepositoriespackagesuploadluarockscreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadLuarocksPackage](#uploadluarockspackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new LuaRocks package
-* [WorkspacesRepositoriesPackagesUploadMavenCreate](#workspacesrepositoriespackagesuploadmavencreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadMavenPackage](#uploadmavenpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Maven package
-* [WorkspacesRepositoriesPackagesUploadMcpCreate](#workspacesrepositoriespackagesuploadmcpcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadMcpPackage](#uploadmcppackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new MCP package
-* [WorkspacesRepositoriesPackagesUploadNpmCreate](#workspacesrepositoriespackagesuploadnpmcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadNpmPackage](#uploadnpmpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new npm package
-* [WorkspacesRepositoriesPackagesUploadNugetCreate](#workspacesrepositoriespackagesuploadnugetcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadNuget](#uploadnuget) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new NuGet package
-* [WorkspacesRepositoriesPackagesUploadP2Create](#workspacesrepositoriespackagesuploadp2create) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadP2](#uploadp2) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new P2 package
-* [WorkspacesRepositoriesPackagesUploadPythonCreate](#workspacesrepositoriespackagesuploadpythoncreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadPythonPackage](#uploadpythonpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Python package
-* [WorkspacesRepositoriesPackagesUploadRawCreate](#workspacesrepositoriespackagesuploadrawcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadRaw](#uploadraw) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Raw package
-* [WorkspacesRepositoriesPackagesUploadRpmCreate](#workspacesrepositoriespackagesuploadrpmcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadRpm](#uploadrpm) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new RedHat package
-* [WorkspacesRepositoriesPackagesUploadRubyCreate](#workspacesrepositoriespackagesuploadrubycreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadRubyPackage](#uploadrubypackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Ruby package
-* [WorkspacesRepositoriesPackagesUploadSwiftCreate](#workspacesrepositoriespackagesuploadswiftcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadSwift](#uploadswift) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Swift package
-* [WorkspacesRepositoriesPackagesUploadTerraformCreate](#workspacesrepositoriespackagesuploadterraformcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadTerraformPackage](#uploadterraformpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Terraform package
-* [WorkspacesRepositoriesPackagesUploadVagrantCreate](#workspacesrepositoriespackagesuploadvagrantcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadVagrantPackage](#uploadvagrantpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new Vagrant package
-* [WorkspacesRepositoriesPackagesUploadVsxCreate](#workspacesrepositoriespackagesuploadvsxcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [UploadVsxPackage](#uploadvsxpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Creates a new VSX package
-* [WorkspacesRepositoriesPackagesValidateUploadAlpineCreate](#workspacesrepositoriespackagesvalidateuploadalpinecreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadAlpine](#validateuploadalpine) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Alpine package payload
-* [WorkspacesRepositoriesPackagesValidateUploadCargoCreate](#workspacesrepositoriespackagesvalidateuploadcargocreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadCargo](#validateuploadcargo) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Cargo package payload
-* [WorkspacesRepositoriesPackagesValidateUploadCocoapodsCreate](#workspacesrepositoriespackagesvalidateuploadcocoapodscreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateCocoapods](#validatecocoapods) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new CocoaPods package payload
-* [WorkspacesRepositoriesPackagesValidateUploadComposerCreate](#workspacesrepositoriespackagesvalidateuploadcomposercreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateComposerPackage](#validatecomposerpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Composer package payload
-* [WorkspacesRepositoriesPackagesValidateUploadConanCreate](#workspacesrepositoriespackagesvalidateuploadconancreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateConanPackage](#validateconanpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Conan package payload
-* [WorkspacesRepositoriesPackagesValidateUploadCondaCreate](#workspacesrepositoriespackagesvalidateuploadcondacreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateCondaUpload](#validatecondaupload) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Conda package payload
-* [WorkspacesRepositoriesPackagesValidateUploadCranCreate](#workspacesrepositoriespackagesvalidateuploadcrancreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadCran](#validateuploadcran) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new CRAN package payload
-* [WorkspacesRepositoriesPackagesValidateUploadDartCreate](#workspacesrepositoriespackagesvalidateuploaddartcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateDart](#validatedart) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Dart package payload
-* [WorkspacesRepositoriesPackagesValidateUploadDebCreate](#workspacesrepositoriespackagesvalidateuploaddebcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateDeb](#validatedeb) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Debian package payload
-* [WorkspacesRepositoriesPackagesValidateUploadDockerCreate](#workspacesrepositoriespackagesvalidateuploaddockercreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateDocker](#validatedocker) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Docker package payload
-* [WorkspacesRepositoriesPackagesValidateUploadGenericCreate](#workspacesrepositoriespackagesvalidateuploadgenericcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadGeneric](#validateuploadgeneric) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Generic package payload
-* [WorkspacesRepositoriesPackagesValidateUploadGoCreate](#workspacesrepositoriespackagesvalidateuploadgocreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateGo](#validatego) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Go package payload
-* [WorkspacesRepositoriesPackagesValidateUploadHelmCreate](#workspacesrepositoriespackagesvalidateuploadhelmcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateHelmPackage](#validatehelmpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Helm package payload
-* [WorkspacesRepositoriesPackagesValidateUploadHexCreate](#workspacesrepositoriespackagesvalidateuploadhexcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadHex](#validateuploadhex) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Hex package payload
-* [WorkspacesRepositoriesPackagesValidateUploadHuggingfaceCreate](#workspacesrepositoriespackagesvalidateuploadhuggingfacecreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateHuggingfaceUpload](#validatehuggingfaceupload) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new HuggingFace package payload
-* [WorkspacesRepositoriesPackagesValidateUploadLuarocksCreate](#workspacesrepositoriespackagesvalidateuploadluarockscreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateLuaRocks](#validateluarocks) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new LuaRocks package payload
-* [WorkspacesRepositoriesPackagesValidateUploadMavenCreate](#workspacesrepositoriespackagesvalidateuploadmavencreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadMaven](#validateuploadmaven) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Maven package payload
-* [WorkspacesRepositoriesPackagesValidateUploadMcpCreate](#workspacesrepositoriespackagesvalidateuploadmcpcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadMcp](#validateuploadmcp) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new MCP package payload
-* [WorkspacesRepositoriesPackagesValidateUploadNpmCreate](#workspacesrepositoriespackagesvalidateuploadnpmcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadNpm](#validateuploadnpm) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new npm package payload
-* [WorkspacesRepositoriesPackagesValidateUploadNugetCreate](#workspacesrepositoriespackagesvalidateuploadnugetcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateNugetPackage](#validatenugetpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new NuGet package payload
-* [WorkspacesRepositoriesPackagesValidateUploadP2Create](#workspacesrepositoriespackagesvalidateuploadp2create) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateP2Package](#validatep2package) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new P2 package payload
-* [WorkspacesRepositoriesPackagesValidateUploadPythonCreate](#workspacesrepositoriespackagesvalidateuploadpythoncreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidatePythonUpload](#validatepythonupload) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Python package payload
-* [WorkspacesRepositoriesPackagesValidateUploadRawCreate](#workspacesrepositoriespackagesvalidateuploadrawcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateRawPackage](#validaterawpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Raw package payload
-* [WorkspacesRepositoriesPackagesValidateUploadRpmCreate](#workspacesrepositoriespackagesvalidateuploadrpmcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadRpm](#validateuploadrpm) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new RedHat package payload
-* [WorkspacesRepositoriesPackagesValidateUploadRubyCreate](#workspacesrepositoriespackagesvalidateuploadrubycreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateUploadRuby](#validateuploadruby) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Ruby package payload
-* [WorkspacesRepositoriesPackagesValidateUploadSwiftCreate](#workspacesrepositoriespackagesvalidateuploadswiftcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateSwift](#validateswift) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Swift package payload
-* [WorkspacesRepositoriesPackagesValidateUploadTerraformCreate](#workspacesrepositoriespackagesvalidateuploadterraformcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateTerraformPackage](#validateterraformpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Terraform package payload
-* [WorkspacesRepositoriesPackagesValidateUploadVagrantCreate](#workspacesrepositoriespackagesvalidateuploadvagrantcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateVagrantPackage](#validatevagrantpackage) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new Vagrant package payload
-* [WorkspacesRepositoriesPackagesValidateUploadVsxCreate](#workspacesrepositoriespackagesvalidateuploadvsxcreate) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
+* [ValidateVsx](#validatevsx) - **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
 Validates a new VSX package payload
 
-## WorkspacesRepositoriesFilesCreate
-
-**Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Requests upload URLs for a new package file.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_repositories_files_create" method="post" path="/workspaces/{workspace}/repositories/{repository}/files/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Experimental.WorkspacesRepositoriesFilesCreate(ctx, "<value>", "<value>", components.PackageFileUploadV2Request{
-        Filename: "example.file",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PackageFileUploadV2 != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                                                      | Type                                                                                           | Required                                                                                       | Description                                                                                    |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                          | [context.Context](https://pkg.go.dev/context#Context)                                          | :heavy_check_mark:                                                                             | The context to use for the request.                                                            |
-| `repository`                                                                                   | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the repository within the workspace.                                             |
-| `workspace`                                                                                    | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the workspace.                                                                   |
-| `body`                                                                                         | [components.PackageFileUploadV2Request](../../models/components/packagefileuploadv2request.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |
-| `opts`                                                                                         | [][operations.Option](../../models/operations/option.md)                                       | :heavy_minus_sign:                                                                             | The options for this request.                                                                  |
-
-### Response
-
-**[*operations.WorkspacesRepositoriesFilesCreateResponse](../../models/operations/workspacesrepositoriesfilescreateresponse.md), error**
-
-### Errors
-
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 400, 404, 422         | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
-
-## WorkspacesRepositoriesFilesAbortCreate
-
-**Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Aborts a multipart file upload.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_repositories_files_abort_create" method="post" path="/workspaces/{workspace}/repositories/{repository}/files/{identifier}/abort/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Experimental.WorkspacesRepositoriesFilesAbortCreate(ctx, "<value>", "<value>", "<value>")
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | N/A                                                      |
-| `repository`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the repository within the workspace.       |
-| `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the workspace.                             |
-| `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
-
-### Response
-
-**[*operations.WorkspacesRepositoriesFilesAbortCreateResponse](../../models/operations/workspacesrepositoriesfilesabortcreateresponse.md), error**
-
-### Errors
-
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 400, 404              | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
-
-## WorkspacesRepositoriesFilesCompleteCreate
-
-**Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Completes a multipart file upload.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_repositories_files_complete_create" method="post" path="/workspaces/{workspace}/repositories/{repository}/files/{identifier}/complete/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Experimental.WorkspacesRepositoriesFilesCompleteCreate(ctx, "<value>", "<value>", "<value>")
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PackageFileUploadResultV2 != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | N/A                                                      |
-| `repository`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the repository within the workspace.       |
-| `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the workspace.                             |
-| `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
-
-### Response
-
-**[*operations.WorkspacesRepositoriesFilesCompleteCreateResponse](../../models/operations/workspacesrepositoriesfilescompletecreateresponse.md), error**
-
-### Errors
-
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 400, 404              | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
-
-## WorkspacesRepositoriesFilesInfoRetrieve
-
-**Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Returns information needed to perform a multipart file upload.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_repositories_files_info_retrieve" method="get" path="/workspaces/{workspace}/repositories/{repository}/files/{identifier}/info/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Experimental.WorkspacesRepositoriesFilesInfoRetrieve(ctx, operations.WorkspacesRepositoriesFilesInfoRetrieveRequest{
-        Filename: "example.file",
-        Identifier: "<value>",
-        Repository: "<value>",
-        Workspace: "<value>",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PackageFilePartsUpload != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                                                                                              | Type                                                                                                                                   | Required                                                                                                                               | Description                                                                                                                            |
-| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                                                                  | [context.Context](https://pkg.go.dev/context#Context)                                                                                  | :heavy_check_mark:                                                                                                                     | The context to use for the request.                                                                                                    |
-| `request`                                                                                                                              | [operations.WorkspacesRepositoriesFilesInfoRetrieveRequest](../../models/operations/workspacesrepositoriesfilesinforetrieverequest.md) | :heavy_check_mark:                                                                                                                     | The request object to use for the request.                                                                                             |
-| `opts`                                                                                                                                 | [][operations.Option](../../models/operations/option.md)                                                                               | :heavy_minus_sign:                                                                                                                     | The options for this request.                                                                                                          |
-
-### Response
-
-**[*operations.WorkspacesRepositoriesFilesInfoRetrieveResponse](../../models/operations/workspacesrepositoriesfilesinforetrieveresponse.md), error**
-
-### Errors
-
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 400, 404              | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
-
-## WorkspacesRepositoriesFilesValidateCreate
-
-**Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
-
-Validates parameters used to request a file upload.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_repositories_files_validate_create" method="post" path="/workspaces/{workspace}/repositories/{repository}/files/validate/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Experimental.WorkspacesRepositoriesFilesValidateCreate(ctx, "<value>", "<value>", components.PackageFileUploadV2Request{
-        Filename: "example.file",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                                                      | Type                                                                                           | Required                                                                                       | Description                                                                                    |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                          | [context.Context](https://pkg.go.dev/context#Context)                                          | :heavy_check_mark:                                                                             | The context to use for the request.                                                            |
-| `repository`                                                                                   | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the repository within the workspace.                                             |
-| `workspace`                                                                                    | `string`                                                                                       | :heavy_check_mark:                                                                             | The `slug` of the workspace.                                                                   |
-| `body`                                                                                         | [components.PackageFileUploadV2Request](../../models/components/packagefileuploadv2request.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |
-| `opts`                                                                                         | [][operations.Option](../../models/operations/option.md)                                       | :heavy_minus_sign:                                                                             | The options for this request.                                                                  |
-
-### Response
-
-**[*operations.WorkspacesRepositoriesFilesValidateCreateResponse](../../models/operations/workspacesrepositoriesfilesvalidatecreateresponse.md), error**
-
-### Errors
-
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 400, 404, 422         | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
-
-## WorkspacesRepositoriesPackagesList
+## List
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -519,7 +214,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesList(ctx, operations.WorkspacesRepositoriesPackagesListRequest{
+    res, err := s.Experimental.Packages.List(ctx, operations.WorkspacesRepositoriesPackagesListRequest{
         Repository: "<value>",
         Workspace: "<value>",
     })
@@ -551,7 +246,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404              | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesRetrieve
+## GetPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -577,7 +272,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesRetrieve(ctx, "<value>", "<value>", "<value>")
+    res, err := s.Experimental.Packages.GetPackage(ctx, "<value>", "<value>", "<value>")
     if err != nil {
         log.Fatal(err)
     }
@@ -616,7 +311,7 @@ func main() {
 | apierrors.ErrorDetail | 404                   | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesDestroy
+## DeletePackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -641,7 +336,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesDestroy(ctx, "<value>", "<value>", "<value>")
+    res, err := s.Experimental.Packages.DeletePackage(ctx, "<value>", "<value>", "<value>")
     if err != nil {
         log.Fatal(err)
     }
@@ -672,7 +367,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404              | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadAlpineCreate
+## UploadAlpinePackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -698,7 +393,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadAlpineCreate(ctx, "<value>", "<value>", components.AlpinePackageUploadV2{
+    res, err := s.Experimental.Packages.UploadAlpinePackage(ctx, "<value>", "<value>", components.AlpinePackageUploadV2{
         Distribution: "<value>",
         PackageFile: "<value>",
     })
@@ -740,7 +435,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadCargoCreate
+## UploadCargo
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -766,7 +461,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadCargoCreate(ctx, "<value>", "<value>", components.CargoPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadCargo(ctx, "<value>", "<value>", components.CargoPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -807,7 +502,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadCocoapodsCreate
+## UploadCocoapodsPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -833,7 +528,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadCocoapodsCreate(ctx, "<value>", "<value>", components.CocoapodsPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadCocoapodsPackage(ctx, "<value>", "<value>", components.CocoapodsPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -874,7 +569,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadComposerCreate
+## UploadComposerPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -900,7 +595,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadComposerCreate(ctx, "<value>", "<value>", components.ComposerPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadComposerPackage(ctx, "<value>", "<value>", components.ComposerPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -941,7 +636,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadConanCreate
+## UploadConan
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -967,7 +662,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadConanCreate(ctx, "<value>", "<value>", components.ConanPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadConan(ctx, "<value>", "<value>", components.ConanPackageUploadV2{
         PackageFile: "<value>",
         MetadataFile: "<value>",
         InfoFile: "<value>",
@@ -1011,7 +706,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadCondaCreate
+## UploadCondaPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1037,7 +732,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadCondaCreate(ctx, "<value>", "<value>", components.CondaPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadCondaPackage(ctx, "<value>", "<value>", components.CondaPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1078,7 +773,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadCranCreate
+## UploadCranPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1104,7 +799,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadCranCreate(ctx, "<value>", "<value>", components.CranPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadCranPackage(ctx, "<value>", "<value>", components.CranPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1145,7 +840,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadDartCreate
+## UploadDartPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1171,7 +866,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadDartCreate(ctx, "<value>", "<value>", components.DartPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadDartPackage(ctx, "<value>", "<value>", components.DartPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1212,7 +907,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadDebCreate
+## UploadDebPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1238,7 +933,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadDebCreate(ctx, "<value>", "<value>", components.DebPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadDebPackage(ctx, "<value>", "<value>", components.DebPackageUploadV2{
         Distribution: "<value>",
         PackageFile: "<value>",
     })
@@ -1280,7 +975,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadDockerCreate
+## UploadDockerPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1306,7 +1001,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadDockerCreate(ctx, "<value>", "<value>", components.DockerPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadDockerPackage(ctx, "<value>", "<value>", components.DockerPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1347,7 +1042,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadGenericCreate
+## UploadGeneric
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1373,7 +1068,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadGenericCreate(ctx, "<value>", "<value>", components.GenericPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadGeneric(ctx, "<value>", "<value>", components.GenericPackageUploadV2{
         Filepath: "/private/tmp/slow.vst",
         PackageFile: "<value>",
     })
@@ -1415,7 +1110,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadGoCreate
+## UploadGo
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1441,7 +1136,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadGoCreate(ctx, "<value>", "<value>", components.GoPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadGo(ctx, "<value>", "<value>", components.GoPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1482,7 +1177,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadHelmCreate
+## UploadHelm
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1508,7 +1203,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadHelmCreate(ctx, "<value>", "<value>", components.HelmPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadHelm(ctx, "<value>", "<value>", components.HelmPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1549,7 +1244,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadHexCreate
+## UploadHex
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1575,7 +1270,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadHexCreate(ctx, "<value>", "<value>", components.HexPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadHex(ctx, "<value>", "<value>", components.HexPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1616,7 +1311,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadHuggingfaceCreate
+## UploadHuggingFace
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1642,7 +1337,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadHuggingfaceCreate(ctx, "<value>", "<value>", components.HuggingfacePackageUploadV2{
+    res, err := s.Experimental.Packages.UploadHuggingFace(ctx, "<value>", "<value>", components.HuggingfacePackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1683,7 +1378,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadLuarocksCreate
+## UploadLuarocksPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1709,7 +1404,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadLuarocksCreate(ctx, "<value>", "<value>", components.LuarocksPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadLuarocksPackage(ctx, "<value>", "<value>", components.LuarocksPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1750,7 +1445,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadMavenCreate
+## UploadMavenPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1776,7 +1471,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadMavenCreate(ctx, "<value>", "<value>", components.MavenPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadMavenPackage(ctx, "<value>", "<value>", components.MavenPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1817,7 +1512,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadMcpCreate
+## UploadMcpPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1843,7 +1538,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadMcpCreate(ctx, "<value>", "<value>", components.McpPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadMcpPackage(ctx, "<value>", "<value>", components.McpPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1884,7 +1579,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadNpmCreate
+## UploadNpmPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1910,7 +1605,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadNpmCreate(ctx, "<value>", "<value>", components.NpmPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadNpmPackage(ctx, "<value>", "<value>", components.NpmPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -1951,7 +1646,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadNugetCreate
+## UploadNuget
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -1977,7 +1672,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadNugetCreate(ctx, "<value>", "<value>", components.NugetPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadNuget(ctx, "<value>", "<value>", components.NugetPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2018,7 +1713,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadP2Create
+## UploadP2
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2044,7 +1739,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadP2Create(ctx, "<value>", "<value>", components.P2PackageUploadV2{
+    res, err := s.Experimental.Packages.UploadP2(ctx, "<value>", "<value>", components.P2PackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2085,7 +1780,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadPythonCreate
+## UploadPythonPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2111,7 +1806,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadPythonCreate(ctx, "<value>", "<value>", components.PythonPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadPythonPackage(ctx, "<value>", "<value>", components.PythonPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2152,7 +1847,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadRawCreate
+## UploadRaw
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2178,7 +1873,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadRawCreate(ctx, "<value>", "<value>", components.RawPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadRaw(ctx, "<value>", "<value>", components.RawPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2219,7 +1914,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadRpmCreate
+## UploadRpm
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2245,7 +1940,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadRpmCreate(ctx, "<value>", "<value>", components.RpmPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadRpm(ctx, "<value>", "<value>", components.RpmPackageUploadV2{
         Distribution: "<value>",
         PackageFile: "<value>",
     })
@@ -2287,7 +1982,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadRubyCreate
+## UploadRubyPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2313,7 +2008,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadRubyCreate(ctx, "<value>", "<value>", components.RubyPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadRubyPackage(ctx, "<value>", "<value>", components.RubyPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2354,7 +2049,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadSwiftCreate
+## UploadSwift
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2380,7 +2075,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadSwiftCreate(ctx, "<value>", "<value>", components.SwiftPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadSwift(ctx, "<value>", "<value>", components.SwiftPackageUploadV2{
         Name: "<value>",
         Version: "<value>",
         PackageFile: "<value>",
@@ -2424,7 +2119,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadTerraformCreate
+## UploadTerraformPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2450,7 +2145,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadTerraformCreate(ctx, "<value>", "<value>", components.TerraformPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadTerraformPackage(ctx, "<value>", "<value>", components.TerraformPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2491,7 +2186,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadVagrantCreate
+## UploadVagrantPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2517,7 +2212,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadVagrantCreate(ctx, "<value>", "<value>", components.VagrantPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadVagrantPackage(ctx, "<value>", "<value>", components.VagrantPackageUploadV2{
         Name: "<value>",
         Version: "<value>",
         PackageFile: "<value>",
@@ -2561,7 +2256,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesUploadVsxCreate
+## UploadVsxPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2587,7 +2282,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesUploadVsxCreate(ctx, "<value>", "<value>", components.VsxPackageUploadV2{
+    res, err := s.Experimental.Packages.UploadVsxPackage(ctx, "<value>", "<value>", components.VsxPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2628,7 +2323,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadAlpineCreate
+## ValidateUploadAlpine
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2654,7 +2349,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadAlpineCreate(ctx, "<value>", "<value>", components.AlpinePackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadAlpine(ctx, "<value>", "<value>", components.AlpinePackageUploadV2{
         Distribution: "<value>",
         PackageFile: "<value>",
     })
@@ -2688,7 +2383,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadCargoCreate
+## ValidateUploadCargo
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2714,7 +2409,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadCargoCreate(ctx, "<value>", "<value>", components.CargoPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadCargo(ctx, "<value>", "<value>", components.CargoPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2747,7 +2442,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadCocoapodsCreate
+## ValidateCocoapods
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2773,7 +2468,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadCocoapodsCreate(ctx, "<value>", "<value>", components.CocoapodsPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateCocoapods(ctx, "<value>", "<value>", components.CocoapodsPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2806,7 +2501,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadComposerCreate
+## ValidateComposerPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2832,7 +2527,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadComposerCreate(ctx, "<value>", "<value>", components.ComposerPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateComposerPackage(ctx, "<value>", "<value>", components.ComposerPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2865,7 +2560,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadConanCreate
+## ValidateConanPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2891,7 +2586,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadConanCreate(ctx, "<value>", "<value>", components.ConanPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateConanPackage(ctx, "<value>", "<value>", components.ConanPackageUploadV2{
         PackageFile: "<value>",
         MetadataFile: "<value>",
         InfoFile: "<value>",
@@ -2927,7 +2622,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadCondaCreate
+## ValidateCondaUpload
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -2953,7 +2648,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadCondaCreate(ctx, "<value>", "<value>", components.CondaPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateCondaUpload(ctx, "<value>", "<value>", components.CondaPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -2986,7 +2681,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadCranCreate
+## ValidateUploadCran
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3012,7 +2707,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadCranCreate(ctx, "<value>", "<value>", components.CranPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadCran(ctx, "<value>", "<value>", components.CranPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3045,7 +2740,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadDartCreate
+## ValidateDart
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3071,7 +2766,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadDartCreate(ctx, "<value>", "<value>", components.DartPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateDart(ctx, "<value>", "<value>", components.DartPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3104,7 +2799,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadDebCreate
+## ValidateDeb
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3130,7 +2825,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadDebCreate(ctx, "<value>", "<value>", components.DebPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateDeb(ctx, "<value>", "<value>", components.DebPackageUploadV2{
         Distribution: "<value>",
         PackageFile: "<value>",
     })
@@ -3164,7 +2859,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadDockerCreate
+## ValidateDocker
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3190,7 +2885,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadDockerCreate(ctx, "<value>", "<value>", components.DockerPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateDocker(ctx, "<value>", "<value>", components.DockerPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3223,7 +2918,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadGenericCreate
+## ValidateUploadGeneric
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3249,7 +2944,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadGenericCreate(ctx, "<value>", "<value>", components.GenericPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadGeneric(ctx, "<value>", "<value>", components.GenericPackageUploadV2{
         Filepath: "/var/yp/farmer_until.eot",
         PackageFile: "<value>",
     })
@@ -3283,7 +2978,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadGoCreate
+## ValidateGo
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3309,7 +3004,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadGoCreate(ctx, "<value>", "<value>", components.GoPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateGo(ctx, "<value>", "<value>", components.GoPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3342,7 +3037,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadHelmCreate
+## ValidateHelmPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3368,7 +3063,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadHelmCreate(ctx, "<value>", "<value>", components.HelmPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateHelmPackage(ctx, "<value>", "<value>", components.HelmPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3401,7 +3096,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadHexCreate
+## ValidateUploadHex
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3427,7 +3122,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadHexCreate(ctx, "<value>", "<value>", components.HexPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadHex(ctx, "<value>", "<value>", components.HexPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3460,7 +3155,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadHuggingfaceCreate
+## ValidateHuggingfaceUpload
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3486,7 +3181,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadHuggingfaceCreate(ctx, "<value>", "<value>", components.HuggingfacePackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateHuggingfaceUpload(ctx, "<value>", "<value>", components.HuggingfacePackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3519,7 +3214,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadLuarocksCreate
+## ValidateLuaRocks
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3545,7 +3240,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadLuarocksCreate(ctx, "<value>", "<value>", components.LuarocksPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateLuaRocks(ctx, "<value>", "<value>", components.LuarocksPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3578,7 +3273,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadMavenCreate
+## ValidateUploadMaven
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3604,7 +3299,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadMavenCreate(ctx, "<value>", "<value>", components.MavenPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadMaven(ctx, "<value>", "<value>", components.MavenPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3637,7 +3332,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadMcpCreate
+## ValidateUploadMcp
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3663,7 +3358,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadMcpCreate(ctx, "<value>", "<value>", components.McpPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadMcp(ctx, "<value>", "<value>", components.McpPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3696,7 +3391,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadNpmCreate
+## ValidateUploadNpm
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3722,7 +3417,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadNpmCreate(ctx, "<value>", "<value>", components.NpmPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadNpm(ctx, "<value>", "<value>", components.NpmPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3755,7 +3450,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadNugetCreate
+## ValidateNugetPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3781,7 +3476,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadNugetCreate(ctx, "<value>", "<value>", components.NugetPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateNugetPackage(ctx, "<value>", "<value>", components.NugetPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3814,7 +3509,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadP2Create
+## ValidateP2Package
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3840,7 +3535,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadP2Create(ctx, "<value>", "<value>", components.P2PackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateP2Package(ctx, "<value>", "<value>", components.P2PackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3873,7 +3568,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadPythonCreate
+## ValidatePythonUpload
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3899,7 +3594,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadPythonCreate(ctx, "<value>", "<value>", components.PythonPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidatePythonUpload(ctx, "<value>", "<value>", components.PythonPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3932,7 +3627,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadRawCreate
+## ValidateRawPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -3958,7 +3653,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadRawCreate(ctx, "<value>", "<value>", components.RawPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateRawPackage(ctx, "<value>", "<value>", components.RawPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -3991,7 +3686,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadRpmCreate
+## ValidateUploadRpm
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -4017,7 +3712,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadRpmCreate(ctx, "<value>", "<value>", components.RpmPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadRpm(ctx, "<value>", "<value>", components.RpmPackageUploadV2{
         Distribution: "<value>",
         PackageFile: "<value>",
     })
@@ -4051,7 +3746,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadRubyCreate
+## ValidateUploadRuby
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -4077,7 +3772,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadRubyCreate(ctx, "<value>", "<value>", components.RubyPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateUploadRuby(ctx, "<value>", "<value>", components.RubyPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -4110,7 +3805,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadSwiftCreate
+## ValidateSwift
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -4136,7 +3831,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadSwiftCreate(ctx, "<value>", "<value>", components.SwiftPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateSwift(ctx, "<value>", "<value>", components.SwiftPackageUploadV2{
         Name: "<value>",
         Version: "<value>",
         PackageFile: "<value>",
@@ -4172,7 +3867,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadTerraformCreate
+## ValidateTerraformPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -4198,7 +3893,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadTerraformCreate(ctx, "<value>", "<value>", components.TerraformPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateTerraformPackage(ctx, "<value>", "<value>", components.TerraformPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {
@@ -4231,7 +3926,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadVagrantCreate
+## ValidateVagrantPackage
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -4257,7 +3952,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadVagrantCreate(ctx, "<value>", "<value>", components.VagrantPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateVagrantPackage(ctx, "<value>", "<value>", components.VagrantPackageUploadV2{
         Name: "<value>",
         Version: "<value>",
         PackageFile: "<value>",
@@ -4293,7 +3988,7 @@ func main() {
 | apierrors.ErrorDetail | 400, 404, 422         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesRepositoriesPackagesValidateUploadVsxCreate
+## ValidateVsx
 
 **Experimental**: this endpoint is under active development and may change in backwards-incompatible ways without notice.
 
@@ -4319,7 +4014,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Experimental.WorkspacesRepositoriesPackagesValidateUploadVsxCreate(ctx, "<value>", "<value>", components.VsxPackageUploadV2{
+    res, err := s.Experimental.Packages.ValidateVsx(ctx, "<value>", "<value>", components.VsxPackageUploadV2{
         PackageFile: "<value>",
     })
     if err != nil {

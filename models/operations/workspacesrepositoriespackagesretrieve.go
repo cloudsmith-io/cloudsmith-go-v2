@@ -39,7 +39,8 @@ func (w *WorkspacesRepositoriesPackagesRetrieveRequest) GetWorkspace() string {
 }
 
 type WorkspacesRepositoriesPackagesRetrieveResponse struct {
-	HTTPMeta  components.HTTPMetadata `json:"-"`
+	HTTPMeta components.HTTPMetadata `json:"-"`
+	// The requested package.
 	PackageV2 *components.PackageV2
 }
 
