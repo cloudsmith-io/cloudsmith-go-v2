@@ -4,165 +4,11 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 	"time"
 )
-
-// WorkspacesPoliciesDecisionLogsV1ListPackageFormat - * `DEB` - Debian
-// * `RPM` - RedHat
-// * `RUBY` - Ruby
-// * `PYTHON` - Python
-// * `MAVEN` - Maven
-// * `BOWER` - Bower
-// * `DOCKER` - Docker
-// * `RAW` - Raw
-// * `CHOCOLATEY` - Chocolatey
-// * `NPM` - npm
-// * `NUGET` - NuGet
-// * `VAGRANT` - Vagrant
-// * `COMPOSER` - Composer
-// * `ALPINE` - Alpine
-// * `HELM` - Helm
-// * `CONAN` - Conan
-// * `CARGO` - Cargo
-// * `LUAROCKS` - LuaRocks
-// * `CRAN` - CRAN
-// * `GO` - Go
-// * `DART` - Dart
-// * `COCOAPODS` - CocoaPods
-// * `TERRAFORM` - Terraform
-// * `P2` - P2
-// * `CONDA` - Conda
-// * `HEX` - Hex
-// * `SWIFT` - Swift
-// * `HUGGINGFACE` - HuggingFace
-// * `GENERIC` - Generic
-// * `VSX` - VSX
-// * `MCP` - MCP
-// * `NIX` - Nix
-// * `DEFAULT` - Default
-type WorkspacesPoliciesDecisionLogsV1ListPackageFormat string
-
-const (
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDeb         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DEB"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatRpm         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "RPM"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatRuby        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "RUBY"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatPython      WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "PYTHON"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatMaven       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "MAVEN"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatBower       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "BOWER"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDocker      WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DOCKER"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatRaw         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "RAW"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatChocolatey  WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CHOCOLATEY"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatNpm         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "NPM"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatNuget       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "NUGET"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatVagrant     WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "VAGRANT"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatComposer    WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "COMPOSER"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatAlpine      WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "ALPINE"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatHelm        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "HELM"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatConan       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CONAN"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatCargo       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CARGO"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatLuarocks    WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "LUAROCKS"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatCran        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CRAN"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatGo          WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "GO"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDart        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DART"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatCocoapods   WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "COCOAPODS"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatTerraform   WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "TERRAFORM"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatP2          WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "P2"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatConda       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CONDA"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatHex         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "HEX"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatSwift       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "SWIFT"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatHuggingface WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "HUGGINGFACE"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatGeneric     WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "GENERIC"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatVsx         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "VSX"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatMcp         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "MCP"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatNix         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "NIX"
-	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDefault     WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DEFAULT"
-)
-
-func (e WorkspacesPoliciesDecisionLogsV1ListPackageFormat) ToPointer() *WorkspacesPoliciesDecisionLogsV1ListPackageFormat {
-	return &e
-}
-func (e *WorkspacesPoliciesDecisionLogsV1ListPackageFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "DEB":
-		fallthrough
-	case "RPM":
-		fallthrough
-	case "RUBY":
-		fallthrough
-	case "PYTHON":
-		fallthrough
-	case "MAVEN":
-		fallthrough
-	case "BOWER":
-		fallthrough
-	case "DOCKER":
-		fallthrough
-	case "RAW":
-		fallthrough
-	case "CHOCOLATEY":
-		fallthrough
-	case "NPM":
-		fallthrough
-	case "NUGET":
-		fallthrough
-	case "VAGRANT":
-		fallthrough
-	case "COMPOSER":
-		fallthrough
-	case "ALPINE":
-		fallthrough
-	case "HELM":
-		fallthrough
-	case "CONAN":
-		fallthrough
-	case "CARGO":
-		fallthrough
-	case "LUAROCKS":
-		fallthrough
-	case "CRAN":
-		fallthrough
-	case "GO":
-		fallthrough
-	case "DART":
-		fallthrough
-	case "COCOAPODS":
-		fallthrough
-	case "TERRAFORM":
-		fallthrough
-	case "P2":
-		fallthrough
-	case "CONDA":
-		fallthrough
-	case "HEX":
-		fallthrough
-	case "SWIFT":
-		fallthrough
-	case "HUGGINGFACE":
-		fallthrough
-	case "GENERIC":
-		fallthrough
-	case "VSX":
-		fallthrough
-	case "MCP":
-		fallthrough
-	case "NIX":
-		fallthrough
-	case "DEFAULT":
-		*e = WorkspacesPoliciesDecisionLogsV1ListPackageFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WorkspacesPoliciesDecisionLogsV1ListPackageFormat: %v", v)
-	}
-}
 
 type WorkspacesPoliciesDecisionLogsV1ListRequest struct {
 	// Filter by `correlation_id`.
@@ -174,7 +20,7 @@ type WorkspacesPoliciesDecisionLogsV1ListRequest struct {
 	// Filter by whether the policy matched the package.
 	Match optionalnullable.OptionalNullable[bool] `queryParam:"style=form,explode=true,name=match"`
 	// Type of package formats by which to filter logs (e.g. Nuget, Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
-	PackageFormat []WorkspacesPoliciesDecisionLogsV1ListPackageFormat `queryParam:"style=form,explode=true,name=package_format"`
+	PackageFormat []components.PackageFormatEnum `queryParam:"style=form,explode=true,name=package_format"`
 	// Filter by package name.
 	PackageName *string `queryParam:"style=form,explode=true,name=package_name"`
 	// Filter by package identifier (`slug_perm`).
@@ -231,7 +77,7 @@ func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetMatch() optionalnullabl
 	return w.Match
 }
 
-func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageFormat() []WorkspacesPoliciesDecisionLogsV1ListPackageFormat {
+func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageFormat() []components.PackageFormatEnum {
 	if w == nil {
 		return nil
 	}

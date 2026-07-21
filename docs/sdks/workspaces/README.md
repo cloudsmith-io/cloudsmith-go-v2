@@ -750,7 +750,7 @@ func main() {
 
     res, err := s.Workspaces.GetPolicyDecisionLogFacets(ctx, operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest{
         CreatedAfter: types.MustTimeFromString("2026-07-12T18:06:56.305Z"),
-        GroupBy: operations.WorkspacesPoliciesDecisionLogsV1FacetsListGroupByRepository,
+        GroupBy: operations.GroupByRepository,
         Workspace: "<value>",
     })
     if err != nil {

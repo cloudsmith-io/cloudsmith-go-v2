@@ -3,88 +3,33 @@
 
 package components
 
-// FormatEnum - * `DEB` - Debian
-// * `RPM` - RedHat
-// * `RUBY` - Ruby
-// * `PYTHON` - Python
-// * `MAVEN` - Maven
-// * `BOWER` - Bower
-// * `DOCKER` - Docker
-// * `RAW` - Raw
-// * `CHOCOLATEY` - Chocolatey
-// * `NPM` - npm
-// * `NUGET` - NuGet
-// * `VAGRANT` - Vagrant
-// * `COMPOSER` - Composer
-// * `ALPINE` - Alpine
-// * `HELM` - Helm
-// * `CONAN` - Conan
-// * `CARGO` - Cargo
-// * `LUAROCKS` - LuaRocks
-// * `CRAN` - CRAN
-// * `GO` - Go
-// * `DART` - Dart
-// * `COCOAPODS` - CocoaPods
-// * `TERRAFORM` - Terraform
-// * `P2` - P2
-// * `CONDA` - Conda
-// * `HEX` - Hex
-// * `SWIFT` - Swift
-// * `HUGGINGFACE` - HuggingFace
-// * `GENERIC` - Generic
-// * `VSX` - VSX
-// * `MCP` - MCP
-// * `NIX` - Nix
-// * `DEFAULT` - Default
+import (
+	"encoding/json"
+	"fmt"
+)
+
 type FormatEnum string
 
 const (
-	FormatEnumDeb         FormatEnum = "DEB"
-	FormatEnumRpm         FormatEnum = "RPM"
-	FormatEnumRuby        FormatEnum = "RUBY"
-	FormatEnumPython      FormatEnum = "PYTHON"
-	FormatEnumMaven       FormatEnum = "MAVEN"
-	FormatEnumBower       FormatEnum = "BOWER"
-	FormatEnumDocker      FormatEnum = "DOCKER"
-	FormatEnumRaw         FormatEnum = "RAW"
-	FormatEnumChocolatey  FormatEnum = "CHOCOLATEY"
-	FormatEnumNpm         FormatEnum = "NPM"
-	FormatEnumNuget       FormatEnum = "NUGET"
-	FormatEnumVagrant     FormatEnum = "VAGRANT"
-	FormatEnumComposer    FormatEnum = "COMPOSER"
-	FormatEnumAlpine      FormatEnum = "ALPINE"
-	FormatEnumHelm        FormatEnum = "HELM"
-	FormatEnumConan       FormatEnum = "CONAN"
-	FormatEnumCargo       FormatEnum = "CARGO"
-	FormatEnumLuarocks    FormatEnum = "LUAROCKS"
-	FormatEnumCran        FormatEnum = "CRAN"
-	FormatEnumGo          FormatEnum = "GO"
-	FormatEnumDart        FormatEnum = "DART"
-	FormatEnumCocoapods   FormatEnum = "COCOAPODS"
-	FormatEnumTerraform   FormatEnum = "TERRAFORM"
-	FormatEnumP2          FormatEnum = "P2"
-	FormatEnumConda       FormatEnum = "CONDA"
-	FormatEnumHex         FormatEnum = "HEX"
-	FormatEnumSwift       FormatEnum = "SWIFT"
-	FormatEnumHuggingface FormatEnum = "HUGGINGFACE"
-	FormatEnumGeneric     FormatEnum = "GENERIC"
-	FormatEnumVsx         FormatEnum = "VSX"
-	FormatEnumMcp         FormatEnum = "MCP"
-	FormatEnumNix         FormatEnum = "NIX"
-	FormatEnumDefault     FormatEnum = "DEFAULT"
+	FormatEnumCsv  FormatEnum = "csv"
+	FormatEnumJSON FormatEnum = "json"
 )
 
 func (e FormatEnum) ToPointer() *FormatEnum {
 	return &e
 }
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *FormatEnum) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "DEB", "RPM", "RUBY", "PYTHON", "MAVEN", "BOWER", "DOCKER", "RAW", "CHOCOLATEY", "NPM", "NUGET", "VAGRANT", "COMPOSER", "ALPINE", "HELM", "CONAN", "CARGO", "LUAROCKS", "CRAN", "GO", "DART", "COCOAPODS", "TERRAFORM", "P2", "CONDA", "HEX", "SWIFT", "HUGGINGFACE", "GENERIC", "VSX", "MCP", "NIX", "DEFAULT":
-			return true
-		}
+func (e *FormatEnum) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
 	}
-	return false
+	switch v {
+	case "csv":
+		fallthrough
+	case "json":
+		*e = FormatEnum(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for FormatEnum: %v", v)
+	}
 }

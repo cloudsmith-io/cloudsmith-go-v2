@@ -79,61 +79,7 @@ func (e *EventAction) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// EventActorType - * `USER` - User
-// * `SERVICE` - Service
-type EventActorType string
-
-const (
-	EventActorTypeUser    EventActorType = "USER"
-	EventActorTypeService EventActorType = "SERVICE"
-)
-
-func (e EventActorType) ToPointer() *EventActorType {
-	return &e
-}
-func (e *EventActorType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "USER":
-		fallthrough
-	case "SERVICE":
-		*e = EventActorType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EventActorType: %v", v)
-	}
-}
-
-type AnalyticsLogsPackageListFormat string
-
-const (
-	AnalyticsLogsPackageListFormatCsv  AnalyticsLogsPackageListFormat = "csv"
-	AnalyticsLogsPackageListFormatJSON AnalyticsLogsPackageListFormat = "json"
-)
-
-func (e AnalyticsLogsPackageListFormat) ToPointer() *AnalyticsLogsPackageListFormat {
-	return &e
-}
-func (e *AnalyticsLogsPackageListFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "csv":
-		fallthrough
-	case "json":
-		*e = AnalyticsLogsPackageListFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AnalyticsLogsPackageListFormat: %v", v)
-	}
-}
-
-// AnalyticsLogsPackageListPackageFormat - * `DEB` - Debian
+// PackageFormat - * `DEB` - Debian
 // * `RPM` - RedHat
 // * `RUBY` - Ruby
 // * `PYTHON` - Python
@@ -165,47 +111,47 @@ func (e *AnalyticsLogsPackageListFormat) UnmarshalJSON(data []byte) error {
 // * `VSX` - VSX
 // * `MCP` - MCP
 // * `NIX` - Nix
-type AnalyticsLogsPackageListPackageFormat string
+type PackageFormat string
 
 const (
-	AnalyticsLogsPackageListPackageFormatDeb         AnalyticsLogsPackageListPackageFormat = "DEB"
-	AnalyticsLogsPackageListPackageFormatRpm         AnalyticsLogsPackageListPackageFormat = "RPM"
-	AnalyticsLogsPackageListPackageFormatRuby        AnalyticsLogsPackageListPackageFormat = "RUBY"
-	AnalyticsLogsPackageListPackageFormatPython      AnalyticsLogsPackageListPackageFormat = "PYTHON"
-	AnalyticsLogsPackageListPackageFormatMaven       AnalyticsLogsPackageListPackageFormat = "MAVEN"
-	AnalyticsLogsPackageListPackageFormatBower       AnalyticsLogsPackageListPackageFormat = "BOWER"
-	AnalyticsLogsPackageListPackageFormatDocker      AnalyticsLogsPackageListPackageFormat = "DOCKER"
-	AnalyticsLogsPackageListPackageFormatRaw         AnalyticsLogsPackageListPackageFormat = "RAW"
-	AnalyticsLogsPackageListPackageFormatChocolatey  AnalyticsLogsPackageListPackageFormat = "CHOCOLATEY"
-	AnalyticsLogsPackageListPackageFormatNpm         AnalyticsLogsPackageListPackageFormat = "NPM"
-	AnalyticsLogsPackageListPackageFormatNuget       AnalyticsLogsPackageListPackageFormat = "NUGET"
-	AnalyticsLogsPackageListPackageFormatVagrant     AnalyticsLogsPackageListPackageFormat = "VAGRANT"
-	AnalyticsLogsPackageListPackageFormatComposer    AnalyticsLogsPackageListPackageFormat = "COMPOSER"
-	AnalyticsLogsPackageListPackageFormatAlpine      AnalyticsLogsPackageListPackageFormat = "ALPINE"
-	AnalyticsLogsPackageListPackageFormatHelm        AnalyticsLogsPackageListPackageFormat = "HELM"
-	AnalyticsLogsPackageListPackageFormatConan       AnalyticsLogsPackageListPackageFormat = "CONAN"
-	AnalyticsLogsPackageListPackageFormatCargo       AnalyticsLogsPackageListPackageFormat = "CARGO"
-	AnalyticsLogsPackageListPackageFormatLuarocks    AnalyticsLogsPackageListPackageFormat = "LUAROCKS"
-	AnalyticsLogsPackageListPackageFormatCran        AnalyticsLogsPackageListPackageFormat = "CRAN"
-	AnalyticsLogsPackageListPackageFormatGo          AnalyticsLogsPackageListPackageFormat = "GO"
-	AnalyticsLogsPackageListPackageFormatDart        AnalyticsLogsPackageListPackageFormat = "DART"
-	AnalyticsLogsPackageListPackageFormatCocoapods   AnalyticsLogsPackageListPackageFormat = "COCOAPODS"
-	AnalyticsLogsPackageListPackageFormatTerraform   AnalyticsLogsPackageListPackageFormat = "TERRAFORM"
-	AnalyticsLogsPackageListPackageFormatP2          AnalyticsLogsPackageListPackageFormat = "P2"
-	AnalyticsLogsPackageListPackageFormatConda       AnalyticsLogsPackageListPackageFormat = "CONDA"
-	AnalyticsLogsPackageListPackageFormatHex         AnalyticsLogsPackageListPackageFormat = "HEX"
-	AnalyticsLogsPackageListPackageFormatSwift       AnalyticsLogsPackageListPackageFormat = "SWIFT"
-	AnalyticsLogsPackageListPackageFormatHuggingface AnalyticsLogsPackageListPackageFormat = "HUGGINGFACE"
-	AnalyticsLogsPackageListPackageFormatGeneric     AnalyticsLogsPackageListPackageFormat = "GENERIC"
-	AnalyticsLogsPackageListPackageFormatVsx         AnalyticsLogsPackageListPackageFormat = "VSX"
-	AnalyticsLogsPackageListPackageFormatMcp         AnalyticsLogsPackageListPackageFormat = "MCP"
-	AnalyticsLogsPackageListPackageFormatNix         AnalyticsLogsPackageListPackageFormat = "NIX"
+	PackageFormatDeb         PackageFormat = "DEB"
+	PackageFormatRpm         PackageFormat = "RPM"
+	PackageFormatRuby        PackageFormat = "RUBY"
+	PackageFormatPython      PackageFormat = "PYTHON"
+	PackageFormatMaven       PackageFormat = "MAVEN"
+	PackageFormatBower       PackageFormat = "BOWER"
+	PackageFormatDocker      PackageFormat = "DOCKER"
+	PackageFormatRaw         PackageFormat = "RAW"
+	PackageFormatChocolatey  PackageFormat = "CHOCOLATEY"
+	PackageFormatNpm         PackageFormat = "NPM"
+	PackageFormatNuget       PackageFormat = "NUGET"
+	PackageFormatVagrant     PackageFormat = "VAGRANT"
+	PackageFormatComposer    PackageFormat = "COMPOSER"
+	PackageFormatAlpine      PackageFormat = "ALPINE"
+	PackageFormatHelm        PackageFormat = "HELM"
+	PackageFormatConan       PackageFormat = "CONAN"
+	PackageFormatCargo       PackageFormat = "CARGO"
+	PackageFormatLuarocks    PackageFormat = "LUAROCKS"
+	PackageFormatCran        PackageFormat = "CRAN"
+	PackageFormatGo          PackageFormat = "GO"
+	PackageFormatDart        PackageFormat = "DART"
+	PackageFormatCocoapods   PackageFormat = "COCOAPODS"
+	PackageFormatTerraform   PackageFormat = "TERRAFORM"
+	PackageFormatP2          PackageFormat = "P2"
+	PackageFormatConda       PackageFormat = "CONDA"
+	PackageFormatHex         PackageFormat = "HEX"
+	PackageFormatSwift       PackageFormat = "SWIFT"
+	PackageFormatHuggingface PackageFormat = "HUGGINGFACE"
+	PackageFormatGeneric     PackageFormat = "GENERIC"
+	PackageFormatVsx         PackageFormat = "VSX"
+	PackageFormatMcp         PackageFormat = "MCP"
+	PackageFormatNix         PackageFormat = "NIX"
 )
 
-func (e AnalyticsLogsPackageListPackageFormat) ToPointer() *AnalyticsLogsPackageListPackageFormat {
+func (e PackageFormat) ToPointer() *PackageFormat {
 	return &e
 }
-func (e *AnalyticsLogsPackageListPackageFormat) UnmarshalJSON(data []byte) error {
+func (e *PackageFormat) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -274,10 +220,10 @@ func (e *AnalyticsLogsPackageListPackageFormat) UnmarshalJSON(data []byte) error
 	case "MCP":
 		fallthrough
 	case "NIX":
-		*e = AnalyticsLogsPackageListPackageFormat(v)
+		*e = PackageFormat(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AnalyticsLogsPackageListPackageFormat: %v", v)
+		return fmt.Errorf("invalid value for PackageFormat: %v", v)
 	}
 }
 
@@ -289,12 +235,12 @@ type AnalyticsLogsPackageListRequest struct {
 	// Actor slug or unique identifier (slug-perm) by which to filter logs. Multiple actors can be provided e.g. `event_actor=my-user&event_actor=W9iD9l2rNnrk`.
 	EventActor []string `queryParam:"style=form,explode=true,name=event_actor"`
 	// Type of actor by which to filter logs (e.g. USER, SERVICE). Multiple types can be provided e.g. `event_actor_type=USER&event_actor_type=SERVICE`.
-	EventActorType []EventActorType                `queryParam:"style=form,explode=true,name=event_actor_type"`
-	Format         *AnalyticsLogsPackageListFormat `queryParam:"style=form,explode=true,name=format"`
+	EventActorType []components.UserTypeEnum `queryParam:"style=form,explode=true,name=event_actor_type"`
+	Format         *components.FormatEnum    `queryParam:"style=form,explode=true,name=format"`
 	// Package name or unique identifier (slug-perm) by which to filter logs. Multiple values can be provided e.g. `package=my-package&package=W9iD9l2rNnrk`.
 	Package []string `queryParam:"style=form,explode=true,name=package"`
 	// Type of package formats by which to filter logs (e.g. Nuget, Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
-	PackageFormat []AnalyticsLogsPackageListPackageFormat `queryParam:"style=form,explode=true,name=package_format"`
+	PackageFormat []PackageFormat `queryParam:"style=form,explode=true,name=package_format"`
 	// A page number within the paginated result set.
 	Page *int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
@@ -338,14 +284,14 @@ func (a *AnalyticsLogsPackageListRequest) GetEventActor() []string {
 	return a.EventActor
 }
 
-func (a *AnalyticsLogsPackageListRequest) GetEventActorType() []EventActorType {
+func (a *AnalyticsLogsPackageListRequest) GetEventActorType() []components.UserTypeEnum {
 	if a == nil {
 		return nil
 	}
 	return a.EventActorType
 }
 
-func (a *AnalyticsLogsPackageListRequest) GetFormat() *AnalyticsLogsPackageListFormat {
+func (a *AnalyticsLogsPackageListRequest) GetFormat() *components.FormatEnum {
 	if a == nil {
 		return nil
 	}
@@ -359,7 +305,7 @@ func (a *AnalyticsLogsPackageListRequest) GetPackage() []string {
 	return a.Package
 }
 
-func (a *AnalyticsLogsPackageListRequest) GetPackageFormat() []AnalyticsLogsPackageListPackageFormat {
+func (a *AnalyticsLogsPackageListRequest) GetPackageFormat() []PackageFormat {
 	if a == nil {
 		return nil
 	}

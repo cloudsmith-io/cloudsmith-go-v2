@@ -46,7 +46,7 @@ type PackageLogPackage struct {
 	// * `MCP` - MCP
 	// * `NIX` - Nix
 	// * `DEFAULT` - Default
-	Format FormatEnum `json:"format"`
+	Format PackageFormatEnum `json:"format"`
 	// Size of the package in bytes.
 	Size int64 `json:"size"`
 }
@@ -72,9 +72,9 @@ func (p *PackageLogPackage) GetVersion() string {
 	return p.Version
 }
 
-func (p *PackageLogPackage) GetFormat() FormatEnum {
+func (p *PackageLogPackage) GetFormat() PackageFormatEnum {
 	if p == nil {
-		return FormatEnum("")
+		return PackageFormatEnum("")
 	}
 	return p.Format
 }

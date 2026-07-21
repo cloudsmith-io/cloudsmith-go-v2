@@ -11,7 +11,7 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 )
 
-// PackagesVulnerabilitiesOsvListThreatLevel - Filter by threat level. Matches the single best classified severity. Accepts normalized threat levels (critical, high, medium, low, unknown, malware) and vendor aliases (important, moderate, negligible, none, unimportant).
+// ThreatLevel - Filter by threat level. Matches the single best classified severity. Accepts normalized threat levels (critical, high, medium, low, unknown, malware) and vendor aliases (important, moderate, negligible, none, unimportant).
 //
 // * `critical` - critical
 // * `high` - high
@@ -24,26 +24,26 @@ import (
 // * `none` - none
 // * `unimportant` - unimportant
 // * `unknown` - unknown
-type PackagesVulnerabilitiesOsvListThreatLevel string
+type ThreatLevel string
 
 const (
-	PackagesVulnerabilitiesOsvListThreatLevelCritical    PackagesVulnerabilitiesOsvListThreatLevel = "critical"
-	PackagesVulnerabilitiesOsvListThreatLevelHigh        PackagesVulnerabilitiesOsvListThreatLevel = "high"
-	PackagesVulnerabilitiesOsvListThreatLevelImportant   PackagesVulnerabilitiesOsvListThreatLevel = "important"
-	PackagesVulnerabilitiesOsvListThreatLevelLow         PackagesVulnerabilitiesOsvListThreatLevel = "low"
-	PackagesVulnerabilitiesOsvListThreatLevelMalware     PackagesVulnerabilitiesOsvListThreatLevel = "malware"
-	PackagesVulnerabilitiesOsvListThreatLevelMedium      PackagesVulnerabilitiesOsvListThreatLevel = "medium"
-	PackagesVulnerabilitiesOsvListThreatLevelModerate    PackagesVulnerabilitiesOsvListThreatLevel = "moderate"
-	PackagesVulnerabilitiesOsvListThreatLevelNegligible  PackagesVulnerabilitiesOsvListThreatLevel = "negligible"
-	PackagesVulnerabilitiesOsvListThreatLevelNone        PackagesVulnerabilitiesOsvListThreatLevel = "none"
-	PackagesVulnerabilitiesOsvListThreatLevelUnimportant PackagesVulnerabilitiesOsvListThreatLevel = "unimportant"
-	PackagesVulnerabilitiesOsvListThreatLevelUnknown     PackagesVulnerabilitiesOsvListThreatLevel = "unknown"
+	ThreatLevelCritical    ThreatLevel = "critical"
+	ThreatLevelHigh        ThreatLevel = "high"
+	ThreatLevelImportant   ThreatLevel = "important"
+	ThreatLevelLow         ThreatLevel = "low"
+	ThreatLevelMalware     ThreatLevel = "malware"
+	ThreatLevelMedium      ThreatLevel = "medium"
+	ThreatLevelModerate    ThreatLevel = "moderate"
+	ThreatLevelNegligible  ThreatLevel = "negligible"
+	ThreatLevelNone        ThreatLevel = "none"
+	ThreatLevelUnimportant ThreatLevel = "unimportant"
+	ThreatLevelUnknown     ThreatLevel = "unknown"
 )
 
-func (e PackagesVulnerabilitiesOsvListThreatLevel) ToPointer() *PackagesVulnerabilitiesOsvListThreatLevel {
+func (e ThreatLevel) ToPointer() *ThreatLevel {
 	return &e
 }
-func (e *PackagesVulnerabilitiesOsvListThreatLevel) UnmarshalJSON(data []byte) error {
+func (e *ThreatLevel) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -70,10 +70,10 @@ func (e *PackagesVulnerabilitiesOsvListThreatLevel) UnmarshalJSON(data []byte) e
 	case "unimportant":
 		fallthrough
 	case "unknown":
-		*e = PackagesVulnerabilitiesOsvListThreatLevel(v)
+		*e = ThreatLevel(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PackagesVulnerabilitiesOsvListThreatLevel: %v", v)
+		return fmt.Errorf("invalid value for ThreatLevel: %v", v)
 	}
 }
 
@@ -104,7 +104,7 @@ type PackagesVulnerabilitiesOsvListRequest struct {
 	// * `none` - none
 	// * `unimportant` - unimportant
 	// * `unknown` - unknown
-	ThreatLevel *PackagesVulnerabilitiesOsvListThreatLevel `queryParam:"style=form,explode=true,name=threat_level"`
+	ThreatLevel *ThreatLevel `queryParam:"style=form,explode=true,name=threat_level"`
 	// Filter by OSV vulnerability identifier (e.g., CVE-2024-1234 or GHSA-xxxx). Matching is exact and case-sensitive, and also checks the aliases and upstream identifiers of each advisory.
 	VulnerabilityID *string `queryParam:"style=form,explode=true,name=vulnerability_id"`
 }
@@ -169,7 +169,7 @@ func (p *PackagesVulnerabilitiesOsvListRequest) GetPrimaryRecords() *bool {
 	return p.PrimaryRecords
 }
 
-func (p *PackagesVulnerabilitiesOsvListRequest) GetThreatLevel() *PackagesVulnerabilitiesOsvListThreatLevel {
+func (p *PackagesVulnerabilitiesOsvListRequest) GetThreatLevel() *ThreatLevel {
 	if p == nil {
 		return nil
 	}

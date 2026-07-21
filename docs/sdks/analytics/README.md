@@ -129,6 +129,7 @@ package main
 import(
 	"context"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
 )
@@ -141,7 +142,7 @@ func main() {
     )
 
     res, err := s.Analytics.GetClientTimeSeriesMetrics(ctx, operations.AnalyticsMetricsClientTimeSeriesListRequest{
-        Interval: operations.IntervalFifteenMinutes,
+        Interval: components.IntervalEnumFifteenMinutes,
         Workspace: "<value>",
     })
     if err != nil {

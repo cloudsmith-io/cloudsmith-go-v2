@@ -136,9 +136,9 @@ type PolicyPackageLicense struct {
 	// The license URL of this package.
 	LicenseURL optionalnullable.OptionalNullable[string] `json:"license_url,omitzero"`
 	OssLicense OssLicense                                `json:"oss_license"`
-	// * `AUTOMATIC` - Automatically sourced
-	// * `MANUAL` - Manually sourced
-	Source LicenseSourceEnum `json:"source"`
+	// * `AUTOMATIC` - Automatic
+	// * `MANUAL` - Manual
+	Source PackageTagSourceTypeEnum `json:"source"`
 	// * `NONE` - None
 	// * `OSS_EXACT` - OSS exact match
 	// * `OSS_FUZZY` - OSS fuzzy match
@@ -200,9 +200,9 @@ func (p *PolicyPackageLicense) GetOssLicense() OssLicense {
 	return p.OssLicense
 }
 
-func (p *PolicyPackageLicense) GetSource() LicenseSourceEnum {
+func (p *PolicyPackageLicense) GetSource() PackageTagSourceTypeEnum {
 	if p == nil {
-		return LicenseSourceEnum("")
+		return PackageTagSourceTypeEnum("")
 	}
 	return p.Source
 }

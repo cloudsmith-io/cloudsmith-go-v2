@@ -1,7 +1,5 @@
 # AnalyticsMetricsClientListAggregate
 
-Type of aggregation.
-
 * `BYTES_DOWNLOADED_AVG` - bytes_downloaded_avg
 * `BYTES_DOWNLOADED_SUM` - bytes_downloaded_sum
 * `IP_ADDRESS_COUNT_UNIQUE` - ip_address_count_unique

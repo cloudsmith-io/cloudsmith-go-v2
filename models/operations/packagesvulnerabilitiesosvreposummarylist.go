@@ -4,58 +4,10 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 )
-
-// PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel - Filter by the severity bucket. Accepted values: critical, high, medium, low, unknown, malware.
-//
-// * `critical` - critical
-// * `high` - high
-// * `low` - low
-// * `malware` - malware
-// * `medium` - medium
-// * `unknown` - unknown
-type PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel string
-
-const (
-	PackagesVulnerabilitiesOsvRepoSummaryListThreatLevelCritical PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel = "critical"
-	PackagesVulnerabilitiesOsvRepoSummaryListThreatLevelHigh     PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel = "high"
-	PackagesVulnerabilitiesOsvRepoSummaryListThreatLevelLow      PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel = "low"
-	PackagesVulnerabilitiesOsvRepoSummaryListThreatLevelMalware  PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel = "malware"
-	PackagesVulnerabilitiesOsvRepoSummaryListThreatLevelMedium   PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel = "medium"
-	PackagesVulnerabilitiesOsvRepoSummaryListThreatLevelUnknown  PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel = "unknown"
-)
-
-func (e PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel) ToPointer() *PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel {
-	return &e
-}
-func (e *PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "critical":
-		fallthrough
-	case "high":
-		fallthrough
-	case "low":
-		fallthrough
-	case "malware":
-		fallthrough
-	case "medium":
-		fallthrough
-	case "unknown":
-		*e = PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel: %v", v)
-	}
-}
 
 type PackagesVulnerabilitiesOsvRepoSummaryListRequest struct {
 	// Filter by malware classification (MAL- prefix or CWE-506). When true, only malware entries are returned; when false, malware entries are excluded.
@@ -74,7 +26,7 @@ type PackagesVulnerabilitiesOsvRepoSummaryListRequest struct {
 	// * `malware` - malware
 	// * `medium` - medium
 	// * `unknown` - unknown
-	ThreatLevel *PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel `queryParam:"style=form,explode=true,name=threat_level"`
+	ThreatLevel *components.ThreatLevelEnum `queryParam:"style=form,explode=true,name=threat_level"`
 	// Filter by OSV vulnerability identifier (e.g., CVE-2024-1234 or GHSA-xxxx). Matching is exact and case-sensitive, and also checks the aliases and upstream identifiers of each advisory.
 	VulnerabilityID *string `queryParam:"style=form,explode=true,name=vulnerability_id"`
 }
@@ -114,7 +66,7 @@ func (p *PackagesVulnerabilitiesOsvRepoSummaryListRequest) GetRepo() string {
 	return p.Repo
 }
 
-func (p *PackagesVulnerabilitiesOsvRepoSummaryListRequest) GetThreatLevel() *PackagesVulnerabilitiesOsvRepoSummaryListThreatLevel {
+func (p *PackagesVulnerabilitiesOsvRepoSummaryListRequest) GetThreatLevel() *components.ThreatLevelEnum {
 	if p == nil {
 		return nil
 	}

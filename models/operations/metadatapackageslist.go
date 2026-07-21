@@ -4,99 +4,9 @@
 package operations
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 )
-
-// Classification - Filter results by metadata classification.
-//
-// * `UNKNOWN` - Unknown
-// * `INTRINSIC` - Intrinsic
-// * `SECURITY` - Security
-// * `PROVENANCE` - Provenance
-// * `SBOM` - SBOM
-// * `GENERIC` - Generic
-type Classification string
-
-const (
-	ClassificationUnknown    Classification = "UNKNOWN"
-	ClassificationIntrinsic  Classification = "INTRINSIC"
-	ClassificationSecurity   Classification = "SECURITY"
-	ClassificationProvenance Classification = "PROVENANCE"
-	ClassificationSbom       Classification = "SBOM"
-	ClassificationGeneric    Classification = "GENERIC"
-)
-
-func (e Classification) ToPointer() *Classification {
-	return &e
-}
-func (e *Classification) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "INTRINSIC":
-		fallthrough
-	case "SECURITY":
-		fallthrough
-	case "PROVENANCE":
-		fallthrough
-	case "SBOM":
-		fallthrough
-	case "GENERIC":
-		*e = Classification(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Classification: %v", v)
-	}
-}
-
-// SourceKind - Filter results by metadata source kind.
-//
-// * `UNKNOWN` - Unknown
-// * `SYSTEM` - System
-// * `UPSTREAM` - Upstream
-// * `CUSTOM` - Custom
-// * `THIRD_PARTY` - Third Party
-type SourceKind string
-
-const (
-	SourceKindUnknown    SourceKind = "UNKNOWN"
-	SourceKindSystem     SourceKind = "SYSTEM"
-	SourceKindUpstream   SourceKind = "UPSTREAM"
-	SourceKindCustom     SourceKind = "CUSTOM"
-	SourceKindThirdParty SourceKind = "THIRD_PARTY"
-)
-
-func (e SourceKind) ToPointer() *SourceKind {
-	return &e
-}
-func (e *SourceKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "SYSTEM":
-		fallthrough
-	case "UPSTREAM":
-		fallthrough
-	case "CUSTOM":
-		fallthrough
-	case "THIRD_PARTY":
-		*e = SourceKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SourceKind: %v", v)
-	}
-}
 
 type MetadataPackagesListRequest struct {
 	// Filter results by metadata classification.
@@ -107,7 +17,7 @@ type MetadataPackagesListRequest struct {
 	// * `PROVENANCE` - Provenance
 	// * `SBOM` - SBOM
 	// * `GENERIC` - Generic
-	Classification *Classification `queryParam:"style=form,explode=true,name=classification"`
+	Classification *components.ClassificationEnum `queryParam:"style=form,explode=true,name=classification"`
 	// The `slug_perm` of the package.
 	PackageSlugPerm string `pathParam:"style=simple,explode=false,name=package_slug_perm"`
 	// A page number within the paginated result set.
@@ -121,10 +31,10 @@ type MetadataPackagesListRequest struct {
 	// * `UPSTREAM` - Upstream
 	// * `CUSTOM` - Custom
 	// * `THIRD_PARTY` - Third Party
-	SourceKind *SourceKind `queryParam:"style=form,explode=true,name=source_kind"`
+	SourceKind *components.SourceKindEnum `queryParam:"style=form,explode=true,name=source_kind"`
 }
 
-func (m *MetadataPackagesListRequest) GetClassification() *Classification {
+func (m *MetadataPackagesListRequest) GetClassification() *components.ClassificationEnum {
 	if m == nil {
 		return nil
 	}
@@ -152,7 +62,7 @@ func (m *MetadataPackagesListRequest) GetPageSize() *int64 {
 	return m.PageSize
 }
 
-func (m *MetadataPackagesListRequest) GetSourceKind() *SourceKind {
+func (m *MetadataPackagesListRequest) GetSourceKind() *components.SourceKindEnum {
 	if m == nil {
 		return nil
 	}
