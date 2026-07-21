@@ -359,6 +359,7 @@ func (a *AnalyticsLogsPackageListRequest) GetWorkspace() string {
 type AnalyticsLogsPackageListResponse struct {
 	HTTPMeta                         components.HTTPMetadata `json:"-"`
 	PaginatedPackageLogsResponseList *components.PaginatedPackageLogsResponseList
+	Body                             []byte
 
 	Next func() (*AnalyticsLogsPackageListResponse, error)
 }
@@ -386,4 +387,11 @@ func (a *AnalyticsLogsPackageListResponse) GetPaginatedPackageLogsResponseList()
 		return nil
 	}
 	return a.PaginatedPackageLogsResponseList
+}
+
+func (a *AnalyticsLogsPackageListResponse) GetBody() []byte {
+	if a == nil {
+		return nil
+	}
+	return a.Body
 }

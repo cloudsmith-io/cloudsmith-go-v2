@@ -19,6 +19,8 @@ import (
 )
 
 type Workspaces struct {
+	Policies *Policies
+
 	rootSDK          *Cloudsmith
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -29,268 +31,12 @@ func newWorkspaces(rootSDK *Cloudsmith, sdkConfig config.SDKConfiguration, hooks
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
+		Policies:         newPolicies(rootSDK, sdkConfig, hooks),
 	}
 }
 
-// WorkspacesPoliciesList - List policies.
-func (s *Workspaces) WorkspacesPoliciesList(ctx context.Context, request operations.WorkspacesPoliciesListRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesListResponse, error) {
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionRetries,
-		operations.SupportedOptionTimeout,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-
-	var baseURL string
-	if o.ServerURL == nil {
-		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	} else {
-		baseURL = *o.ServerURL
-	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/workspaces/{workspace}/policies/", request, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error generating URL: %w", err)
-	}
-
-	hookCtx := hooks.HookContext{
-		SDK:              s.rootSDK,
-		SDKConfiguration: s.sdkConfiguration,
-		BaseURL:          baseURL,
-		Context:          ctx,
-		OperationID:      "workspaces_policies_list",
-		SecuritySource:   s.sdkConfiguration.Security,
-	}
-
-	timeout := o.Timeout
-	if timeout == nil {
-		timeout = s.sdkConfiguration.Timeout
-	}
-
-	if timeout != nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, *timeout)
-		defer cancel()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error creating request: %w", err)
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
-	}
-
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
-		return nil, err
-	}
-
-	for k, v := range o.SetHeaders {
-		req.Header.Set(k, v)
-	}
-
-	globalRetryConfig := s.sdkConfiguration.RetryConfig
-	retryConfig := o.Retries
-	if retryConfig == nil {
-		if globalRetryConfig != nil {
-			retryConfig = globalRetryConfig
-		} else {
-			retryConfig = &retry.Config{
-				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 1000,
-					MaxInterval:     30000,
-					Exponent:        2,
-					MaxElapsedTime:  60000,
-				},
-				RetryConnectionErrors: true,
-			}
-		}
-	}
-
-	var httpRes *http.Response
-	if retryConfig != nil {
-		httpRes, err = utils.Retry(ctx, utils.Retries{
-			Config: retryConfig,
-			StatusCodes: []string{
-				"429",
-				"5XX",
-			},
-		}, func() (*http.Response, error) {
-			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
-				copyBody, err := req.GetBody()
-
-				if err != nil {
-					return nil, err
-				}
-
-				req.Body = copyBody
-			}
-
-			req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-			if err != nil {
-				if retry.IsPermanentError(err) || retry.IsTemporaryError(err) {
-					return nil, err
-				}
-
-				return nil, retry.Permanent(err)
-			}
-
-			httpRes, err := s.sdkConfiguration.Client.Do(req)
-			if err != nil || httpRes == nil {
-				if err != nil {
-					err = fmt.Errorf("error sending request: %w", err)
-				} else {
-					err = fmt.Errorf("error sending request: no response")
-				}
-
-				_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			}
-			return httpRes, err
-		})
-
-		if err != nil {
-			return nil, err
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	} else {
-		req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-		if err != nil {
-			return nil, err
-		}
-
-		httpRes, err = s.sdkConfiguration.Client.Do(req)
-		if err != nil || httpRes == nil {
-			if err != nil {
-				err = fmt.Errorf("error sending request: %w", err)
-			} else {
-				err = fmt.Errorf("error sending request: no response")
-			}
-
-			_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			return nil, err
-		} else if utils.MatchStatusCodes([]string{"4XX", "5XX"}, httpRes.StatusCode) {
-			_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
-			if err != nil {
-				return nil, err
-			} else if _httpRes != nil {
-				httpRes = _httpRes
-			}
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
-
-	res := &operations.WorkspacesPoliciesListResponse{
-		HTTPMeta: components.HTTPMetadata{
-			Request:  req,
-			Response: httpRes,
-		},
-	}
-	res.Next = func() (*operations.WorkspacesPoliciesListResponse, error) {
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-
-		b, err := ajson.Unmarshal(rawBody)
-		if err != nil {
-			return nil, err
-		}
-		p := request.Page
-		nP := int64(p + 1)
-		r, err := ajson.Eval(b, "$.results")
-		if err != nil {
-			return nil, err
-		}
-		if !r.IsArray() {
-			return nil, nil
-		}
-		arr, err := r.GetArray()
-		if err != nil {
-			return nil, err
-		}
-		if len(arr) == 0 {
-			return nil, nil
-		}
-
-		l := 0
-		if request.PageSize != nil {
-			l = int(*request.PageSize)
-		}
-		if len(arr) < l {
-			return nil, nil
-		}
-		request.Page = nP
-
-		return s.WorkspacesPoliciesList(
-			ctx,
-			request,
-			opts...,
-		)
-	}
-
-	switch {
-	case httpRes.StatusCode == 200:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out components.PaginatedPolicyList
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.PaginatedPolicyList = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, apierrors.NewAPIError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	case httpRes.StatusCode >= 500 && httpRes.StatusCode < 600:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	default:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
-	}
-
-	return res, nil
-
-}
-
-// WorkspacesPoliciesCreate - Create a policy.
-func (s *Workspaces) WorkspacesPoliciesCreate(ctx context.Context, workspace string, body components.PolicyRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesCreateResponse, error) {
+// CreatePolicy - Create a policy.
+func (s *Workspaces) CreatePolicy(ctx context.Context, workspace string, body components.PolicyRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesCreateResponse, error) {
 	request := operations.WorkspacesPoliciesCreateRequest{
 		Workspace: workspace,
 		Body:      body,
@@ -537,8 +283,8 @@ func (s *Workspaces) WorkspacesPoliciesCreate(ctx context.Context, workspace str
 
 }
 
-// WorkspacesPoliciesRetrieve - Retrieve a policy.
-func (s *Workspaces) WorkspacesPoliciesRetrieve(ctx context.Context, policy string, workspace string, opts ...operations.Option) (*operations.WorkspacesPoliciesRetrieveResponse, error) {
+// RetrievePolicy - Retrieve a policy.
+func (s *Workspaces) RetrievePolicy(ctx context.Context, policy string, workspace string, opts ...operations.Option) (*operations.WorkspacesPoliciesRetrieveResponse, error) {
 	request := operations.WorkspacesPoliciesRetrieveRequest{
 		Policy:    policy,
 		Workspace: workspace,
@@ -753,8 +499,8 @@ func (s *Workspaces) WorkspacesPoliciesRetrieve(ctx context.Context, policy stri
 
 }
 
-// WorkspacesPoliciesUpdate - Update a policy.
-func (s *Workspaces) WorkspacesPoliciesUpdate(ctx context.Context, policy string, workspace string, body components.PolicyRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesUpdateResponse, error) {
+// UpdatePolicy - Update a policy.
+func (s *Workspaces) UpdatePolicy(ctx context.Context, policy string, workspace string, body components.PolicyRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesUpdateResponse, error) {
 	request := operations.WorkspacesPoliciesUpdateRequest{
 		Policy:    policy,
 		Workspace: workspace,
@@ -977,232 +723,8 @@ func (s *Workspaces) WorkspacesPoliciesUpdate(ctx context.Context, policy string
 
 }
 
-// WorkspacesPoliciesPartialUpdate - Partially update a policy.
-func (s *Workspaces) WorkspacesPoliciesPartialUpdate(ctx context.Context, policy string, workspace string, body *components.PatchedPolicy, opts ...operations.Option) (*operations.WorkspacesPoliciesPartialUpdateResponse, error) {
-	request := operations.WorkspacesPoliciesPartialUpdateRequest{
-		Policy:    policy,
-		Workspace: workspace,
-		Body:      body,
-	}
-
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionRetries,
-		operations.SupportedOptionTimeout,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-
-	var baseURL string
-	if o.ServerURL == nil {
-		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	} else {
-		baseURL = *o.ServerURL
-	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/workspaces/{workspace}/policies/{policy}/", request, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error generating URL: %w", err)
-	}
-
-	hookCtx := hooks.HookContext{
-		SDK:              s.rootSDK,
-		SDKConfiguration: s.sdkConfiguration,
-		BaseURL:          baseURL,
-		Context:          ctx,
-		OperationID:      "workspaces_policies_partial_update",
-		SecuritySource:   s.sdkConfiguration.Security,
-	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Body", "json", `request:"mediaType=application/json"`)
-	if err != nil {
-		return nil, err
-	}
-
-	timeout := o.Timeout
-	if timeout == nil {
-		timeout = s.sdkConfiguration.Timeout
-	}
-
-	if timeout != nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, *timeout)
-		defer cancel()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
-	if err != nil {
-		return nil, fmt.Errorf("error creating request: %w", err)
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-	if reqContentType != "" {
-		req.Header.Set("Content-Type", reqContentType)
-	}
-
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
-		return nil, err
-	}
-
-	for k, v := range o.SetHeaders {
-		req.Header.Set(k, v)
-	}
-
-	globalRetryConfig := s.sdkConfiguration.RetryConfig
-	retryConfig := o.Retries
-	if retryConfig == nil {
-		if globalRetryConfig != nil {
-			retryConfig = globalRetryConfig
-		} else {
-			retryConfig = &retry.Config{
-				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 1000,
-					MaxInterval:     30000,
-					Exponent:        2,
-					MaxElapsedTime:  60000,
-				},
-				RetryConnectionErrors: true,
-			}
-		}
-	}
-
-	var httpRes *http.Response
-	if retryConfig != nil {
-		httpRes, err = utils.Retry(ctx, utils.Retries{
-			Config: retryConfig,
-			StatusCodes: []string{
-				"429",
-				"5XX",
-			},
-		}, func() (*http.Response, error) {
-			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
-				copyBody, err := req.GetBody()
-
-				if err != nil {
-					return nil, err
-				}
-
-				req.Body = copyBody
-			}
-
-			req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-			if err != nil {
-				if retry.IsPermanentError(err) || retry.IsTemporaryError(err) {
-					return nil, err
-				}
-
-				return nil, retry.Permanent(err)
-			}
-
-			httpRes, err := s.sdkConfiguration.Client.Do(req)
-			if err != nil || httpRes == nil {
-				if err != nil {
-					err = fmt.Errorf("error sending request: %w", err)
-				} else {
-					err = fmt.Errorf("error sending request: no response")
-				}
-
-				_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			}
-			return httpRes, err
-		})
-
-		if err != nil {
-			return nil, err
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	} else {
-		req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-		if err != nil {
-			return nil, err
-		}
-
-		httpRes, err = s.sdkConfiguration.Client.Do(req)
-		if err != nil || httpRes == nil {
-			if err != nil {
-				err = fmt.Errorf("error sending request: %w", err)
-			} else {
-				err = fmt.Errorf("error sending request: no response")
-			}
-
-			_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			return nil, err
-		} else if utils.MatchStatusCodes([]string{"4XX", "5XX"}, httpRes.StatusCode) {
-			_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
-			if err != nil {
-				return nil, err
-			} else if _httpRes != nil {
-				httpRes = _httpRes
-			}
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
-
-	res := &operations.WorkspacesPoliciesPartialUpdateResponse{
-		HTTPMeta: components.HTTPMetadata{
-			Request:  req,
-			Response: httpRes,
-		},
-	}
-
-	switch {
-	case httpRes.StatusCode == 200:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out components.Policy
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.Policy = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, apierrors.NewAPIError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	case httpRes.StatusCode >= 500 && httpRes.StatusCode < 600:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	default:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
-	}
-
-	return res, nil
-
-}
-
-// WorkspacesPoliciesDestroy - Delete a policy.
-func (s *Workspaces) WorkspacesPoliciesDestroy(ctx context.Context, policy string, workspace string, opts ...operations.Option) (*operations.WorkspacesPoliciesDestroyResponse, error) {
+// DeletePolicy - Delete a policy.
+func (s *Workspaces) DeletePolicy(ctx context.Context, policy string, workspace string, opts ...operations.Option) (*operations.WorkspacesPoliciesDestroyResponse, error) {
 	request := operations.WorkspacesPoliciesDestroyRequest{
 		Policy:    policy,
 		Workspace: workspace,
@@ -1398,8 +920,8 @@ func (s *Workspaces) WorkspacesPoliciesDestroy(ctx context.Context, policy strin
 
 }
 
-// WorkspacesPoliciesActionsList - List all actions for the policy.
-func (s *Workspaces) WorkspacesPoliciesActionsList(ctx context.Context, page int64, policy string, workspace string, pageSize *int64, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsListResponse, error) {
+// GetPolicyActions - List all actions for the policy.
+func (s *Workspaces) GetPolicyActions(ctx context.Context, page int64, policy string, workspace string, pageSize *int64, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsListResponse, error) {
 	request := operations.WorkspacesPoliciesActionsListRequest{
 		Page:      page,
 		Policy:    policy,
@@ -1608,7 +1130,7 @@ func (s *Workspaces) WorkspacesPoliciesActionsList(ctx context.Context, page int
 			return nil, nil
 		}
 
-		return s.WorkspacesPoliciesActionsList(
+		return s.GetPolicyActions(
 			ctx,
 			nP,
 			policy,
@@ -1664,474 +1186,8 @@ func (s *Workspaces) WorkspacesPoliciesActionsList(ctx context.Context, page int
 
 }
 
-// WorkspacesPoliciesActionsCreate - Create an action for a policy.
-func (s *Workspaces) WorkspacesPoliciesActionsCreate(ctx context.Context, policy string, workspace string, body *components.PolicyActionRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsCreateResponse, error) {
-	request := operations.WorkspacesPoliciesActionsCreateRequest{
-		Policy:    policy,
-		Workspace: workspace,
-		Body:      body,
-	}
-
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionRetries,
-		operations.SupportedOptionTimeout,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-
-	var baseURL string
-	if o.ServerURL == nil {
-		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	} else {
-		baseURL = *o.ServerURL
-	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/workspaces/{workspace}/policies/{policy}/actions/", request, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error generating URL: %w", err)
-	}
-
-	hookCtx := hooks.HookContext{
-		SDK:              s.rootSDK,
-		SDKConfiguration: s.sdkConfiguration,
-		BaseURL:          baseURL,
-		Context:          ctx,
-		OperationID:      "workspaces_policies_actions_create",
-		SecuritySource:   s.sdkConfiguration.Security,
-	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Body", "json", `request:"mediaType=application/json"`)
-	if err != nil {
-		return nil, err
-	}
-
-	timeout := o.Timeout
-	if timeout == nil {
-		timeout = s.sdkConfiguration.Timeout
-	}
-
-	if timeout != nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, *timeout)
-		defer cancel()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
-	if err != nil {
-		return nil, fmt.Errorf("error creating request: %w", err)
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-	if reqContentType != "" {
-		req.Header.Set("Content-Type", reqContentType)
-	}
-
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
-		return nil, err
-	}
-
-	for k, v := range o.SetHeaders {
-		req.Header.Set(k, v)
-	}
-
-	globalRetryConfig := s.sdkConfiguration.RetryConfig
-	retryConfig := o.Retries
-	if retryConfig == nil {
-		if globalRetryConfig != nil {
-			retryConfig = globalRetryConfig
-		} else {
-			retryConfig = &retry.Config{
-				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 1000,
-					MaxInterval:     30000,
-					Exponent:        2,
-					MaxElapsedTime:  60000,
-				},
-				RetryConnectionErrors: true,
-			}
-		}
-	}
-
-	var httpRes *http.Response
-	if retryConfig != nil {
-		httpRes, err = utils.Retry(ctx, utils.Retries{
-			Config: retryConfig,
-			StatusCodes: []string{
-				"429",
-				"5XX",
-			},
-		}, func() (*http.Response, error) {
-			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
-				copyBody, err := req.GetBody()
-
-				if err != nil {
-					return nil, err
-				}
-
-				req.Body = copyBody
-			}
-
-			req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-			if err != nil {
-				if retry.IsPermanentError(err) || retry.IsTemporaryError(err) {
-					return nil, err
-				}
-
-				return nil, retry.Permanent(err)
-			}
-
-			httpRes, err := s.sdkConfiguration.Client.Do(req)
-			if err != nil || httpRes == nil {
-				if err != nil {
-					err = fmt.Errorf("error sending request: %w", err)
-				} else {
-					err = fmt.Errorf("error sending request: no response")
-				}
-
-				_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			}
-			return httpRes, err
-		})
-
-		if err != nil {
-			return nil, err
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	} else {
-		req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-		if err != nil {
-			return nil, err
-		}
-
-		httpRes, err = s.sdkConfiguration.Client.Do(req)
-		if err != nil || httpRes == nil {
-			if err != nil {
-				err = fmt.Errorf("error sending request: %w", err)
-			} else {
-				err = fmt.Errorf("error sending request: no response")
-			}
-
-			_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			return nil, err
-		} else if utils.MatchStatusCodes([]string{"4XX", "5XX"}, httpRes.StatusCode) {
-			_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
-			if err != nil {
-				return nil, err
-			} else if _httpRes != nil {
-				httpRes = _httpRes
-			}
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
-
-	res := &operations.WorkspacesPoliciesActionsCreateResponse{
-		HTTPMeta: components.HTTPMetadata{
-			Request:  req,
-			Response: httpRes,
-		},
-	}
-
-	switch {
-	case httpRes.StatusCode == 201:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out components.PolicyAction
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.PolicyAction = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, apierrors.NewAPIError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 422:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out apierrors.ErrorDetail
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			out.HTTPMeta = components.HTTPMetadata{
-				Request:  req,
-				Response: httpRes,
-			}
-			return nil, &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, apierrors.NewAPIError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	case httpRes.StatusCode >= 500 && httpRes.StatusCode < 600:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	default:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
-	}
-
-	return res, nil
-
-}
-
-// WorkspacesPoliciesActionsRetrieve - Retrieve an action for a policy.
-func (s *Workspaces) WorkspacesPoliciesActionsRetrieve(ctx context.Context, action string, policy string, workspace string, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsRetrieveResponse, error) {
-	request := operations.WorkspacesPoliciesActionsRetrieveRequest{
-		Action:    action,
-		Policy:    policy,
-		Workspace: workspace,
-	}
-
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionRetries,
-		operations.SupportedOptionTimeout,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-
-	var baseURL string
-	if o.ServerURL == nil {
-		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	} else {
-		baseURL = *o.ServerURL
-	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/workspaces/{workspace}/policies/{policy}/actions/{action}/", request, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error generating URL: %w", err)
-	}
-
-	hookCtx := hooks.HookContext{
-		SDK:              s.rootSDK,
-		SDKConfiguration: s.sdkConfiguration,
-		BaseURL:          baseURL,
-		Context:          ctx,
-		OperationID:      "workspaces_policies_actions_retrieve",
-		SecuritySource:   s.sdkConfiguration.Security,
-	}
-
-	timeout := o.Timeout
-	if timeout == nil {
-		timeout = s.sdkConfiguration.Timeout
-	}
-
-	if timeout != nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, *timeout)
-		defer cancel()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error creating request: %w", err)
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
-		return nil, err
-	}
-
-	for k, v := range o.SetHeaders {
-		req.Header.Set(k, v)
-	}
-
-	globalRetryConfig := s.sdkConfiguration.RetryConfig
-	retryConfig := o.Retries
-	if retryConfig == nil {
-		if globalRetryConfig != nil {
-			retryConfig = globalRetryConfig
-		} else {
-			retryConfig = &retry.Config{
-				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 1000,
-					MaxInterval:     30000,
-					Exponent:        2,
-					MaxElapsedTime:  60000,
-				},
-				RetryConnectionErrors: true,
-			}
-		}
-	}
-
-	var httpRes *http.Response
-	if retryConfig != nil {
-		httpRes, err = utils.Retry(ctx, utils.Retries{
-			Config: retryConfig,
-			StatusCodes: []string{
-				"429",
-				"5XX",
-			},
-		}, func() (*http.Response, error) {
-			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
-				copyBody, err := req.GetBody()
-
-				if err != nil {
-					return nil, err
-				}
-
-				req.Body = copyBody
-			}
-
-			req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-			if err != nil {
-				if retry.IsPermanentError(err) || retry.IsTemporaryError(err) {
-					return nil, err
-				}
-
-				return nil, retry.Permanent(err)
-			}
-
-			httpRes, err := s.sdkConfiguration.Client.Do(req)
-			if err != nil || httpRes == nil {
-				if err != nil {
-					err = fmt.Errorf("error sending request: %w", err)
-				} else {
-					err = fmt.Errorf("error sending request: no response")
-				}
-
-				_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			}
-			return httpRes, err
-		})
-
-		if err != nil {
-			return nil, err
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	} else {
-		req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-		if err != nil {
-			return nil, err
-		}
-
-		httpRes, err = s.sdkConfiguration.Client.Do(req)
-		if err != nil || httpRes == nil {
-			if err != nil {
-				err = fmt.Errorf("error sending request: %w", err)
-			} else {
-				err = fmt.Errorf("error sending request: no response")
-			}
-
-			_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-			return nil, err
-		} else if utils.MatchStatusCodes([]string{"4XX", "5XX"}, httpRes.StatusCode) {
-			_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
-			if err != nil {
-				return nil, err
-			} else if _httpRes != nil {
-				httpRes = _httpRes
-			}
-		} else {
-			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
-
-	res := &operations.WorkspacesPoliciesActionsRetrieveResponse{
-		HTTPMeta: components.HTTPMetadata{
-			Request:  req,
-			Response: httpRes,
-		},
-	}
-
-	switch {
-	case httpRes.StatusCode == 200:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out components.PolicyAction
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.PolicyAction = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, apierrors.NewAPIError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	case httpRes.StatusCode >= 500 && httpRes.StatusCode < 600:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
-	default:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, apierrors.NewAPIError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
-	}
-
-	return res, nil
-
-}
-
-// WorkspacesPoliciesActionsUpdate - Update an action for a policy.
-func (s *Workspaces) WorkspacesPoliciesActionsUpdate(ctx context.Context, action string, policy string, workspace string, body *components.PolicyActionRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsUpdateResponse, error) {
+// UpdatePolicyAction - Update an action for a policy.
+func (s *Workspaces) UpdatePolicyAction(ctx context.Context, action string, policy string, workspace string, body *components.PolicyActionRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsUpdateResponse, error) {
 	request := operations.WorkspacesPoliciesActionsUpdateRequest{
 		Action:    action,
 		Policy:    policy,
@@ -2355,8 +1411,8 @@ func (s *Workspaces) WorkspacesPoliciesActionsUpdate(ctx context.Context, action
 
 }
 
-// WorkspacesPoliciesActionsPartialUpdate - Partially update an action for a policy.
-func (s *Workspaces) WorkspacesPoliciesActionsPartialUpdate(ctx context.Context, action string, policy string, workspace string, body *components.PatchedPolicyAction, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsPartialUpdateResponse, error) {
+// PatchPolicyAction - Partially update an action for a policy.
+func (s *Workspaces) PatchPolicyAction(ctx context.Context, action string, policy string, workspace string, body *components.PatchedPolicyAction, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsPartialUpdateResponse, error) {
 	request := operations.WorkspacesPoliciesActionsPartialUpdateRequest{
 		Action:    action,
 		Policy:    policy,
@@ -2580,8 +1636,8 @@ func (s *Workspaces) WorkspacesPoliciesActionsPartialUpdate(ctx context.Context,
 
 }
 
-// WorkspacesPoliciesActionsDestroy - Delete an action for a policy.
-func (s *Workspaces) WorkspacesPoliciesActionsDestroy(ctx context.Context, action string, policy string, workspace string, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsDestroyResponse, error) {
+// DeletePolicyAction - Delete an action for a policy.
+func (s *Workspaces) DeletePolicyAction(ctx context.Context, action string, policy string, workspace string, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsDestroyResponse, error) {
 	request := operations.WorkspacesPoliciesActionsDestroyRequest{
 		Action:    action,
 		Policy:    policy,
@@ -2778,7 +1834,7 @@ func (s *Workspaces) WorkspacesPoliciesActionsDestroy(ctx context.Context, actio
 
 }
 
-// WorkspacesPoliciesSimulateList - Simulates the execution of a Policy to verify its behavior without taking any actions.
+// SimulatePolicy - Simulates the execution of a Policy to verify its behavior without taking any actions.
 //
 // Before using this endpoint, the Policy to simulate must be created with the creation endpoint. To experiment
 // with the policy, it is recommended to create the policy with disabled=True, so that it does not take effect
@@ -2790,7 +1846,7 @@ func (s *Workspaces) WorkspacesPoliciesActionsDestroy(ctx context.Context, actio
 // - Output from the user-defined Rego policy.
 //
 // No actions associated with the policy are executed. Instead, the endpoint reports what would happen to each package if the policy were active.
-func (s *Workspaces) WorkspacesPoliciesSimulateList(ctx context.Context, request operations.WorkspacesPoliciesSimulateListRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesSimulateListResponse, error) {
+func (s *Workspaces) SimulatePolicy(ctx context.Context, request operations.WorkspacesPoliciesSimulateListRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesSimulateListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2993,7 +2049,7 @@ func (s *Workspaces) WorkspacesPoliciesSimulateList(ctx context.Context, request
 		}
 		request.Page = nP
 
-		return s.WorkspacesPoliciesSimulateList(
+		return s.SimulatePolicy(
 			ctx,
 			request,
 			opts...,
@@ -3046,8 +2102,8 @@ func (s *Workspaces) WorkspacesPoliciesSimulateList(ctx context.Context, request
 
 }
 
-// WorkspacesPoliciesDecisionLogsV1List - List policy evaluation decision logs.
-func (s *Workspaces) WorkspacesPoliciesDecisionLogsV1List(ctx context.Context, request operations.WorkspacesPoliciesDecisionLogsV1ListRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesDecisionLogsV1ListResponse, error) {
+// GetPoliciesDecisionLogsV1 - List policy evaluation decision logs.
+func (s *Workspaces) GetPoliciesDecisionLogsV1(ctx context.Context, request operations.WorkspacesPoliciesDecisionLogsV1ListRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesDecisionLogsV1ListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -3250,7 +2306,7 @@ func (s *Workspaces) WorkspacesPoliciesDecisionLogsV1List(ctx context.Context, r
 		}
 		request.Page = nP
 
-		return s.WorkspacesPoliciesDecisionLogsV1List(
+		return s.GetPoliciesDecisionLogsV1(
 			ctx,
 			request,
 			opts...,
@@ -3336,8 +2392,8 @@ func (s *Workspaces) WorkspacesPoliciesDecisionLogsV1List(ctx context.Context, r
 
 }
 
-// WorkspacesPoliciesDecisionLogsV1Retrieve - Retrieve the full decision log JSON from S3.
-func (s *Workspaces) WorkspacesPoliciesDecisionLogsV1Retrieve(ctx context.Context, decisionLogID string, workspace string, fields *string, opts ...operations.Option) (*operations.WorkspacesPoliciesDecisionLogsV1RetrieveResponse, error) {
+// GetDecisionLog - Retrieve the full decision log JSON from S3.
+func (s *Workspaces) GetDecisionLog(ctx context.Context, decisionLogID string, workspace string, fields *string, opts ...operations.Option) (*operations.WorkspacesPoliciesDecisionLogsV1RetrieveResponse, error) {
 	request := operations.WorkspacesPoliciesDecisionLogsV1RetrieveRequest{
 		DecisionLogID: decisionLogID,
 		Workspace:     workspace,
@@ -3557,12 +2613,12 @@ func (s *Workspaces) WorkspacesPoliciesDecisionLogsV1Retrieve(ctx context.Contex
 
 }
 
-// WorkspacesPoliciesDecisionLogsV1FacetsList - Internal endpoint that returns counts of policy decision logs grouped by a
+// GetDecisionLogFacets - Internal endpoint that returns counts of policy decision logs grouped by a
 // single dimension. Used to populate the Policy Decision Logs filter dropdowns in
 // the web app with the full set of entities that had activity in the timeframe.
 //
 // Excluded from the public OpenAPI spec in prd; visible in dev/stg.
-func (s *Workspaces) WorkspacesPoliciesDecisionLogsV1FacetsList(ctx context.Context, request operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesDecisionLogsV1FacetsListResponse, error) {
+func (s *Workspaces) GetDecisionLogFacets(ctx context.Context, request operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest, opts ...operations.Option) (*operations.WorkspacesPoliciesDecisionLogsV1FacetsListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,

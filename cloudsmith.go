@@ -3,7 +3,7 @@
 
 package cloudsmith
 
-// Generated from OpenAPI doc version dev (v2) and generator version 2.884.4
+// Generated from OpenAPI doc version dev (v2) and generator version 2.918.4
 
 import (
 	"context"
@@ -52,14 +52,16 @@ func Pointer[T any](v T) *T { return &v }
 //
 // https://help.cloudsmith.io/reference/introduction - Cloudsmith API Reference
 type Cloudsmith struct {
-	SDKVersion      string
-	Analytics       *Analytics
-	Metadata        *Metadata
-	Packages        *Packages
-	User            *User
-	Vulnerabilities *Vulnerabilities
-	Workspaces      *Workspaces
-	Experimental    *Experimental
+	SDKVersion           string
+	Analytics            *Analytics
+	Metadata             *Metadata
+	Packages             *Packages
+	User                 *User
+	Vulnerabilities      *Vulnerabilities
+	Workspaces           *Workspaces
+	ExperimentalFiles    *ExperimentalFiles
+	Experimental         *Experimental
+	ExperimentalPackages *ExperimentalPackages1
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -136,9 +138,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Cloudsmith {
 	sdk := &Cloudsmith{
-		SDKVersion: "1.2.0",
+		SDKVersion: "1.3.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/go 1.2.0 2.884.4 dev (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
+			UserAgent:  "speakeasy-sdk/go 1.3.0 2.918.4 dev (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -165,7 +167,9 @@ func New(opts ...SDKOption) *Cloudsmith {
 	sdk.User = newUser(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Vulnerabilities = newVulnerabilities(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Workspaces = newWorkspaces(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ExperimentalFiles = newExperimentalFiles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Experimental = newExperimental(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ExperimentalPackages = newExperimentalPackages1(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

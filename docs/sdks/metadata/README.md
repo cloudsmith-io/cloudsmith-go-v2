@@ -4,14 +4,14 @@
 
 ### Available Operations
 
-* [MetadataPackagesList](#metadatapackageslist) - List metadata for a package
-* [MetadataPackagesCreate](#metadatapackagescreate) - Attach metadata to a package
-* [MetadataPackagesRetrieve](#metadatapackagesretrieve) - Retrieve a package metadata entry
-* [MetadataPackagesPartialUpdate](#metadatapackagespartialupdate) - Update a package metadata entry
-* [MetadataPackagesDestroy](#metadatapackagesdestroy) - Delete a package metadata entry
-* [MetadataValidateCreate](#metadatavalidatecreate) - Validate a metadata payload
+* [ListPackages](#listpackages) - List metadata for a package
+* [CreatePackages](#createpackages) - Attach metadata to a package
+* [GetPackage](#getpackage) - Retrieve a package metadata entry
+* [UpdatePackage](#updatepackage) - Update a package metadata entry
+* [DeletePackage](#deletepackage) - Delete a package metadata entry
+* [ValidatePayload](#validatepayload) - Validate a metadata payload
 
-## MetadataPackagesList
+## ListPackages
 
 List all metadata entries for a package.
 
@@ -35,7 +35,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
+    res, err := s.Metadata.ListPackages(ctx, operations.MetadataPackagesListRequest{
         PackageSlugPerm: "<value>",
         Page: 430521,
     })
@@ -79,7 +79,7 @@ func main() {
 | apierrors.ErrorDetail | 401, 403, 404, 422    | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## MetadataPackagesCreate
+## CreatePackages
 
 Attach arbitrary metadata to a package.
 
@@ -103,7 +103,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Metadata.MetadataPackagesCreate(ctx, "<value>", components.ArtifactMetadataWrite{
+    res, err := s.Metadata.CreatePackages(ctx, "<value>", components.ArtifactMetadataWrite{
         Content: map[string]any{
             "key": "<value>",
             "key1": "<value>",
@@ -140,7 +140,7 @@ func main() {
 | apierrors.ErrorDetail   | 401, 402, 403, 404, 422 | application/json        |
 | apierrors.APIError      | 4XX, 5XX                | \*/\*                   |
 
-## MetadataPackagesRetrieve
+## GetPackage
 
 Retrieve a specific metadata entry for a package.
 
@@ -163,7 +163,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Metadata.MetadataPackagesRetrieve(ctx, "<value>", "<value>")
+    res, err := s.Metadata.GetPackage(ctx, "<value>", "<value>")
     if err != nil {
         log.Fatal(err)
     }
@@ -193,7 +193,7 @@ func main() {
 | apierrors.ErrorDetail | 401, 403, 404         | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## MetadataPackagesPartialUpdate
+## UpdatePackage
 
 Edit a specific metadata entry for a package.
 
@@ -216,7 +216,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Metadata.MetadataPackagesPartialUpdate(ctx, "<value>", "<value>", nil)
+    res, err := s.Metadata.UpdatePackage(ctx, "<value>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -247,7 +247,7 @@ func main() {
 | apierrors.ErrorDetail   | 401, 402, 403, 404, 422 | application/json        |
 | apierrors.APIError      | 4XX, 5XX                | \*/\*                   |
 
-## MetadataPackagesDestroy
+## DeletePackage
 
 Remove a specific metadata entry from a package.
 
@@ -270,7 +270,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Metadata.MetadataPackagesDestroy(ctx, "<value>", "<value>")
+    res, err := s.Metadata.DeletePackage(ctx, "<value>", "<value>")
     if err != nil {
         log.Fatal(err)
     }
@@ -300,7 +300,7 @@ func main() {
 | apierrors.ErrorDetail | 401, 402, 403, 404    | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## MetadataValidateCreate
+## ValidatePayload
 
 Validate a metadata payload against the JSON schema for its ``content_type`` without persisting it. Returns 200 on success and 422 on validation failure, with the same field-level error shape as the create endpoint.
 
@@ -324,7 +324,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Metadata.MetadataValidateCreate(ctx, components.ArtifactMetadataValidate{
+    res, err := s.Metadata.ValidatePayload(ctx, components.ArtifactMetadataValidate{
         Content: map[string]any{
             "key": "<value>",
             "key1": "<value>",

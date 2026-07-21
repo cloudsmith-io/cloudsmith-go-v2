@@ -4,19 +4,15 @@
 
 ### Available Operations
 
-* [WorkspacesPoliciesList](#workspacespolicieslist) - List policies.
-* [WorkspacesPoliciesCreate](#workspacespoliciescreate) - Create a policy.
-* [WorkspacesPoliciesRetrieve](#workspacespoliciesretrieve) - Retrieve a policy.
-* [WorkspacesPoliciesUpdate](#workspacespoliciesupdate) - Update a policy.
-* [WorkspacesPoliciesPartialUpdate](#workspacespoliciespartialupdate) - Partially update a policy.
-* [WorkspacesPoliciesDestroy](#workspacespoliciesdestroy) - Delete a policy.
-* [WorkspacesPoliciesActionsList](#workspacespoliciesactionslist) - List all actions for the policy.
-* [WorkspacesPoliciesActionsCreate](#workspacespoliciesactionscreate) - Create an action for a policy.
-* [WorkspacesPoliciesActionsRetrieve](#workspacespoliciesactionsretrieve) - Retrieve an action for a policy.
-* [WorkspacesPoliciesActionsUpdate](#workspacespoliciesactionsupdate) - Update an action for a policy.
-* [WorkspacesPoliciesActionsPartialUpdate](#workspacespoliciesactionspartialupdate) - Partially update an action for a policy.
-* [WorkspacesPoliciesActionsDestroy](#workspacespoliciesactionsdestroy) - Delete an action for a policy.
-* [WorkspacesPoliciesSimulateList](#workspacespoliciessimulatelist) - Simulates the execution of a Policy to verify its behavior without taking any actions.
+* [CreatePolicy](#createpolicy) - Create a policy.
+* [RetrievePolicy](#retrievepolicy) - Retrieve a policy.
+* [UpdatePolicy](#updatepolicy) - Update a policy.
+* [DeletePolicy](#deletepolicy) - Delete a policy.
+* [GetPolicyActions](#getpolicyactions) - List all actions for the policy.
+* [UpdatePolicyAction](#updatepolicyaction) - Update an action for a policy.
+* [PatchPolicyAction](#patchpolicyaction) - Partially update an action for a policy.
+* [DeletePolicyAction](#deletepolicyaction) - Delete an action for a policy.
+* [SimulatePolicy](#simulatepolicy) - Simulates the execution of a Policy to verify its behavior without taking any actions.
 
 Before using this endpoint, the Policy to simulate must be created with the creation endpoint. To experiment
 with the policy, it is recommended to create the policy with disabled=True, so that it does not take effect
@@ -28,128 +24,15 @@ Each log contains:
 - Output from the user-defined Rego policy.
 
 No actions associated with the policy are executed. Instead, the endpoint reports what would happen to each package if the policy were active.
-* [WorkspacesPoliciesDecisionLogsV1List](#workspacespoliciesdecisionlogsv1list) - List policy evaluation decision logs.
-* [WorkspacesPoliciesDecisionLogsV1Retrieve](#workspacespoliciesdecisionlogsv1retrieve) - Retrieve the full decision log JSON from S3.
-* [WorkspacesPoliciesDecisionLogsV1FacetsList](#workspacespoliciesdecisionlogsv1facetslist) - Internal endpoint that returns counts of policy decision logs grouped by a
+* [GetPoliciesDecisionLogsV1](#getpoliciesdecisionlogsv1) - List policy evaluation decision logs.
+* [GetDecisionLog](#getdecisionlog) - Retrieve the full decision log JSON from S3.
+* [GetDecisionLogFacets](#getdecisionlogfacets) - Internal endpoint that returns counts of policy decision logs grouped by a
 single dimension. Used to populate the Policy Decision Logs filter dropdowns in
 the web app with the full set of entities that had activity in the timeframe.
 
 Excluded from the public OpenAPI spec in prd; visible in dev/stg.
 
-## WorkspacesPoliciesList
-
-List policies.
-
-### Example Usage: PoliciesNamedFooOrBar
-
-<!-- UsageSnippet language="go" operationID="workspaces_policies_list" method="get" path="/workspaces/{workspace}/policies/" example="PoliciesNamedFooOrBar" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Workspaces.WorkspacesPoliciesList(ctx, operations.WorkspacesPoliciesListRequest{
-        Page: 694333,
-        Query: cloudsmith.Pointer("name: foo OR name: bar"),
-        Workspace: "<value>",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PaginatedPolicyList != nil {
-        for {
-            // handle items
-
-            res, err = res.Next()
-
-            if err != nil {
-                // handle error
-            }
-
-            if res == nil {
-                break
-            }
-        }
-    }
-}
-```
-### Example Usage: `version`Descending,`updatedAt`Ascending
-
-<!-- UsageSnippet language="go" operationID="workspaces_policies_list" method="get" path="/workspaces/{workspace}/policies/" example="`version`Descending,`updatedAt`Ascending" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Workspaces.WorkspacesPoliciesList(ctx, operations.WorkspacesPoliciesListRequest{
-        Page: 475392,
-        Sort: cloudsmith.Pointer("-version,updated_at"),
-        Workspace: "<value>",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PaginatedPolicyList != nil {
-        for {
-            // handle items
-
-            res, err = res.Next()
-
-            if err != nil {
-                // handle error
-            }
-
-            if res == nil {
-                break
-            }
-        }
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                                                            | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                                | [context.Context](https://pkg.go.dev/context#Context)                                                | :heavy_check_mark:                                                                                   | The context to use for the request.                                                                  |
-| `request`                                                                                            | [operations.WorkspacesPoliciesListRequest](../../models/operations/workspacespolicieslistrequest.md) | :heavy_check_mark:                                                                                   | The request object to use for the request.                                                           |
-| `opts`                                                                                               | [][operations.Option](../../models/operations/option.md)                                             | :heavy_minus_sign:                                                                                   | The options for this request.                                                                        |
-
-### Response
-
-**[*operations.WorkspacesPoliciesListResponse](../../models/operations/workspacespolicieslistresponse.md), error**
-
-### Errors
-
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| apierrors.APIError | 4XX, 5XX           | \*/\*              |
-
-## WorkspacesPoliciesCreate
+## CreatePolicy
 
 Create a policy.
 
@@ -173,7 +56,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesCreate(ctx, "<value>", components.PolicyRequest{
+    res, err := s.Workspaces.CreatePolicy(ctx, "<value>", components.PolicyRequest{
         Name: "<value>",
         Rego: "<value>",
     })
@@ -206,7 +89,7 @@ func main() {
 | apierrors.ErrorDetail | 422                   | application/json      |
 | apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
 
-## WorkspacesPoliciesRetrieve
+## RetrievePolicy
 
 Retrieve a policy.
 
@@ -229,7 +112,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesRetrieve(ctx, "<value>", "<value>")
+    res, err := s.Workspaces.RetrievePolicy(ctx, "<value>", "<value>")
     if err != nil {
         log.Fatal(err)
     }
@@ -258,7 +141,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesUpdate
+## UpdatePolicy
 
 Update a policy.
 
@@ -282,7 +165,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesUpdate(ctx, "<value>", "<value>", components.PolicyRequest{
+    res, err := s.Workspaces.UpdatePolicy(ctx, "<value>", "<value>", components.PolicyRequest{
         Name: "<value>",
         Rego: "<value>",
     })
@@ -315,60 +198,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesPartialUpdate
-
-Partially update a policy.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_policies_partial_update" method="patch" path="/workspaces/{workspace}/policies/{policy}/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Workspaces.WorkspacesPoliciesPartialUpdate(ctx, "<value>", "<value>", nil)
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.Policy != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                             | Type                                                                  | Required                                                              | Description                                                           |
-| --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `ctx`                                                                 | [context.Context](https://pkg.go.dev/context#Context)                 | :heavy_check_mark:                                                    | The context to use for the request.                                   |
-| `policy`                                                              | `string`                                                              | :heavy_check_mark:                                                    | The `slug_perm` (identifier) of the Policy.                           |
-| `workspace`                                                           | `string`                                                              | :heavy_check_mark:                                                    | The `name` of the Workspace.                                          |
-| `body`                                                                | [*components.PatchedPolicy](../../models/components/patchedpolicy.md) | :heavy_minus_sign:                                                    | N/A                                                                   |
-| `opts`                                                                | [][operations.Option](../../models/operations/option.md)              | :heavy_minus_sign:                                                    | The options for this request.                                         |
-
-### Response
-
-**[*operations.WorkspacesPoliciesPartialUpdateResponse](../../models/operations/workspacespoliciespartialupdateresponse.md), error**
-
-### Errors
-
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| apierrors.APIError | 4XX, 5XX           | \*/\*              |
-
-## WorkspacesPoliciesDestroy
+## DeletePolicy
 
 Delete a policy.
 
@@ -391,7 +221,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesDestroy(ctx, "<value>", "<value>")
+    res, err := s.Workspaces.DeletePolicy(ctx, "<value>", "<value>")
     if err != nil {
         log.Fatal(err)
     }
@@ -420,7 +250,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesActionsList
+## GetPolicyActions
 
 List all actions for the policy.
 
@@ -443,7 +273,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesActionsList(ctx, 452996, "<value>", "<value>", nil)
+    res, err := s.Workspaces.GetPolicyActions(ctx, 452996, "<value>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -486,136 +316,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesActionsCreate
-
-Create an action for a policy.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_policies_actions_create" method="post" path="/workspaces/{workspace}/policies/{policy}/actions/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"log"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Workspaces.WorkspacesPoliciesActionsCreate(ctx, "<value>", "<value>", nil)
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PolicyAction != nil {
-        switch res.PolicyAction.Type {
-            case components.PolicyActionTypeSetPackageState:
-                // res.PolicyAction.SetPackageStatePolicyActionTyped is populated
-            case components.PolicyActionTypeAddPackageTags:
-                // res.PolicyAction.AddPackageTagsPolicyActionTyped is populated
-            case components.PolicyActionTypeRemovePackageTags:
-                // res.PolicyAction.RemovePackageTagsPolicyActionTyped is populated
-            default:
-                // Unknown type - use res.PolicyAction.GetUnknownRaw() for raw JSON
-        }
-
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                                         | Type                                                                              | Required                                                                          | Description                                                                       |
-| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `ctx`                                                                             | [context.Context](https://pkg.go.dev/context#Context)                             | :heavy_check_mark:                                                                | The context to use for the request.                                               |
-| `policy`                                                                          | `string`                                                                          | :heavy_check_mark:                                                                | The `slug_perm` (identifier) of the Policy.                                       |
-| `workspace`                                                                       | `string`                                                                          | :heavy_check_mark:                                                                | The `name` of the Workspace.                                                      |
-| `body`                                                                            | [*components.PolicyActionRequest](../../models/components/policyactionrequest.md) | :heavy_minus_sign:                                                                | N/A                                                                               |
-| `opts`                                                                            | [][operations.Option](../../models/operations/option.md)                          | :heavy_minus_sign:                                                                | The options for this request.                                                     |
-
-### Response
-
-**[*operations.WorkspacesPoliciesActionsCreateResponse](../../models/operations/workspacespoliciesactionscreateresponse.md), error**
-
-### Errors
-
-| Error Type            | Status Code           | Content Type          |
-| --------------------- | --------------------- | --------------------- |
-| apierrors.ErrorDetail | 422                   | application/json      |
-| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
-
-## WorkspacesPoliciesActionsRetrieve
-
-Retrieve an action for a policy.
-
-### Example Usage
-
-<!-- UsageSnippet language="go" operationID="workspaces_policies_actions_retrieve" method="get" path="/workspaces/{workspace}/policies/{policy}/actions/{action}/" -->
-```go
-package main
-
-import(
-	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
-	"log"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
-    )
-
-    res, err := s.Workspaces.WorkspacesPoliciesActionsRetrieve(ctx, "<value>", "<value>", "<value>")
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res.PolicyAction != nil {
-        switch res.PolicyAction.Type {
-            case components.PolicyActionTypeSetPackageState:
-                // res.PolicyAction.SetPackageStatePolicyActionTyped is populated
-            case components.PolicyActionTypeAddPackageTags:
-                // res.PolicyAction.AddPackageTagsPolicyActionTyped is populated
-            case components.PolicyActionTypeRemovePackageTags:
-                // res.PolicyAction.RemovePackageTagsPolicyActionTyped is populated
-            default:
-                // Unknown type - use res.PolicyAction.GetUnknownRaw() for raw JSON
-        }
-
-    }
-}
-```
-
-### Parameters
-
-| Parameter                                                | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `action`                                                 | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the Action.              |
-| `policy`                                                 | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the Policy.              |
-| `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `name` of the Workspace.                             |
-| `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
-
-### Response
-
-**[*operations.WorkspacesPoliciesActionsRetrieveResponse](../../models/operations/workspacespoliciesactionsretrieveresponse.md), error**
-
-### Errors
-
-| Error Type         | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| apierrors.APIError | 4XX, 5XX           | \*/\*              |
-
-## WorkspacesPoliciesActionsUpdate
+## UpdatePolicyAction
 
 Update an action for a policy.
 
@@ -639,7 +340,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesActionsUpdate(ctx, "<value>", "<value>", "<value>", nil)
+    res, err := s.Workspaces.UpdatePolicyAction(ctx, "<value>", "<value>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -680,7 +381,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesActionsPartialUpdate
+## PatchPolicyAction
 
 Partially update an action for a policy.
 
@@ -704,7 +405,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesActionsPartialUpdate(ctx, "<value>", "<value>", "<value>", nil)
+    res, err := s.Workspaces.PatchPolicyAction(ctx, "<value>", "<value>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -745,7 +446,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesActionsDestroy
+## DeletePolicyAction
 
 Delete an action for a policy.
 
@@ -768,7 +469,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesActionsDestroy(ctx, "<value>", "<value>", "<value>")
+    res, err := s.Workspaces.DeletePolicyAction(ctx, "<value>", "<value>", "<value>")
     if err != nil {
         log.Fatal(err)
     }
@@ -798,7 +499,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesSimulateList
+## SimulatePolicy
 
 Simulates the execution of a Policy to verify its behavior without taking any actions.
 
@@ -833,7 +534,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesSimulateList(ctx, operations.WorkspacesPoliciesSimulateListRequest{
+    res, err := s.Workspaces.SimulatePolicy(ctx, operations.WorkspacesPoliciesSimulateListRequest{
         Page: 439618,
         Policy: "<value>",
         Workspace: "<value>",
@@ -877,7 +578,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesDecisionLogsV1List
+## GetPoliciesDecisionLogsV1
 
 List policy evaluation decision logs.
 
@@ -902,7 +603,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1List(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
+    res, err := s.Workspaces.GetPoliciesDecisionLogsV1(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
         CreatedAfter: types.MustTimeFromString("2024-11-12T13:20:12.290Z"),
         Page: 583225,
         Sort: cloudsmith.Pointer("id"),
@@ -949,7 +650,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1List(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
+    res, err := s.Workspaces.GetPoliciesDecisionLogsV1(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
         CreatedAfter: types.MustTimeFromString("2025-02-17T14:08:57.543Z"),
         Page: 377363,
         Workspace: "<value>",
@@ -994,7 +695,7 @@ func main() {
 | apierrors.ErrorDetail   | 400, 401, 403, 404, 422 | application/json        |
 | apierrors.APIError      | 4XX, 5XX                | \*/\*                   |
 
-## WorkspacesPoliciesDecisionLogsV1Retrieve
+## GetDecisionLog
 
 Retrieve the full decision log JSON from S3.
 
@@ -1017,7 +718,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1Retrieve(ctx, "<id>", "<value>", nil)
+    res, err := s.Workspaces.GetDecisionLog(ctx, "<id>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -1047,7 +748,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## WorkspacesPoliciesDecisionLogsV1FacetsList
+## GetDecisionLogFacets
 
 Internal endpoint that returns counts of policy decision logs grouped by a
 single dimension. Used to populate the Policy Decision Logs filter dropdowns in
@@ -1077,7 +778,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Workspaces.WorkspacesPoliciesDecisionLogsV1FacetsList(ctx, operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest{
+    res, err := s.Workspaces.GetDecisionLogFacets(ctx, operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest{
         CreatedAfter: types.MustTimeFromString("2026-07-12T18:06:56.305Z"),
         GroupBy: operations.GroupByRepository,
         Workspace: "<value>",

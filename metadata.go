@@ -33,9 +33,9 @@ func newMetadata(rootSDK *Cloudsmith, sdkConfig config.SDKConfiguration, hooks *
 	}
 }
 
-// MetadataPackagesList - List metadata for a package
+// ListPackages - List metadata for a package
 // List all metadata entries for a package.
-func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.MetadataPackagesListRequest, opts ...operations.Option) (*operations.MetadataPackagesListResponse, error) {
+func (s *Metadata) ListPackages(ctx context.Context, request operations.MetadataPackagesListRequest, opts ...operations.Option) (*operations.MetadataPackagesListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -238,7 +238,7 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 		}
 		request.Page = nP
 
-		return s.MetadataPackagesList(
+		return s.ListPackages(
 			ctx,
 			request,
 			opts...,
@@ -322,9 +322,9 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 
 }
 
-// MetadataPackagesCreate - Attach metadata to a package
+// CreatePackages - Attach metadata to a package
 // Attach arbitrary metadata to a package.
-func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
+func (s *Metadata) CreatePackages(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
 	request := operations.MetadataPackagesCreateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		Body:            body,
@@ -579,9 +579,9 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 
 }
 
-// MetadataPackagesRetrieve - Retrieve a package metadata entry
+// GetPackage - Retrieve a package metadata entry
 // Retrieve a specific metadata entry for a package.
-func (s *Metadata) MetadataPackagesRetrieve(ctx context.Context, packageSlugPerm string, slugPerm string, opts ...operations.Option) (*operations.MetadataPackagesRetrieveResponse, error) {
+func (s *Metadata) GetPackage(ctx context.Context, packageSlugPerm string, slugPerm string, opts ...operations.Option) (*operations.MetadataPackagesRetrieveResponse, error) {
 	request := operations.MetadataPackagesRetrieveRequest{
 		PackageSlugPerm: packageSlugPerm,
 		SlugPerm:        slugPerm,
@@ -825,9 +825,9 @@ func (s *Metadata) MetadataPackagesRetrieve(ctx context.Context, packageSlugPerm
 
 }
 
-// MetadataPackagesPartialUpdate - Update a package metadata entry
+// UpdatePackage - Update a package metadata entry
 // Edit a specific metadata entry for a package.
-func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlugPerm string, slugPerm string, body *components.PatchedArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesPartialUpdateResponse, error) {
+func (s *Metadata) UpdatePackage(ctx context.Context, packageSlugPerm string, slugPerm string, body *components.PatchedArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesPartialUpdateResponse, error) {
 	request := operations.MetadataPackagesPartialUpdateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		SlugPerm:        slugPerm,
@@ -1083,9 +1083,9 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 
 }
 
-// MetadataPackagesDestroy - Delete a package metadata entry
+// DeletePackage - Delete a package metadata entry
 // Remove a specific metadata entry from a package.
-func (s *Metadata) MetadataPackagesDestroy(ctx context.Context, packageSlugPerm string, slugPerm string, opts ...operations.Option) (*operations.MetadataPackagesDestroyResponse, error) {
+func (s *Metadata) DeletePackage(ctx context.Context, packageSlugPerm string, slugPerm string, opts ...operations.Option) (*operations.MetadataPackagesDestroyResponse, error) {
 	request := operations.MetadataPackagesDestroyRequest{
 		PackageSlugPerm: packageSlugPerm,
 		SlugPerm:        slugPerm,
@@ -1312,9 +1312,9 @@ func (s *Metadata) MetadataPackagesDestroy(ctx context.Context, packageSlugPerm 
 
 }
 
-// MetadataValidateCreate - Validate a metadata payload
+// ValidatePayload - Validate a metadata payload
 // Validate a metadata payload against the JSON schema for its “content_type“ without persisting it. Returns 200 on success and 422 on validation failure, with the same field-level error shape as the create endpoint.
-func (s *Metadata) MetadataValidateCreate(ctx context.Context, request components.ArtifactMetadataValidate, opts ...operations.Option) (*operations.MetadataValidateCreateResponse, error) {
+func (s *Metadata) ValidatePayload(ctx context.Context, request components.ArtifactMetadataValidate, opts ...operations.Option) (*operations.MetadataValidateCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,

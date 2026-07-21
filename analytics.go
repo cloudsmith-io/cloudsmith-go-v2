@@ -32,12 +32,13 @@ func newAnalytics(rootSDK *Cloudsmith, sdkConfig config.SDKConfiguration, hooks 
 	}
 }
 
-// AnalyticsLogsClientList - Returns individual log-level records of client downloads, including bandwidth in bytes. Available for _Manager_ or _Owner_ level users only. All times in UTC.
-func (s *Analytics) AnalyticsLogsClientList(ctx context.Context, request operations.AnalyticsLogsClientListRequest, opts ...operations.Option) (*operations.AnalyticsLogsClientListResponse, error) {
+// GetClientLogs - Returns individual log-level records of client downloads, including bandwidth in bytes. Available for _Manager_ or _Owner_ level users only. All times in UTC.
+func (s *Analytics) GetClientLogs(ctx context.Context, request operations.AnalyticsLogsClientListRequest, opts ...operations.Option) (*operations.AnalyticsLogsClientListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
+		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
 	for _, opt := range opts {
@@ -81,7 +82,12 @@ func (s *Analytics) AnalyticsLogsClientList(ctx context.Context, request operati
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Accept", "application/json")
+	if o.AcceptHeaderOverride != nil {
+		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
+	} else {
+		req.Header.Set("Accept", "application/json;q=1, text/csv;q=0")
+	}
+
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
@@ -236,7 +242,7 @@ func (s *Analytics) AnalyticsLogsClientList(ctx context.Context, request operati
 		}
 		request.Page = nP
 
-		return s.AnalyticsLogsClientList(
+		return s.GetClientLogs(
 			ctx,
 			request,
 			opts...,
@@ -258,6 +264,13 @@ func (s *Analytics) AnalyticsLogsClientList(ctx context.Context, request operati
 			}
 
 			res.PaginatedLogsResponseList = &out
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `text/csv`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			res.Body = rawBody
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -289,12 +302,13 @@ func (s *Analytics) AnalyticsLogsClientList(ctx context.Context, request operati
 
 }
 
-// AnalyticsLogsPackageList - Returns package log events, including uploads, copies, deletes, etc.
-func (s *Analytics) AnalyticsLogsPackageList(ctx context.Context, request operations.AnalyticsLogsPackageListRequest, opts ...operations.Option) (*operations.AnalyticsLogsPackageListResponse, error) {
+// GetLogs - Returns package log events, including uploads, copies, deletes, etc.
+func (s *Analytics) GetLogs(ctx context.Context, request operations.AnalyticsLogsPackageListRequest, opts ...operations.Option) (*operations.AnalyticsLogsPackageListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
+		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
 	for _, opt := range opts {
@@ -338,7 +352,12 @@ func (s *Analytics) AnalyticsLogsPackageList(ctx context.Context, request operat
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Accept", "application/json")
+	if o.AcceptHeaderOverride != nil {
+		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
+	} else {
+		req.Header.Set("Accept", "application/json;q=1, text/csv;q=0")
+	}
+
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
@@ -493,7 +512,7 @@ func (s *Analytics) AnalyticsLogsPackageList(ctx context.Context, request operat
 		}
 		request.Page = nP
 
-		return s.AnalyticsLogsPackageList(
+		return s.GetLogs(
 			ctx,
 			request,
 			opts...,
@@ -515,6 +534,13 @@ func (s *Analytics) AnalyticsLogsPackageList(ctx context.Context, request operat
 			}
 
 			res.PaginatedPackageLogsResponseList = &out
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `text/csv`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			res.Body = rawBody
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -546,8 +572,8 @@ func (s *Analytics) AnalyticsLogsPackageList(ctx context.Context, request operat
 
 }
 
-// AnalyticsMetricsClientList - API to provide usage data derived from client logs as single aggregated values. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
-func (s *Analytics) AnalyticsMetricsClientList(ctx context.Context, request operations.AnalyticsMetricsClientListRequest, opts ...operations.Option) (*operations.AnalyticsMetricsClientListResponse, error) {
+// GetClientMetrics - API to provide usage data derived from client logs as single aggregated values. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
+func (s *Analytics) GetClientMetrics(ctx context.Context, request operations.AnalyticsMetricsClientListRequest, opts ...operations.Option) (*operations.AnalyticsMetricsClientListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -761,8 +787,8 @@ func (s *Analytics) AnalyticsMetricsClientList(ctx context.Context, request oper
 
 }
 
-// AnalyticsMetricsClientTimeSeriesList - API to provide usage data derived from client logs in time series format. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
-func (s *Analytics) AnalyticsMetricsClientTimeSeriesList(ctx context.Context, request operations.AnalyticsMetricsClientTimeSeriesListRequest, opts ...operations.Option) (*operations.AnalyticsMetricsClientTimeSeriesListResponse, error) {
+// GetClientTimeSeries - API to provide usage data derived from client logs in time series format. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
+func (s *Analytics) GetClientTimeSeries(ctx context.Context, request operations.AnalyticsMetricsClientTimeSeriesListRequest, opts ...operations.Option) (*operations.AnalyticsMetricsClientTimeSeriesListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,

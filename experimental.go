@@ -10,7 +10,7 @@ import (
 
 type Experimental struct {
 	Files    *Files
-	Packages *ExperimentalPackages
+	Packages *ExperimentalPackages2
 
 	rootSDK          *Cloudsmith
 	sdkConfiguration config.SDKConfiguration
@@ -23,6 +23,6 @@ func newExperimental(rootSDK *Cloudsmith, sdkConfig config.SDKConfiguration, hoo
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
 		Files:            newFiles(rootSDK, sdkConfig, hooks),
-		Packages:         newExperimentalPackages(rootSDK, sdkConfig, hooks),
+		Packages:         newExperimentalPackages2(rootSDK, sdkConfig, hooks),
 	}
 }

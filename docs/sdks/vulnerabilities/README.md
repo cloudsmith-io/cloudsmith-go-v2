@@ -4,9 +4,9 @@
 
 ### Available Operations
 
-* [VulnerabilitiesOsvRetrieve](#vulnerabilitiesosvretrieve) - API to provide OSV.dev vulnerability data.
+* [Retrieve](#retrieve) - API to provide OSV.dev vulnerability data.
 
-## VulnerabilitiesOsvRetrieve
+## Retrieve
 
 API to provide OSV.dev vulnerability data.
 
@@ -29,7 +29,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Vulnerabilities.VulnerabilitiesOsvRetrieve(ctx, "<id>")
+    res, err := s.Vulnerabilities.Retrieve(ctx, "<id>")
     if err != nil {
         log.Fatal(err)
     }

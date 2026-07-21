@@ -4,12 +4,12 @@
 
 ### Available Operations
 
-* [AnalyticsLogsClientList](#analyticslogsclientlist) - Returns individual log-level records of client downloads, including bandwidth in bytes. Available for _Manager_ or _Owner_ level users only. All times in UTC.
-* [AnalyticsLogsPackageList](#analyticslogspackagelist) - Returns package log events, including uploads, copies, deletes, etc.
-* [AnalyticsMetricsClientList](#analyticsmetricsclientlist) - API to provide usage data derived from client logs as single aggregated values. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
-* [AnalyticsMetricsClientTimeSeriesList](#analyticsmetricsclienttimeserieslist) - API to provide usage data derived from client logs in time series format. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
+* [GetClientLogs](#getclientlogs) - Returns individual log-level records of client downloads, including bandwidth in bytes. Available for _Manager_ or _Owner_ level users only. All times in UTC.
+* [GetLogs](#getlogs) - Returns package log events, including uploads, copies, deletes, etc.
+* [GetClientMetrics](#getclientmetrics) - API to provide usage data derived from client logs as single aggregated values. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
+* [GetClientTimeSeries](#getclienttimeseries) - API to provide usage data derived from client logs in time series format. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
 
-## AnalyticsLogsClientList
+## GetClientLogs
 
 Returns individual log-level records of client downloads, including bandwidth in bytes. Available for _Manager_ or _Owner_ level users only. All times in UTC.
 
@@ -33,7 +33,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Analytics.AnalyticsLogsClientList(ctx, operations.AnalyticsLogsClientListRequest{
+    res, err := s.Analytics.GetClientLogs(ctx, operations.AnalyticsLogsClientListRequest{
         Page: 408040,
         Workspace: "<value>",
     })
@@ -76,7 +76,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## AnalyticsLogsPackageList
+## GetLogs
 
 Returns package log events, including uploads, copies, deletes, etc.
 
@@ -100,7 +100,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Analytics.AnalyticsLogsPackageList(ctx, operations.AnalyticsLogsPackageListRequest{
+    res, err := s.Analytics.GetLogs(ctx, operations.AnalyticsLogsPackageListRequest{
         Page: 557482,
         Query: cloudsmith.Pointer("package:semver OR package_format:ruby"),
         Workspace: "<value>",
@@ -144,7 +144,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## AnalyticsMetricsClientList
+## GetClientMetrics
 
 API to provide usage data derived from client logs as single aggregated values. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
 
@@ -168,7 +168,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Analytics.AnalyticsMetricsClientList(ctx, operations.AnalyticsMetricsClientListRequest{
+    res, err := s.Analytics.GetClientMetrics(ctx, operations.AnalyticsMetricsClientListRequest{
         Workspace: "<value>",
     })
     if err != nil {
@@ -198,7 +198,7 @@ func main() {
 | ------------------ | ------------------ | ------------------ |
 | apierrors.APIError | 4XX, 5XX           | \*/\*              |
 
-## AnalyticsMetricsClientTimeSeriesList
+## GetClientTimeSeries
 
 API to provide usage data derived from client logs in time series format. Available for _Member_, _Manager_ and _Owner_ level Users. All times in UTC.
 
@@ -222,7 +222,7 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Analytics.AnalyticsMetricsClientTimeSeriesList(ctx, operations.AnalyticsMetricsClientTimeSeriesListRequest{
+    res, err := s.Analytics.GetClientTimeSeries(ctx, operations.AnalyticsMetricsClientTimeSeriesListRequest{
         Interval: operations.IntervalFifteenMinutes,
         Workspace: "<value>",
     })

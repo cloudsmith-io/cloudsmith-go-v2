@@ -31,8 +31,8 @@ func newVulnerabilities(rootSDK *Cloudsmith, sdkConfig config.SDKConfiguration, 
 	}
 }
 
-// VulnerabilitiesOsvRetrieve - API to provide OSV.dev vulnerability data.
-func (s *Vulnerabilities) VulnerabilitiesOsvRetrieve(ctx context.Context, vulnerabilityID string, opts ...operations.Option) (*operations.VulnerabilitiesOsvRetrieveResponse, error) {
+// Retrieve - API to provide OSV.dev vulnerability data.
+func (s *Vulnerabilities) Retrieve(ctx context.Context, vulnerabilityID string, opts ...operations.Option) (*operations.VulnerabilitiesOsvRetrieveResponse, error) {
 	request := operations.VulnerabilitiesOsvRetrieveRequest{
 		VulnerabilityID: vulnerabilityID,
 	}

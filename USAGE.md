@@ -16,7 +16,7 @@ func main() {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Analytics.AnalyticsLogsClientList(ctx, operations.AnalyticsLogsClientListRequest{
+	res, err := s.Analytics.GetClientLogs(ctx, operations.AnalyticsLogsClientListRequest{
 		Page:      408040,
 		Workspace: "<value>",
 	})
