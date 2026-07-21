@@ -12,7 +12,7 @@ type WorkspacesPoliciesSimulateListRequest struct {
 	// A [package search](https://help.cloudsmith.io/docs/search-packages) query by which to filter the packages being evaluated.
 	PackageQueryString *string `queryParam:"style=form,explode=true,name=package_query_string"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// The `slug_perm` (identifier) of the Policy.
@@ -28,9 +28,9 @@ func (w *WorkspacesPoliciesSimulateListRequest) GetPackageQueryString() *string 
 	return w.PackageQueryString
 }
 
-func (w *WorkspacesPoliciesSimulateListRequest) GetPage() *int64 {
+func (w *WorkspacesPoliciesSimulateListRequest) GetPage() int64 {
 	if w == nil {
-		return nil
+		return 0
 	}
 	return w.Page
 }
@@ -59,6 +59,8 @@ func (w *WorkspacesPoliciesSimulateListRequest) GetWorkspace() string {
 type WorkspacesPoliciesSimulateListResponse struct {
 	HTTPMeta                       components.HTTPMetadata `json:"-"`
 	PaginatedPolicyDecisionLogList *components.PaginatedPolicyDecisionLogList
+
+	Next func() (*WorkspacesPoliciesSimulateListResponse, error)
 }
 
 func (w WorkspacesPoliciesSimulateListResponse) MarshalJSON() ([]byte, error) {

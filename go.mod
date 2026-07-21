@@ -4,7 +4,7 @@ go 1.25.10
 
 require (
 	github.com/spyzhov/ajson v0.8.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.11.1
 )
 
 require (

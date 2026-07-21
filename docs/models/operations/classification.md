@@ -1,7 +1,5 @@
 # Classification
 
-Filter results by metadata classification.
-
 * `UNKNOWN` - Unknown
 * `INTRINSIC` - Intrinsic
 * `SECURITY` - Security

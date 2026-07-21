@@ -252,40 +252,270 @@ The country your workspace is based in.
 * `ZM` - Zambia
 * `ZW` - Zimbabwe
 
-
-## Supported Types
-
-### CountryEnum
+## Example Usage
 
 ```go
-country := components.CreateCountryCountryEnum(components.CountryEnum{/* values here */})
+import (
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+)
+
+value := components.CountryAf
+
+// Open enum: custom values can be created with a direct type cast
+custom := components.Country("custom_value")
 ```
 
-### BlankEnum
 
-```go
-country := components.CreateCountryBlankEnum(components.BlankEnum{/* values here */})
-```
+## Values
 
-### 
-
-```go
-country := components.CreateCountryAny(any{/* values here */})
-```
-
-## Union Discrimination
-
-Use the `Type` field to determine which variant is active, then access the corresponding field:
-
-```go
-switch country.Type {
-	case components.CountryTypeCountryEnum:
-		// country.CountryEnum is populated
-	case components.CountryTypeBlankEnum:
-		// country.BlankEnum is populated
-	case components.CountryTypeAny:
-		// country.Any is populated
-	default:
-		// Unknown type - use country.GetUnknownRaw() for raw JSON
-}
-```
+| Name        | Value       |
+| ----------- | ----------- |
+| `CountryAf` | AF          |
+| `CountryAx` | AX          |
+| `CountryAl` | AL          |
+| `CountryDz` | DZ          |
+| `CountryAs` | AS          |
+| `CountryAd` | AD          |
+| `CountryAo` | AO          |
+| `CountryAi` | AI          |
+| `CountryAq` | AQ          |
+| `CountryAg` | AG          |
+| `CountryAr` | AR          |
+| `CountryAm` | AM          |
+| `CountryAw` | AW          |
+| `CountryAu` | AU          |
+| `CountryAt` | AT          |
+| `CountryAz` | AZ          |
+| `CountryBs` | BS          |
+| `CountryBh` | BH          |
+| `CountryBd` | BD          |
+| `CountryBb` | BB          |
+| `CountryBy` | BY          |
+| `CountryBe` | BE          |
+| `CountryBz` | BZ          |
+| `CountryBj` | BJ          |
+| `CountryBm` | BM          |
+| `CountryBt` | BT          |
+| `CountryBo` | BO          |
+| `CountryBq` | BQ          |
+| `CountryBa` | BA          |
+| `CountryBw` | BW          |
+| `CountryBv` | BV          |
+| `CountryBr` | BR          |
+| `CountryIo` | IO          |
+| `CountryBn` | BN          |
+| `CountryBg` | BG          |
+| `CountryBf` | BF          |
+| `CountryBi` | BI          |
+| `CountryCv` | CV          |
+| `CountryKh` | KH          |
+| `CountryCm` | CM          |
+| `CountryCa` | CA          |
+| `CountryKy` | KY          |
+| `CountryCf` | CF          |
+| `CountryTd` | TD          |
+| `CountryCl` | CL          |
+| `CountryCn` | CN          |
+| `CountryCx` | CX          |
+| `CountryCc` | CC          |
+| `CountryCo` | CO          |
+| `CountryKm` | KM          |
+| `CountryCg` | CG          |
+| `CountryCk` | CK          |
+| `CountryCr` | CR          |
+| `CountryCi` | CI          |
+| `CountryHr` | HR          |
+| `CountryCu` | CU          |
+| `CountryCw` | CW          |
+| `CountryCy` | CY          |
+| `CountryCz` | CZ          |
+| `CountryCd` | CD          |
+| `CountryDk` | DK          |
+| `CountryDj` | DJ          |
+| `CountryDm` | DM          |
+| `CountryDo` | DO          |
+| `CountryEc` | EC          |
+| `CountryEg` | EG          |
+| `CountrySv` | SV          |
+| `CountryGq` | GQ          |
+| `CountryEr` | ER          |
+| `CountryEe` | EE          |
+| `CountrySz` | SZ          |
+| `CountryEt` | ET          |
+| `CountryFk` | FK          |
+| `CountryFo` | FO          |
+| `CountryFj` | FJ          |
+| `CountryFi` | FI          |
+| `CountryFr` | FR          |
+| `CountryGf` | GF          |
+| `CountryPf` | PF          |
+| `CountryTf` | TF          |
+| `CountryGa` | GA          |
+| `CountryGm` | GM          |
+| `CountryGe` | GE          |
+| `CountryDe` | DE          |
+| `CountryGh` | GH          |
+| `CountryGi` | GI          |
+| `CountryGr` | GR          |
+| `CountryGl` | GL          |
+| `CountryGd` | GD          |
+| `CountryGp` | GP          |
+| `CountryGu` | GU          |
+| `CountryGt` | GT          |
+| `CountryGg` | GG          |
+| `CountryGn` | GN          |
+| `CountryGw` | GW          |
+| `CountryGy` | GY          |
+| `CountryHt` | HT          |
+| `CountryHm` | HM          |
+| `CountryHn` | HN          |
+| `CountryHk` | HK          |
+| `CountryHu` | HU          |
+| `CountryIs` | IS          |
+| `CountryIn` | IN          |
+| `CountryID` | ID          |
+| `CountryIr` | IR          |
+| `CountryIq` | IQ          |
+| `CountryIe` | IE          |
+| `CountryIm` | IM          |
+| `CountryIl` | IL          |
+| `CountryIt` | IT          |
+| `CountryJm` | JM          |
+| `CountryJp` | JP          |
+| `CountryJe` | JE          |
+| `CountryJo` | JO          |
+| `CountryKz` | KZ          |
+| `CountryKe` | KE          |
+| `CountryKi` | KI          |
+| `CountryKw` | KW          |
+| `CountryKg` | KG          |
+| `CountryLa` | LA          |
+| `CountryLv` | LV          |
+| `CountryLb` | LB          |
+| `CountryLs` | LS          |
+| `CountryLr` | LR          |
+| `CountryLy` | LY          |
+| `CountryLi` | LI          |
+| `CountryLt` | LT          |
+| `CountryLu` | LU          |
+| `CountryMo` | MO          |
+| `CountryMg` | MG          |
+| `CountryMw` | MW          |
+| `CountryMy` | MY          |
+| `CountryMv` | MV          |
+| `CountryMl` | ML          |
+| `CountryMt` | MT          |
+| `CountryMh` | MH          |
+| `CountryMq` | MQ          |
+| `CountryMr` | MR          |
+| `CountryMu` | MU          |
+| `CountryYt` | YT          |
+| `CountryMx` | MX          |
+| `CountryFm` | FM          |
+| `CountryMd` | MD          |
+| `CountryMc` | MC          |
+| `CountryMn` | MN          |
+| `CountryMe` | ME          |
+| `CountryMs` | MS          |
+| `CountryMa` | MA          |
+| `CountryMz` | MZ          |
+| `CountryMm` | MM          |
+| `CountryNa` | NA          |
+| `CountryNr` | NR          |
+| `CountryNp` | NP          |
+| `CountryNl` | NL          |
+| `CountryNc` | NC          |
+| `CountryNz` | NZ          |
+| `CountryNi` | NI          |
+| `CountryNe` | NE          |
+| `CountryNg` | NG          |
+| `CountryNu` | NU          |
+| `CountryNf` | NF          |
+| `CountryKp` | KP          |
+| `CountryMk` | MK          |
+| `CountryMp` | MP          |
+| `CountryNo` | NO          |
+| `CountryOm` | OM          |
+| `CountryPk` | PK          |
+| `CountryPw` | PW          |
+| `CountryPs` | PS          |
+| `CountryPa` | PA          |
+| `CountryPg` | PG          |
+| `CountryPy` | PY          |
+| `CountryPe` | PE          |
+| `CountryPh` | PH          |
+| `CountryPn` | PN          |
+| `CountryPl` | PL          |
+| `CountryPt` | PT          |
+| `CountryPr` | PR          |
+| `CountryQa` | QA          |
+| `CountryRe` | RE          |
+| `CountryRo` | RO          |
+| `CountryRu` | RU          |
+| `CountryRw` | RW          |
+| `CountryBl` | BL          |
+| `CountrySh` | SH          |
+| `CountryKn` | KN          |
+| `CountryLc` | LC          |
+| `CountryMf` | MF          |
+| `CountryPm` | PM          |
+| `CountryVc` | VC          |
+| `CountryWs` | WS          |
+| `CountrySm` | SM          |
+| `CountrySt` | ST          |
+| `CountrySa` | SA          |
+| `CountrySn` | SN          |
+| `CountryRs` | RS          |
+| `CountrySc` | SC          |
+| `CountrySl` | SL          |
+| `CountrySg` | SG          |
+| `CountrySx` | SX          |
+| `CountrySk` | SK          |
+| `CountrySi` | SI          |
+| `CountrySb` | SB          |
+| `CountrySo` | SO          |
+| `CountryZa` | ZA          |
+| `CountryGs` | GS          |
+| `CountryKr` | KR          |
+| `CountrySs` | SS          |
+| `CountryEs` | ES          |
+| `CountryLk` | LK          |
+| `CountrySd` | SD          |
+| `CountrySr` | SR          |
+| `CountrySj` | SJ          |
+| `CountrySe` | SE          |
+| `CountryCh` | CH          |
+| `CountrySy` | SY          |
+| `CountryTw` | TW          |
+| `CountryTj` | TJ          |
+| `CountryTz` | TZ          |
+| `CountryTh` | TH          |
+| `CountryTl` | TL          |
+| `CountryTg` | TG          |
+| `CountryTk` | TK          |
+| `CountryTo` | TO          |
+| `CountryTt` | TT          |
+| `CountryTn` | TN          |
+| `CountryTr` | TR          |
+| `CountryTm` | TM          |
+| `CountryTc` | TC          |
+| `CountryTv` | TV          |
+| `CountryUg` | UG          |
+| `CountryUa` | UA          |
+| `CountryAe` | AE          |
+| `CountryGb` | GB          |
+| `CountryUm` | UM          |
+| `CountryUs` | US          |
+| `CountryUy` | UY          |
+| `CountryUz` | UZ          |
+| `CountryVu` | VU          |
+| `CountryVa` | VA          |
+| `CountryVe` | VE          |
+| `CountryVn` | VN          |
+| `CountryVg` | VG          |
+| `CountryVi` | VI          |
+| `CountryWf` | WF          |
+| `CountryEh` | EH          |
+| `CountryYe` | YE          |
+| `CountryZm` | ZM          |
+| `CountryZw` | ZW          |

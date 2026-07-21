@@ -10,9 +10,7 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 )
 
-// Classification - Filter results by metadata classification.
-//
-// * `UNKNOWN` - Unknown
+// Classification - * `UNKNOWN` - Unknown
 // * `INTRINSIC` - Intrinsic
 // * `SECURITY` - Security
 // * `PROVENANCE` - Provenance
@@ -56,9 +54,7 @@ func (e *Classification) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// SourceKind - Filter results by metadata source kind.
-//
-// * `UNKNOWN` - Unknown
+// SourceKind - * `UNKNOWN` - Unknown
 // * `SYSTEM` - System
 // * `UPSTREAM` - Upstream
 // * `CUSTOM` - Custom
@@ -111,7 +107,7 @@ type MetadataPackagesListRequest struct {
 	// The `slug_perm` of the package.
 	PackageSlugPerm string `pathParam:"style=simple,explode=false,name=package_slug_perm"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// Filter results by metadata source kind.
@@ -138,9 +134,9 @@ func (m *MetadataPackagesListRequest) GetPackageSlugPerm() string {
 	return m.PackageSlugPerm
 }
 
-func (m *MetadataPackagesListRequest) GetPage() *int64 {
+func (m *MetadataPackagesListRequest) GetPage() int64 {
 	if m == nil {
-		return nil
+		return 0
 	}
 	return m.Page
 }
@@ -163,6 +159,8 @@ type MetadataPackagesListResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
 	// A paginated collection of metadata entries for the package.
 	PaginatedArtifactMetadataReadList *components.PaginatedArtifactMetadataReadList
+
+	Next func() (*MetadataPackagesListResponse, error)
 }
 
 func (m MetadataPackagesListResponse) MarshalJSON() ([]byte, error) {

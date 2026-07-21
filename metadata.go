@@ -14,6 +14,7 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/retry"
+	"github.com/spyzhov/ajson"
 	"net/http"
 	"net/url"
 )
@@ -64,7 +65,6 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_list",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -202,6 +202,48 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 			Response: httpRes,
 		},
 	}
+	res.Next = func() (*operations.MetadataPackagesListResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		p := request.Page
+		nP := int64(p + 1)
+		r, err := ajson.Eval(b, "$.results")
+		if err != nil {
+			return nil, err
+		}
+		if !r.IsArray() {
+			return nil, nil
+		}
+		arr, err := r.GetArray()
+		if err != nil {
+			return nil, err
+		}
+		if len(arr) == 0 {
+			return nil, nil
+		}
+
+		l := 0
+		if request.PageSize != nil {
+			l = int(*request.PageSize)
+		}
+		if len(arr) < l {
+			return nil, nil
+		}
+		request.Page = nP
+
+		return s.MetadataPackagesList(
+			ctx,
+			request,
+			opts...,
+		)
+	}
 
 	switch {
 	case httpRes.StatusCode == 200:
@@ -282,7 +324,7 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 
 // MetadataPackagesCreate - Attach metadata to a package
 // Attach arbitrary metadata to a package.
-func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteRequest, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
+func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
 	request := operations.MetadataPackagesCreateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		Body:            body,
@@ -317,7 +359,6 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_create",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Body", "json", `request:"mediaType=application/json"`)
@@ -468,12 +509,12 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -575,7 +616,6 @@ func (s *Metadata) MetadataPackagesRetrieve(ctx context.Context, packageSlugPerm
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_retrieve",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -823,7 +863,6 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_partial_update",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Body", "json", `request:"mediaType=application/json"`)
@@ -974,12 +1013,12 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1081,7 +1120,6 @@ func (s *Metadata) MetadataPackagesDestroy(ctx context.Context, packageSlugPerm 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_destroy",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1306,7 +1344,6 @@ func (s *Metadata) MetadataValidateCreate(ctx context.Context, request component
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_validate_create",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
