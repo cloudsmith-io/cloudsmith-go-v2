@@ -83,6 +83,58 @@ func (e *AnalyticsMetricsClientTimeSeriesListAggregate) UnmarshalJSON(data []byt
 	}
 }
 
+// Interval - * `MINUTE` - Minute
+// * `HOUR` - Hour
+// * `DAY` - Day
+// * `WEEK` - Week
+// * `MONTH` - Month
+// * `YEAR` - Year
+// * `FIVE_MINUTES` - 5 Minutes
+// * `FIFTEEN_MINUTES` - 15 Minutes
+type Interval string
+
+const (
+	IntervalMinute         Interval = "MINUTE"
+	IntervalHour           Interval = "HOUR"
+	IntervalDay            Interval = "DAY"
+	IntervalWeek           Interval = "WEEK"
+	IntervalMonth          Interval = "MONTH"
+	IntervalYear           Interval = "YEAR"
+	IntervalFiveMinutes    Interval = "FIVE_MINUTES"
+	IntervalFifteenMinutes Interval = "FIFTEEN_MINUTES"
+)
+
+func (e Interval) ToPointer() *Interval {
+	return &e
+}
+func (e *Interval) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "MINUTE":
+		fallthrough
+	case "HOUR":
+		fallthrough
+	case "DAY":
+		fallthrough
+	case "WEEK":
+		fallthrough
+	case "MONTH":
+		fallthrough
+	case "YEAR":
+		fallthrough
+	case "FIVE_MINUTES":
+		fallthrough
+	case "FIFTEEN_MINUTES":
+		*e = Interval(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Interval: %v", v)
+	}
+}
+
 type AnalyticsMetricsClientTimeSeriesListRequest struct {
 	// Type of aggregation.
 	//
@@ -128,7 +180,7 @@ type AnalyticsMetricsClientTimeSeriesListRequest struct {
 	// * `YEAR` - Year
 	// * `FIVE_MINUTES` - 5 Minutes
 	// * `FIFTEEN_MINUTES` - 15 Minutes
-	Interval components.IntervalEnum `queryParam:"style=form,explode=true,name=interval"`
+	Interval Interval `queryParam:"style=form,explode=true,name=interval"`
 	// IP address or CIDR range with which to filter logs. Supports IPv4 and IPv6.
 	IPAddress []string `queryParam:"style=form,explode=true,name=ip_address"`
 	// Package slug or unique identifier by which to filter logs.
@@ -231,9 +283,9 @@ func (a *AnalyticsMetricsClientTimeSeriesListRequest) GetHTTPStatus() []string {
 	return a.HTTPStatus
 }
 
-func (a *AnalyticsMetricsClientTimeSeriesListRequest) GetInterval() components.IntervalEnum {
+func (a *AnalyticsMetricsClientTimeSeriesListRequest) GetInterval() Interval {
 	if a == nil {
-		return components.IntervalEnum("")
+		return Interval("")
 	}
 	return a.Interval
 }

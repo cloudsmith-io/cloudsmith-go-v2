@@ -10,7 +10,8 @@ import (
 
 type WorkspacesRepositoriesFilesInfoRetrieveRequest struct {
 	// The filename of the file being uploaded.
-	Filename   string `queryParam:"style=form,explode=true,name=filename"`
+	Filename string `queryParam:"style=form,explode=true,name=filename"`
+	// The `slug_perm` (identifier) of the package file.
 	Identifier string `pathParam:"style=simple,explode=false,name=identifier"`
 	// The part number to be uploaded next.
 	PartNumber *int64 `queryParam:"style=form,explode=true,name=part_number"`

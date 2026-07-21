@@ -26,7 +26,7 @@ type WorkspacesPoliciesDecisionLogsV1ListRequest struct {
 	// Filter by package identifier (`slug_perm`).
 	PackageSlugPerm *string `queryParam:"style=form,explode=true,name=package_slug_perm"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// Filter by policy identifier (`slug_perm`).
@@ -98,9 +98,9 @@ func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageSlugPerm() *stri
 	return w.PackageSlugPerm
 }
 
-func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPage() *int64 {
+func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPage() int64 {
 	if w == nil {
-		return nil
+		return 0
 	}
 	return w.Page
 }
@@ -146,6 +146,8 @@ func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) GetWorkspace() string {
 type WorkspacesPoliciesDecisionLogsV1ListResponse struct {
 	HTTPMeta                                components.HTTPMetadata `json:"-"`
 	PaginatedPolicyDecisionLogV1SummaryList *components.PaginatedPolicyDecisionLogV1SummaryList
+
+	Next func() (*WorkspacesPoliciesDecisionLogsV1ListResponse, error)
 }
 
 func (w WorkspacesPoliciesDecisionLogsV1ListResponse) MarshalJSON() ([]byte, error) {

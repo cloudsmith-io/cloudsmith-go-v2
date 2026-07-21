@@ -14,6 +14,7 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/retry"
+	"github.com/spyzhov/ajson"
 	"net/http"
 	"net/url"
 )
@@ -201,6 +202,48 @@ func (s *Metadata) ListPackageMetadata(ctx context.Context, request operations.M
 			Response: httpRes,
 		},
 	}
+	res.Next = func() (*operations.MetadataPackagesListResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		p := request.Page
+		nP := int64(p + 1)
+		r, err := ajson.Eval(b, "$.results")
+		if err != nil {
+			return nil, err
+		}
+		if !r.IsArray() {
+			return nil, nil
+		}
+		arr, err := r.GetArray()
+		if err != nil {
+			return nil, err
+		}
+		if len(arr) == 0 {
+			return nil, nil
+		}
+
+		l := 0
+		if request.PageSize != nil {
+			l = int(*request.PageSize)
+		}
+		if len(arr) < l {
+			return nil, nil
+		}
+		request.Page = nP
+
+		return s.ListPackageMetadata(
+			ctx,
+			request,
+			opts...,
+		)
+	}
 
 	switch {
 	case httpRes.StatusCode == 200:
@@ -281,7 +324,7 @@ func (s *Metadata) ListPackageMetadata(ctx context.Context, request operations.M
 
 // AttachPackageMetadata - Attach metadata to a package
 // Attach arbitrary metadata to a package.
-func (s *Metadata) AttachPackageMetadata(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteRequest, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
+func (s *Metadata) AttachPackageMetadata(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
 	request := operations.MetadataPackagesCreateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		Body:            body,
@@ -466,12 +509,12 @@ func (s *Metadata) AttachPackageMetadata(ctx context.Context, packageSlugPerm st
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -970,12 +1013,12 @@ func (s *Metadata) UpdatePackageMetadata(ctx context.Context, packageSlugPerm st
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

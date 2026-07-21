@@ -1422,11 +1422,11 @@ func (s *Workspaces) DeletePolicy(ctx context.Context, policy string, workspace 
 }
 
 // GetPolicyActions - List all actions for the policy.
-func (s *Workspaces) GetPolicyActions(ctx context.Context, policy string, workspace string, page *int64, pageSize *int64, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsListResponse, error) {
+func (s *Workspaces) GetPolicyActions(ctx context.Context, page int64, policy string, workspace string, pageSize *int64, opts ...operations.Option) (*operations.WorkspacesPoliciesActionsListResponse, error) {
 	request := operations.WorkspacesPoliciesActionsListRequest{
+		Page:      page,
 		Policy:    policy,
 		Workspace: workspace,
-		Page:      page,
 		PageSize:  pageSize,
 	}
 
@@ -1595,6 +1595,50 @@ func (s *Workspaces) GetPolicyActions(ctx context.Context, policy string, worksp
 			Request:  req,
 			Response: httpRes,
 		},
+	}
+	res.Next = func() (*operations.WorkspacesPoliciesActionsListResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		p := page
+		nP := int64(p + 1)
+		r, err := ajson.Eval(b, "$.results")
+		if err != nil {
+			return nil, err
+		}
+		if !r.IsArray() {
+			return nil, nil
+		}
+		arr, err := r.GetArray()
+		if err != nil {
+			return nil, err
+		}
+		if len(arr) == 0 {
+			return nil, nil
+		}
+
+		l := 0
+		if pageSize != nil {
+			l = int(*pageSize)
+		}
+		if len(arr) < l {
+			return nil, nil
+		}
+
+		return s.GetPolicyActions(
+			ctx,
+			nP,
+			policy,
+			workspace,
+			pageSize,
+			opts...,
+		)
 	}
 
 	switch {
@@ -2461,6 +2505,48 @@ func (s *Workspaces) SimulatePolicy(ctx context.Context, request operations.Work
 			Request:  req,
 			Response: httpRes,
 		},
+	}
+	res.Next = func() (*operations.WorkspacesPoliciesSimulateListResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		p := request.Page
+		nP := int64(p + 1)
+		r, err := ajson.Eval(b, "$.results")
+		if err != nil {
+			return nil, err
+		}
+		if !r.IsArray() {
+			return nil, nil
+		}
+		arr, err := r.GetArray()
+		if err != nil {
+			return nil, err
+		}
+		if len(arr) == 0 {
+			return nil, nil
+		}
+
+		l := 0
+		if request.PageSize != nil {
+			l = int(*request.PageSize)
+		}
+		if len(arr) < l {
+			return nil, nil
+		}
+		request.Page = nP
+
+		return s.SimulatePolicy(
+			ctx,
+			request,
+			opts...,
+		)
 	}
 
 	switch {

@@ -44,6 +44,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -53,7 +54,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.ListPolicies(ctx, operations.WorkspacesPoliciesListRequest{
@@ -89,6 +92,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -98,7 +102,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.ListPolicies(ctx, operations.WorkspacesPoliciesListRequest{
@@ -157,8 +163,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -166,7 +172,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.CreatePolicy(ctx, "<value>", components.PolicyRequest{
@@ -214,6 +222,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -222,7 +231,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.GetPolicy(ctx, "<value>", "<value>")
@@ -266,8 +277,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -275,7 +286,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.ReplacePolicy(ctx, "<value>", "<value>", components.PolicyRequest{
@@ -323,6 +336,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -331,7 +345,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.UpdatePolicy(ctx, "<value>", "<value>", nil)
@@ -376,6 +392,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -384,7 +401,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.DeletePolicy(ctx, "<value>", "<value>")
@@ -428,6 +447,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -436,15 +456,29 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
-    res, err := s.Workspaces.GetPolicyActions(ctx, "<value>", "<value>", nil, nil)
+    res, err := s.Workspaces.GetPolicyActions(ctx, 452996, "<value>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedPolicyActionList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -454,9 +488,9 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
+| `page`                                                   | `int64`                                                  | :heavy_check_mark:                                       | A page number within the paginated result set.           |
 | `policy`                                                 | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the Policy.              |
 | `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `name` of the Workspace.                             |
-| `page`                                                   | `*int64`                                                 | :heavy_minus_sign:                                       | A page number within the paginated result set.           |
 | `pageSize`                                               | `*int64`                                                 | :heavy_minus_sign:                                       | Number of results to return per page.                    |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
 
@@ -482,16 +516,18 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 )
 
 func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.GetPolicyAction(ctx, "<value>", "<value>", "<value>")
@@ -546,16 +582,18 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 )
 
 func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.UpdatePolicyAction(ctx, "<value>", "<value>", "<value>", nil)
@@ -611,6 +649,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -619,7 +658,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.DeletePolicyAction(ctx, "<value>", "<value>", "<value>")
@@ -675,6 +716,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -684,10 +726,13 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.SimulatePolicy(ctx, operations.WorkspacesPoliciesSimulateListRequest{
+        Page: 439618,
         Policy: "<value>",
         Workspace: "<value>",
     })
@@ -695,7 +740,19 @@ func main() {
         log.Fatal(err)
     }
     if res.PaginatedPolicyDecisionLogList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -734,18 +791,20 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/types"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 )
 
 func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.GetPolicyDecisionLogFacets(ctx, operations.WorkspacesPoliciesDecisionLogsV1FacetsListRequest{

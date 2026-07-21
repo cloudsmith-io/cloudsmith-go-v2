@@ -18,6 +18,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/types"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
@@ -28,11 +29,14 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.DecisionLogs.List(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
         CreatedAfter: types.MustTimeFromString("2024-11-12T13:20:12.290Z"),
+        Page: 583225,
         Sort: cloudsmith.Pointer("id"),
         Workspace: "<value>",
     })
@@ -40,7 +44,19 @@ func main() {
         log.Fatal(err)
     }
     if res.PaginatedPolicyDecisionLogV1SummaryList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -52,6 +68,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/types"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
@@ -62,18 +79,33 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Workspaces.DecisionLogs.List(ctx, operations.WorkspacesPoliciesDecisionLogsV1ListRequest{
         CreatedAfter: types.MustTimeFromString("2025-02-17T14:08:57.543Z"),
+        Page: 377363,
         Workspace: "<value>",
     })
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedPolicyDecisionLogV1SummaryList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```

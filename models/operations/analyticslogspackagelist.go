@@ -242,9 +242,11 @@ type AnalyticsLogsPackageListRequest struct {
 	// Type of package formats by which to filter logs (e.g. Nuget, Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
 	PackageFormat []PackageFormat `queryParam:"style=form,explode=true,name=package_format"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
+	// A search string for filtering logs. Legal prefixes are `package` (alias `name`), `package_format` (alias `format`), `event_action`, `event_actor`, `event_actor_type`, `repository` and `version`; a term with no prefix matches the package name or identifier. Boolean operators may be used to construct intricate queries. Omitting boolean operators is interpreted as an implicit `AND`. The expression is combined (AND) with any other filter parameters.
+	Query *string `queryParam:"style=form,explode=true,name=query"`
 	// List of repositories for filtering logs. Multiple repositories can be provided e.g. `repository=test-repo&repository=another-repo`.
 	Repository []string `queryParam:"style=form,explode=true,name=repository"`
 	// Start of the time range to filter logs. Start time is inclusive, i.e. a Start time of `2025-01-01` results in a query that returns logs with a timestamp starting from `2025-01-01T00:00:00`.
@@ -312,9 +314,9 @@ func (a *AnalyticsLogsPackageListRequest) GetPackageFormat() []PackageFormat {
 	return a.PackageFormat
 }
 
-func (a *AnalyticsLogsPackageListRequest) GetPage() *int64 {
+func (a *AnalyticsLogsPackageListRequest) GetPage() int64 {
 	if a == nil {
-		return nil
+		return 0
 	}
 	return a.Page
 }
@@ -324,6 +326,13 @@ func (a *AnalyticsLogsPackageListRequest) GetPageSize() *int64 {
 		return nil
 	}
 	return a.PageSize
+}
+
+func (a *AnalyticsLogsPackageListRequest) GetQuery() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Query
 }
 
 func (a *AnalyticsLogsPackageListRequest) GetRepository() []string {
@@ -351,6 +360,8 @@ type AnalyticsLogsPackageListResponse struct {
 	HTTPMeta                         components.HTTPMetadata `json:"-"`
 	PaginatedPackageLogsResponseList *components.PaginatedPackageLogsResponseList
 	Body                             []byte
+
+	Next func() (*AnalyticsLogsPackageListResponse, error)
 }
 
 func (a AnalyticsLogsPackageListResponse) MarshalJSON() ([]byte, error) {

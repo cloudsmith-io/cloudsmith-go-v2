@@ -14,6 +14,7 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/retry"
+	"github.com/spyzhov/ajson"
 	"net/http"
 )
 
@@ -200,6 +201,48 @@ func (s *ExperimentalPackages) List(ctx context.Context, request operations.Work
 			Request:  req,
 			Response: httpRes,
 		},
+	}
+	res.Next = func() (*operations.WorkspacesRepositoriesPackagesListResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		p := request.Page
+		nP := int64(p + 1)
+		r, err := ajson.Eval(b, "$.results")
+		if err != nil {
+			return nil, err
+		}
+		if !r.IsArray() {
+			return nil, nil
+		}
+		arr, err := r.GetArray()
+		if err != nil {
+			return nil, err
+		}
+		if len(arr) == 0 {
+			return nil, nil
+		}
+
+		l := 0
+		if request.PageSize != nil {
+			l = int(*request.PageSize)
+		}
+		if len(arr) < l {
+			return nil, nil
+		}
+		request.Page = nP
+
+		return s.List(
+			ctx,
+			request,
+			opts...,
+		)
 	}
 
 	switch {

@@ -16,6 +16,10 @@ import (
 // unaffected (the viewset still uses the v1 serializer's “ChoiceField“); this
 // class only shapes the generated schema, so the v1 serializer (and its enum
 // component) never enters the v2 spec.
+//
+// “identifier“ is re-declared as a plain string: the inherited v1 field is a
+// “URLField“, but the response value is “package_file.slug_perm“ (a slug,
+// never a URL), so documenting it as “format: uri“ would mislead SDKs.
 type PackageFileUploadV2Request struct {
 	// Filename for the package file upload.
 	Filename string `json:"filename"`

@@ -23,6 +23,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -32,17 +33,32 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Metadata.ListPackageMetadata(ctx, operations.MetadataPackagesListRequest{
         PackageSlugPerm: "<value>",
+        Page: 430521,
     })
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedArtifactMetadataReadList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -78,8 +94,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -87,18 +103,23 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
-    res, err := s.Metadata.AttachPackageMetadata(ctx, "<value>", components.ArtifactMetadataWriteRequest{
-        Content: "<value>",
+    res, err := s.Metadata.AttachPackageMetadata(ctx, "<value>", components.ArtifactMetadataWrite{
+        Content: map[string]any{
+            "key": "<value>",
+            "key1": "<value>",
+        },
         ContentType: "<value>",
         SourceIdentity: "<value>",
     })
     if err != nil {
         log.Fatal(err)
     }
-    if res.ArtifactMetadataWrite != nil {
+    if res.ArtifactMetadataEntry != nil {
         // handle response
     }
 }
@@ -106,12 +127,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                                                          | Type                                                                                               | Required                                                                                           | Description                                                                                        |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                              | [context.Context](https://pkg.go.dev/context#Context)                                              | :heavy_check_mark:                                                                                 | The context to use for the request.                                                                |
-| `packageSlugPerm`                                                                                  | `string`                                                                                           | :heavy_check_mark:                                                                                 | The `slug_perm` of the package.                                                                    |
-| `body`                                                                                             | [components.ArtifactMetadataWriteRequest](../../models/components/artifactmetadatawriterequest.md) | :heavy_check_mark:                                                                                 | N/A                                                                                                |
-| `opts`                                                                                             | [][operations.Option](../../models/operations/option.md)                                           | :heavy_minus_sign:                                                                                 | The options for this request.                                                                      |
+| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `ctx`                                                                                | [context.Context](https://pkg.go.dev/context#Context)                                | :heavy_check_mark:                                                                   | The context to use for the request.                                                  |
+| `packageSlugPerm`                                                                    | `string`                                                                             | :heavy_check_mark:                                                                   | The `slug_perm` of the package.                                                      |
+| `body`                                                                               | [components.ArtifactMetadataWrite](../../models/components/artifactmetadatawrite.md) | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `opts`                                                                               | [][operations.Option](../../models/operations/option.md)                             | :heavy_minus_sign:                                                                   | The options for this request.                                                        |
 
 ### Response
 
@@ -136,6 +157,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -144,7 +166,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Metadata.GetPackageMetadata(ctx, "<value>", "<value>")
@@ -189,6 +213,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -197,14 +222,16 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Metadata.UpdatePackageMetadata(ctx, "<value>", "<value>", nil)
     if err != nil {
         log.Fatal(err)
     }
-    if res.ArtifactMetadataWrite != nil {
+    if res.ArtifactMetadataEntry != nil {
         // handle response
     }
 }
@@ -243,6 +270,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -251,7 +279,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Metadata.DeletePackageMetadata(ctx, "<value>", "<value>")
@@ -296,8 +326,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -305,11 +335,16 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Metadata.Validate(ctx, components.ArtifactMetadataValidate{
-        Content: "<value>",
+        Content: map[string]any{
+            "key": "<value>",
+            "key1": "<value>",
+        },
         ContentType: "<value>",
     })
     if err != nil {

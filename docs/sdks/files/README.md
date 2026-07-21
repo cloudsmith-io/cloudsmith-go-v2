@@ -34,8 +34,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -43,7 +43,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Files.CreateFileUploadUrls(ctx, "<value>", "<value>", components.PackageFileUploadV2Request{
@@ -93,6 +95,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -101,7 +104,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Files.AbortUpload(ctx, "<value>", "<value>", "<value>")
@@ -119,7 +124,7 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the package file.        |
 | `repository`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the repository within the workspace.       |
 | `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the workspace.                             |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
@@ -149,6 +154,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -157,7 +163,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Files.CompleteUpload(ctx, "<value>", "<value>", "<value>")
@@ -175,7 +183,7 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the package file.        |
 | `repository`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the repository within the workspace.       |
 | `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the workspace.                             |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
@@ -205,6 +213,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -214,7 +223,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Files.GetFileInfo(ctx, operations.WorkspacesRepositoriesFilesInfoRetrieveRequest{
@@ -265,8 +276,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -274,7 +285,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Files.ValidateFileParameters(ctx, "<value>", "<value>", components.PackageFileUploadV2Request{

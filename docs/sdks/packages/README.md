@@ -20,6 +20,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -29,18 +30,33 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Packages.OsvSummary(ctx, operations.PackagesVulnerabilitiesOsvRepoSummaryListRequest{
         Owner: "<value>",
+        Page: 495181,
         Repo: "<value>",
     })
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedWebPackageVulnerabilitySummaryList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -75,6 +91,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -84,17 +101,32 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Packages.GetOsvNamespaceSummary(ctx, operations.PackagesVulnerabilitiesOsvNamespaceSummaryListRequest{
         Owner: "<value>",
+        Page: 488651,
     })
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedWebPackageVulnerabilitySummaryList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -129,6 +161,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -137,7 +170,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Packages.GetOsvCounts(ctx, "<value>", cloudsmith.Pointer(true))

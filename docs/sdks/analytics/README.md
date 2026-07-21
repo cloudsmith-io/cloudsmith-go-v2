@@ -20,6 +20,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -29,17 +30,32 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Analytics.ListClientLogs(ctx, operations.AnalyticsLogsClientListRequest{
+        Page: 408040,
         Workspace: "<value>",
     })
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedLogsResponseList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -68,12 +84,13 @@ Returns package log events, including uploads, copies, deletes, etc.
 
 ### Example Usage
 
-<!-- UsageSnippet language="go" operationID="analytics_logs_package_list" method="get" path="/analytics/logs/package/{workspace}/" -->
+<!-- UsageSnippet language="go" operationID="analytics_logs_package_list" method="get" path="/analytics/logs/package/{workspace}/" example="PackageNamedSemverOrAnyRuby-formatPackage" -->
 ```go
 package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -83,17 +100,33 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Analytics.ListPackageLogs(ctx, operations.AnalyticsLogsPackageListRequest{
+        Page: 557482,
+        Query: cloudsmith.Pointer("package:semver OR package_format:ruby"),
         Workspace: "<value>",
     })
     if err != nil {
         log.Fatal(err)
     }
     if res.PaginatedPackageLogsResponseList != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -128,8 +161,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
 )
@@ -138,11 +171,13 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Analytics.GetClientTimeSeriesMetrics(ctx, operations.AnalyticsMetricsClientTimeSeriesListRequest{
-        Interval: components.IntervalEnumFifteenMinutes,
+        Interval: operations.IntervalFifteenMinutes,
         Workspace: "<value>",
     })
     if err != nil {

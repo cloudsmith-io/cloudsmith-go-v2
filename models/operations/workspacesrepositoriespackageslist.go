@@ -12,7 +12,7 @@ type WorkspacesRepositoriesPackagesListRequest struct {
 	// If true, hide package subcomponents (e.g. cosign artifacts that reference docker images) from the results.
 	HideSubcomponents *bool `queryParam:"style=form,explode=true,name=hide_subcomponents"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// A search term for querying names, filenames, versions, distributions, architectures, formats or statuses of packages.
@@ -32,9 +32,9 @@ func (w *WorkspacesRepositoriesPackagesListRequest) GetHideSubcomponents() *bool
 	return w.HideSubcomponents
 }
 
-func (w *WorkspacesRepositoriesPackagesListRequest) GetPage() *int64 {
+func (w *WorkspacesRepositoriesPackagesListRequest) GetPage() int64 {
 	if w == nil {
-		return nil
+		return 0
 	}
 	return w.Page
 }
@@ -78,6 +78,8 @@ type WorkspacesRepositoriesPackagesListResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
 	// A page of packages in the repository.
 	PaginatedPackageV2List *components.PaginatedPackageV2List
+
+	Next func() (*WorkspacesRepositoriesPackagesListResponse, error)
 }
 
 func (w WorkspacesRepositoriesPackagesListResponse) MarshalJSON() ([]byte, error) {

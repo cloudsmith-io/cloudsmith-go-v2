@@ -202,6 +202,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
@@ -211,10 +212,13 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.List(ctx, operations.WorkspacesRepositoriesPackagesListRequest{
+        Page: 668696,
         Repository: "<value>",
         Workspace: "<value>",
     })
@@ -222,7 +226,19 @@ func main() {
         log.Fatal(err)
     }
     if res.PaginatedPackageV2List != nil {
-        // handle response
+        for {
+            // handle items
+
+            res, err = res.Next()
+
+            if err != nil {
+                // handle error
+            }
+
+            if res == nil {
+                break
+            }
+        }
     }
 }
 ```
@@ -260,16 +276,18 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
-	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 )
 
 func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.GetPackage(ctx, "<value>", "<value>", "<value>")
@@ -295,7 +313,7 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the package.             |
+| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` or `slug` (identifier) of the package.   |
 | `repository`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the repository within the workspace.       |
 | `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the workspace.                             |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
@@ -325,6 +343,7 @@ package main
 
 import(
 	"context"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
@@ -333,7 +352,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.DeletePackage(ctx, "<value>", "<value>", "<value>")
@@ -351,7 +372,7 @@ func main() {
 | Parameter                                                | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | `ctx`                                                    | [context.Context](https://pkg.go.dev/context#Context)    | :heavy_check_mark:                                       | The context to use for the request.                      |
-| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` (identifier) of the package.             |
+| `identifier`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug_perm` or `slug` (identifier) of the package.   |
 | `repository`                                             | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the repository within the workspace.       |
 | `workspace`                                              | `string`                                                 | :heavy_check_mark:                                       | The `slug` of the workspace.                             |
 | `opts`                                                   | [][operations.Option](../../models/operations/option.md) | :heavy_minus_sign:                                       | The options for this request.                            |
@@ -381,8 +402,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -390,7 +411,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadAlpinePackage(ctx, "<value>", "<value>", components.AlpinePackageUploadV2{
@@ -449,8 +472,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -458,7 +481,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadCargo(ctx, "<value>", "<value>", components.CargoPackageUploadV2{
@@ -516,8 +541,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -525,7 +550,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadCocoapodsPackage(ctx, "<value>", "<value>", components.CocoapodsPackageUploadV2{
@@ -583,8 +610,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -592,7 +619,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadComposerPackage(ctx, "<value>", "<value>", components.ComposerPackageUploadV2{
@@ -650,8 +679,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -659,7 +688,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadConan(ctx, "<value>", "<value>", components.ConanPackageUploadV2{
@@ -720,8 +751,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -729,7 +760,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadCondaPackage(ctx, "<value>", "<value>", components.CondaPackageUploadV2{
@@ -787,8 +820,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -796,7 +829,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadCranPackage(ctx, "<value>", "<value>", components.CranPackageUploadV2{
@@ -854,8 +889,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -863,7 +898,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadDartPackage(ctx, "<value>", "<value>", components.DartPackageUploadV2{
@@ -921,8 +958,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -930,7 +967,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadDebPackage(ctx, "<value>", "<value>", components.DebPackageUploadV2{
@@ -989,8 +1028,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -998,7 +1037,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadDockerPackage(ctx, "<value>", "<value>", components.DockerPackageUploadV2{
@@ -1056,8 +1097,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1065,7 +1106,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadGeneric(ctx, "<value>", "<value>", components.GenericPackageUploadV2{
@@ -1124,8 +1167,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1133,7 +1176,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadGo(ctx, "<value>", "<value>", components.GoPackageUploadV2{
@@ -1191,8 +1236,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1200,7 +1245,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadHelm(ctx, "<value>", "<value>", components.HelmPackageUploadV2{
@@ -1258,8 +1305,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1267,7 +1314,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadHex(ctx, "<value>", "<value>", components.HexPackageUploadV2{
@@ -1325,8 +1374,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1334,7 +1383,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadHuggingFace(ctx, "<value>", "<value>", components.HuggingfacePackageUploadV2{
@@ -1392,8 +1443,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1401,7 +1452,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadLuarocksPackage(ctx, "<value>", "<value>", components.LuarocksPackageUploadV2{
@@ -1459,8 +1512,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1468,7 +1521,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadMavenPackage(ctx, "<value>", "<value>", components.MavenPackageUploadV2{
@@ -1526,8 +1581,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1535,7 +1590,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadMcpPackage(ctx, "<value>", "<value>", components.McpPackageUploadV2{
@@ -1593,8 +1650,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1602,7 +1659,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadNpmPackage(ctx, "<value>", "<value>", components.NpmPackageUploadV2{
@@ -1660,8 +1719,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1669,7 +1728,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadNuget(ctx, "<value>", "<value>", components.NugetPackageUploadV2{
@@ -1727,8 +1788,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1736,7 +1797,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadP2(ctx, "<value>", "<value>", components.P2PackageUploadV2{
@@ -1794,8 +1857,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1803,7 +1866,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadPythonPackage(ctx, "<value>", "<value>", components.PythonPackageUploadV2{
@@ -1861,8 +1926,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1870,7 +1935,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadRaw(ctx, "<value>", "<value>", components.RawPackageUploadV2{
@@ -1928,8 +1995,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -1937,7 +2004,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadRpm(ctx, "<value>", "<value>", components.RpmPackageUploadV2{
@@ -1996,8 +2065,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2005,7 +2074,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadRubyPackage(ctx, "<value>", "<value>", components.RubyPackageUploadV2{
@@ -2063,8 +2134,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2072,7 +2143,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadSwift(ctx, "<value>", "<value>", components.SwiftPackageUploadV2{
@@ -2133,8 +2206,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2142,7 +2215,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadTerraformPackage(ctx, "<value>", "<value>", components.TerraformPackageUploadV2{
@@ -2200,8 +2275,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2209,7 +2284,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadVagrantPackage(ctx, "<value>", "<value>", components.VagrantPackageUploadV2{
@@ -2270,8 +2347,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2279,7 +2356,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.UploadVsxPackage(ctx, "<value>", "<value>", components.VsxPackageUploadV2{
@@ -2337,8 +2416,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2346,7 +2425,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadAlpine(ctx, "<value>", "<value>", components.AlpinePackageUploadV2{
@@ -2397,8 +2478,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2406,7 +2487,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadCargo(ctx, "<value>", "<value>", components.CargoPackageUploadV2{
@@ -2456,8 +2539,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2465,7 +2548,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateCocoapods(ctx, "<value>", "<value>", components.CocoapodsPackageUploadV2{
@@ -2515,8 +2600,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2524,7 +2609,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateComposerPackage(ctx, "<value>", "<value>", components.ComposerPackageUploadV2{
@@ -2574,8 +2661,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2583,7 +2670,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateConanPackage(ctx, "<value>", "<value>", components.ConanPackageUploadV2{
@@ -2636,8 +2725,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2645,7 +2734,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateCondaUpload(ctx, "<value>", "<value>", components.CondaPackageUploadV2{
@@ -2695,8 +2786,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2704,7 +2795,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadCran(ctx, "<value>", "<value>", components.CranPackageUploadV2{
@@ -2754,8 +2847,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2763,7 +2856,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateDart(ctx, "<value>", "<value>", components.DartPackageUploadV2{
@@ -2813,8 +2908,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2822,7 +2917,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateDeb(ctx, "<value>", "<value>", components.DebPackageUploadV2{
@@ -2873,8 +2970,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2882,7 +2979,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateDocker(ctx, "<value>", "<value>", components.DockerPackageUploadV2{
@@ -2932,8 +3031,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -2941,7 +3040,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadGeneric(ctx, "<value>", "<value>", components.GenericPackageUploadV2{
@@ -2992,8 +3093,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3001,7 +3102,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateGo(ctx, "<value>", "<value>", components.GoPackageUploadV2{
@@ -3051,8 +3154,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3060,7 +3163,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateHelmPackage(ctx, "<value>", "<value>", components.HelmPackageUploadV2{
@@ -3110,8 +3215,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3119,7 +3224,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadHex(ctx, "<value>", "<value>", components.HexPackageUploadV2{
@@ -3169,8 +3276,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3178,7 +3285,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateHuggingfaceUpload(ctx, "<value>", "<value>", components.HuggingfacePackageUploadV2{
@@ -3228,8 +3337,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3237,7 +3346,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateLuaRocks(ctx, "<value>", "<value>", components.LuarocksPackageUploadV2{
@@ -3287,8 +3398,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3296,7 +3407,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadMaven(ctx, "<value>", "<value>", components.MavenPackageUploadV2{
@@ -3346,8 +3459,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3355,7 +3468,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadMcp(ctx, "<value>", "<value>", components.McpPackageUploadV2{
@@ -3405,8 +3520,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3414,7 +3529,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadNpm(ctx, "<value>", "<value>", components.NpmPackageUploadV2{
@@ -3464,8 +3581,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3473,7 +3590,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateNugetPackage(ctx, "<value>", "<value>", components.NugetPackageUploadV2{
@@ -3523,8 +3642,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3532,7 +3651,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateP2Package(ctx, "<value>", "<value>", components.P2PackageUploadV2{
@@ -3582,8 +3703,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3591,7 +3712,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidatePythonUpload(ctx, "<value>", "<value>", components.PythonPackageUploadV2{
@@ -3641,8 +3764,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3650,7 +3773,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateRawPackage(ctx, "<value>", "<value>", components.RawPackageUploadV2{
@@ -3700,8 +3825,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3709,7 +3834,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadRpm(ctx, "<value>", "<value>", components.RpmPackageUploadV2{
@@ -3760,8 +3887,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3769,7 +3896,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateUploadRuby(ctx, "<value>", "<value>", components.RubyPackageUploadV2{
@@ -3819,8 +3948,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3828,7 +3957,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateSwift(ctx, "<value>", "<value>", components.SwiftPackageUploadV2{
@@ -3881,8 +4012,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3890,7 +4021,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateTerraformPackage(ctx, "<value>", "<value>", components.TerraformPackageUploadV2{
@@ -3940,8 +4073,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -3949,7 +4082,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateVagrantPackage(ctx, "<value>", "<value>", components.VagrantPackageUploadV2{
@@ -4002,8 +4137,8 @@ package main
 
 import(
 	"context"
-	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
 	"log"
 )
 
@@ -4011,7 +4146,9 @@ func main() {
     ctx := context.Background()
 
     s := cloudsmith.New(
-        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+        cloudsmith.WithSecurity(components.Security{
+            Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+        }),
     )
 
     res, err := s.Experimental.Packages.ValidateVsx(ctx, "<value>", "<value>", components.VsxPackageUploadV2{

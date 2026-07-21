@@ -9,6 +9,7 @@ import (
 )
 
 type WorkspacesRepositoriesFilesCompleteCreateRequest struct {
+	// The `slug_perm` (identifier) of the package file.
 	Identifier string `pathParam:"style=simple,explode=false,name=identifier"`
 	// The `slug` of the repository within the workspace.
 	Repository string `pathParam:"style=simple,explode=false,name=repository"`

@@ -3,17 +3,32 @@
 
 package components
 
-// PatchedArtifactMetadataWrite - Serializer for POST create and PATCH update on artifact metadata.
+import (
+	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
+)
+
+// PatchedArtifactMetadataWrite - Fields for creating or updating package metadata.
 type PatchedArtifactMetadataWrite struct {
 	// The metadata payload as a JSON object.
-	Content any `json:"content,omitzero"`
+	Content map[string]any `json:"content,omitzero"`
 	// The content type describing the structure of the metadata payload.
 	ContentType *string `json:"content_type,omitzero"`
 	// The identifier for the source of this metadata, for example 'upstream:npmjs'.
 	SourceIdentity *string `json:"source_identity,omitzero"`
 }
 
-func (p *PatchedArtifactMetadataWrite) GetContent() any {
+func (p PatchedArtifactMetadataWrite) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PatchedArtifactMetadataWrite) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PatchedArtifactMetadataWrite) GetContent() map[string]any {
 	if p == nil {
 		return nil
 	}

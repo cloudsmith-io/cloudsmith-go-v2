@@ -8,7 +8,7 @@ import (
 )
 
 type WorkspacesRepositoriesPackagesDestroyRequest struct {
-	// The `slug_perm` (identifier) of the package.
+	// The `slug_perm` or `slug` (identifier) of the package.
 	Identifier string `pathParam:"style=simple,explode=false,name=identifier"`
 	// The `slug` of the repository within the workspace.
 	Repository string `pathParam:"style=simple,explode=false,name=repository"`

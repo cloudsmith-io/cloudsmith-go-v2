@@ -4,12 +4,28 @@
 package components
 
 type Security struct {
-	Apikey string `security:"scheme,type=apiKey,subtype=header,name=X-Api-Key"`
+	Apikey  *string `security:"scheme,type=apiKey,subtype=header,name=X-Api-Key"`
+	Basic   *string `security:"scheme,type=apiKey,subtype=header,name=Authorization"`
+	Apikey1 *string `security:"scheme,type=apiKey,subtype=header,name=X-Api-Key"`
 }
 
-func (s *Security) GetApikey() string {
+func (s *Security) GetApikey() *string {
 	if s == nil {
-		return ""
+		return nil
 	}
 	return s.Apikey
+}
+
+func (s *Security) GetBasic() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Basic
+}
+
+func (s *Security) GetApikey1() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Apikey1
 }

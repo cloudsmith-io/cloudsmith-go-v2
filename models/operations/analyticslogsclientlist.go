@@ -34,7 +34,7 @@ type AnalyticsLogsClientListRequest struct {
 	// Type of package formats by which to filter logs (e.g. Nuget, Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
 	PackageFormat []components.PackageFormatEnum `queryParam:"style=form,explode=true,name=package_format"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// List of repositories for filtering logs. Multiple repositories can be provided e.g. `repository=test-repo&repository=another-repo`.
@@ -145,9 +145,9 @@ func (a *AnalyticsLogsClientListRequest) GetPackageFormat() []components.Package
 	return a.PackageFormat
 }
 
-func (a *AnalyticsLogsClientListRequest) GetPage() *int64 {
+func (a *AnalyticsLogsClientListRequest) GetPage() int64 {
 	if a == nil {
-		return nil
+		return 0
 	}
 	return a.Page
 }
@@ -205,6 +205,8 @@ type AnalyticsLogsClientListResponse struct {
 	HTTPMeta                  components.HTTPMetadata `json:"-"`
 	PaginatedLogsResponseList *components.PaginatedLogsResponseList
 	Body                      []byte
+
+	Next func() (*AnalyticsLogsClientListResponse, error)
 }
 
 func (a AnalyticsLogsClientListResponse) MarshalJSON() ([]byte, error) {

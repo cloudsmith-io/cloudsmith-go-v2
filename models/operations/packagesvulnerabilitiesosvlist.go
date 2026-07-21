@@ -11,7 +11,7 @@ import (
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 )
 
-// ThreatLevel - Filter by threat level. Matches the single best classified severity. Accepts normalized threat levels (critical, high, medium, low, unknown, malware) and vendor aliases (important, moderate, negligible, none, unimportant).
+// PackagesVulnerabilitiesOsvListThreatLevel - Filter by threat level. Matches the single best classified severity. Accepts normalized threat levels (critical, high, medium, low, unknown, malware) and vendor aliases (important, moderate, negligible, none, unimportant).
 //
 // * `critical` - critical
 // * `high` - high
@@ -24,26 +24,26 @@ import (
 // * `none` - none
 // * `unimportant` - unimportant
 // * `unknown` - unknown
-type ThreatLevel string
+type PackagesVulnerabilitiesOsvListThreatLevel string
 
 const (
-	ThreatLevelCritical    ThreatLevel = "critical"
-	ThreatLevelHigh        ThreatLevel = "high"
-	ThreatLevelImportant   ThreatLevel = "important"
-	ThreatLevelLow         ThreatLevel = "low"
-	ThreatLevelMalware     ThreatLevel = "malware"
-	ThreatLevelMedium      ThreatLevel = "medium"
-	ThreatLevelModerate    ThreatLevel = "moderate"
-	ThreatLevelNegligible  ThreatLevel = "negligible"
-	ThreatLevelNone        ThreatLevel = "none"
-	ThreatLevelUnimportant ThreatLevel = "unimportant"
-	ThreatLevelUnknown     ThreatLevel = "unknown"
+	PackagesVulnerabilitiesOsvListThreatLevelCritical    PackagesVulnerabilitiesOsvListThreatLevel = "critical"
+	PackagesVulnerabilitiesOsvListThreatLevelHigh        PackagesVulnerabilitiesOsvListThreatLevel = "high"
+	PackagesVulnerabilitiesOsvListThreatLevelImportant   PackagesVulnerabilitiesOsvListThreatLevel = "important"
+	PackagesVulnerabilitiesOsvListThreatLevelLow         PackagesVulnerabilitiesOsvListThreatLevel = "low"
+	PackagesVulnerabilitiesOsvListThreatLevelMalware     PackagesVulnerabilitiesOsvListThreatLevel = "malware"
+	PackagesVulnerabilitiesOsvListThreatLevelMedium      PackagesVulnerabilitiesOsvListThreatLevel = "medium"
+	PackagesVulnerabilitiesOsvListThreatLevelModerate    PackagesVulnerabilitiesOsvListThreatLevel = "moderate"
+	PackagesVulnerabilitiesOsvListThreatLevelNegligible  PackagesVulnerabilitiesOsvListThreatLevel = "negligible"
+	PackagesVulnerabilitiesOsvListThreatLevelNone        PackagesVulnerabilitiesOsvListThreatLevel = "none"
+	PackagesVulnerabilitiesOsvListThreatLevelUnimportant PackagesVulnerabilitiesOsvListThreatLevel = "unimportant"
+	PackagesVulnerabilitiesOsvListThreatLevelUnknown     PackagesVulnerabilitiesOsvListThreatLevel = "unknown"
 )
 
-func (e ThreatLevel) ToPointer() *ThreatLevel {
+func (e PackagesVulnerabilitiesOsvListThreatLevel) ToPointer() *PackagesVulnerabilitiesOsvListThreatLevel {
 	return &e
 }
-func (e *ThreatLevel) UnmarshalJSON(data []byte) error {
+func (e *PackagesVulnerabilitiesOsvListThreatLevel) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -70,10 +70,10 @@ func (e *ThreatLevel) UnmarshalJSON(data []byte) error {
 	case "unimportant":
 		fallthrough
 	case "unknown":
-		*e = ThreatLevel(v)
+		*e = PackagesVulnerabilitiesOsvListThreatLevel(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ThreatLevel: %v", v)
+		return fmt.Errorf("invalid value for PackagesVulnerabilitiesOsvListThreatLevel: %v", v)
 	}
 }
 
@@ -86,7 +86,7 @@ type PackagesVulnerabilitiesOsvListRequest struct {
 	IsMalware       optionalnullable.OptionalNullable[bool] `queryParam:"style=form,explode=true,name=is_malware"`
 	PackageSlugPerm string                                  `pathParam:"style=simple,explode=false,name=package_slug_perm"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// When true (default), only primary vulnerability records are returned, excluding duplicates identified by the primary record election process. When false, all matched records are returned including hidden duplicates.
@@ -104,7 +104,7 @@ type PackagesVulnerabilitiesOsvListRequest struct {
 	// * `none` - none
 	// * `unimportant` - unimportant
 	// * `unknown` - unknown
-	ThreatLevel *ThreatLevel `queryParam:"style=form,explode=true,name=threat_level"`
+	ThreatLevel *PackagesVulnerabilitiesOsvListThreatLevel `queryParam:"style=form,explode=true,name=threat_level"`
 	// Filter by OSV vulnerability identifier (e.g., CVE-2024-1234 or GHSA-xxxx). Matching is exact and case-sensitive, and also checks the aliases and upstream identifiers of each advisory.
 	VulnerabilityID *string `queryParam:"style=form,explode=true,name=vulnerability_id"`
 }
@@ -148,9 +148,9 @@ func (p *PackagesVulnerabilitiesOsvListRequest) GetPackageSlugPerm() string {
 	return p.PackageSlugPerm
 }
 
-func (p *PackagesVulnerabilitiesOsvListRequest) GetPage() *int64 {
+func (p *PackagesVulnerabilitiesOsvListRequest) GetPage() int64 {
 	if p == nil {
-		return nil
+		return 0
 	}
 	return p.Page
 }
@@ -169,7 +169,7 @@ func (p *PackagesVulnerabilitiesOsvListRequest) GetPrimaryRecords() *bool {
 	return p.PrimaryRecords
 }
 
-func (p *PackagesVulnerabilitiesOsvListRequest) GetThreatLevel() *ThreatLevel {
+func (p *PackagesVulnerabilitiesOsvListRequest) GetThreatLevel() *PackagesVulnerabilitiesOsvListThreatLevel {
 	if p == nil {
 		return nil
 	}
@@ -186,6 +186,8 @@ func (p *PackagesVulnerabilitiesOsvListRequest) GetVulnerabilityID() *string {
 type PackagesVulnerabilitiesOsvListResponse struct {
 	HTTPMeta                         components.HTTPMetadata `json:"-"`
 	PaginatedWebOSVVulnerabilityList *components.PaginatedWebOSVVulnerabilityList
+
+	Next func() (*PackagesVulnerabilitiesOsvListResponse, error)
 }
 
 func (p PackagesVulnerabilitiesOsvListResponse) MarshalJSON() ([]byte, error) {

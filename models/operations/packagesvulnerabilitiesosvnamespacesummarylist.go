@@ -4,17 +4,65 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 )
+
+// PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel - Filter by the severity bucket. Accepted values: critical, high, medium, low, unknown, malware.
+//
+// * `critical` - critical
+// * `high` - high
+// * `low` - low
+// * `malware` - malware
+// * `medium` - medium
+// * `unknown` - unknown
+type PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel string
+
+const (
+	PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevelCritical PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel = "critical"
+	PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevelHigh     PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel = "high"
+	PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevelLow      PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel = "low"
+	PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevelMalware  PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel = "malware"
+	PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevelMedium   PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel = "medium"
+	PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevelUnknown  PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel = "unknown"
+)
+
+func (e PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel) ToPointer() *PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel {
+	return &e
+}
+func (e *PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "critical":
+		fallthrough
+	case "high":
+		fallthrough
+	case "low":
+		fallthrough
+	case "malware":
+		fallthrough
+	case "medium":
+		fallthrough
+	case "unknown":
+		*e = PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel: %v", v)
+	}
+}
 
 type PackagesVulnerabilitiesOsvNamespaceSummaryListRequest struct {
 	// Filter by malware classification (MAL- prefix or CWE-506). When true, only malware entries are returned; when false, malware entries are excluded.
 	IsMalware optionalnullable.OptionalNullable[bool] `queryParam:"style=form,explode=true,name=is_malware"`
 	Owner     string                                  `pathParam:"style=simple,explode=false,name=owner"`
 	// A page number within the paginated result set.
-	Page *int64 `queryParam:"style=form,explode=true,name=page"`
+	Page int64 `queryParam:"style=form,explode=true,name=page"`
 	// Number of results to return per page.
 	PageSize *int64 `queryParam:"style=form,explode=true,name=page_size"`
 	// Filter by the severity bucket. Accepted values: critical, high, medium, low, unknown, malware.
@@ -25,7 +73,7 @@ type PackagesVulnerabilitiesOsvNamespaceSummaryListRequest struct {
 	// * `malware` - malware
 	// * `medium` - medium
 	// * `unknown` - unknown
-	ThreatLevel *components.ThreatLevelEnum `queryParam:"style=form,explode=true,name=threat_level"`
+	ThreatLevel *PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel `queryParam:"style=form,explode=true,name=threat_level"`
 	// Filter by OSV vulnerability identifier (e.g., CVE-2024-1234 or GHSA-xxxx). Matching is exact and case-sensitive, and also checks the aliases and upstream identifiers of each advisory.
 	VulnerabilityID *string `queryParam:"style=form,explode=true,name=vulnerability_id"`
 }
@@ -44,9 +92,9 @@ func (p *PackagesVulnerabilitiesOsvNamespaceSummaryListRequest) GetOwner() strin
 	return p.Owner
 }
 
-func (p *PackagesVulnerabilitiesOsvNamespaceSummaryListRequest) GetPage() *int64 {
+func (p *PackagesVulnerabilitiesOsvNamespaceSummaryListRequest) GetPage() int64 {
 	if p == nil {
-		return nil
+		return 0
 	}
 	return p.Page
 }
@@ -58,7 +106,7 @@ func (p *PackagesVulnerabilitiesOsvNamespaceSummaryListRequest) GetPageSize() *i
 	return p.PageSize
 }
 
-func (p *PackagesVulnerabilitiesOsvNamespaceSummaryListRequest) GetThreatLevel() *components.ThreatLevelEnum {
+func (p *PackagesVulnerabilitiesOsvNamespaceSummaryListRequest) GetThreatLevel() *PackagesVulnerabilitiesOsvNamespaceSummaryListThreatLevel {
 	if p == nil {
 		return nil
 	}
@@ -75,6 +123,8 @@ func (p *PackagesVulnerabilitiesOsvNamespaceSummaryListRequest) GetVulnerability
 type PackagesVulnerabilitiesOsvNamespaceSummaryListResponse struct {
 	HTTPMeta                                    components.HTTPMetadata `json:"-"`
 	PaginatedWebPackageVulnerabilitySummaryList *components.PaginatedWebPackageVulnerabilitySummaryList
+
+	Next func() (*PackagesVulnerabilitiesOsvNamespaceSummaryListResponse, error)
 }
 
 func (p PackagesVulnerabilitiesOsvNamespaceSummaryListResponse) MarshalJSON() ([]byte, error) {

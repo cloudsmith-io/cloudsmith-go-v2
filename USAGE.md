@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
 	"log"
 )
@@ -13,17 +14,32 @@ func main() {
 	ctx := context.Background()
 
 	s := cloudsmith.New(
-		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+		cloudsmith.WithSecurity(components.Security{
+			Apikey: cloudsmith.Pointer("<YOUR_API_KEY_HERE>"),
+		}),
 	)
 
 	res, err := s.Analytics.ListClientLogs(ctx, operations.AnalyticsLogsClientListRequest{
+		Page:      408040,
 		Workspace: "<value>",
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
 	if res.PaginatedLogsResponseList != nil {
-		// handle response
+		for {
+			// handle items
+
+			res, err = res.Next()
+
+			if err != nil {
+				// handle error
+			}
+
+			if res == nil {
+				break
+			}
+		}
 	}
 }
 
