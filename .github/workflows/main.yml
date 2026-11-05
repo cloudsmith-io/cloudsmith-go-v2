@@ -18,11 +18,21 @@ jobs:
         with:
           ssh-key: ${{ secrets.CLOUDSMITH_BOT_SSH_KEY }}
 
-      - name: Install mise tools (Go, Speakeasy)
+      - name: Install mise tools (Go)
         uses: jdx/mise-action@v4
         with:
           cache: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache SDK generator
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/openapi-generation
+          key: ${{ runner.os }}-openapi-generation-${{ hashFiles('scripts/install-generator.sh', 'mise.toml') }}
+
+      # The generator is built before the Cloudsmith GOPROXY is set, which does not serve all of its modules. The generator go.sum still verifies each module.
+      - name: Build SDK generator
+        run: ./scripts/install-generator.sh
 
       - name: Configure Cloudsmith GOPROXY
         run: |
@@ -47,12 +57,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Run Speakeasy generation
-        env:
-          SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
-        run: speakeasy run
+      - name: Generate SDK
+        run: ./scripts/generate.sh
+
+      - name: Start mock server
+        run: |
+          cd tests/mockserver && go run . &
+          until curl -sf http://localhost:18080/_mockserver/health; do sleep 1; done
+
+      - name: Build
+        run: go build ./...
+
+      - name: Test
+        run: go test ./...
 
       - name: Commit generated SDKs
+        if: github.ref == 'refs/heads/main'
         env:
           CLOUDSMITH_BOT_SSH_KEY: ${{ secrets.CLOUDSMITH_BOT_SSH_KEY }}
         run: |

@@ -25,7 +25,7 @@ generation:
   requestBodyFieldName: body
   versioningStrategy: automatic
   persistentEdits:
-    enabled: "true"
+    enabled: "never"
   tests:
     generateTests: true
     generateNewTests: true

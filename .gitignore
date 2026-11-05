@@ -1,5 +1,7 @@
 # .gitignore
 .speakeasy/reports
+# Mock server request logs
+_debug/
 .env.local
 # --- Secrets & environment ---
 .env
