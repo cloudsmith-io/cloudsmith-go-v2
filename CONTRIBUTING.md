@@ -22,12 +22,14 @@ We will review and triage issues as quickly as possible. Our goal is to address 
 The `Generate SDK` workflow runs `scripts/generate.sh` on every push to `main`. The script:
 
 1. Builds the pinned [open-source Speakeasy generator](https://github.com/speakeasy-api/openapi-generation) with `scripts/install-generator.sh` (tag and commit in that script).
-2. Downloads the OpenAPI document and applies `.speakeasy/overlays/*.yaml` in strict mode. An overlay action that matches nothing fails the run.
+2. Applies `.speakeasy/overlays/*.yaml` to the committed OpenAPI document `.speakeasy/openapi.yaml` in strict mode. An overlay action that matches nothing fails the run.
 3. Generates the SDK under the AGPL-3.0-only license election, with telemetry disabled.
 
 The generator applies `.speakeasy/patches/<generated file>.patch` to each generated file that carries hand edits. It applies the patch before it compiles and lints the SDK.
 
 To run it locally, install the tools with `mise install` and run `./scripts/generate.sh`.
+
+To update the API, run `./scripts/update-spec.sh` and then `./scripts/generate.sh`. Put the new `.speakeasy/openapi.yaml` and the generated changes in their own pull request, so that the API changes are reviewed separately.
 
 If a patch does not apply, the generator writes conflict markers into the file and the run fails. To update the patch:
 

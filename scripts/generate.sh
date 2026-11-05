@@ -2,7 +2,6 @@
 # Regenerate the SDK with the pinned open-source Speakeasy generator.
 set -euo pipefail
 
-SPEC_URL="https://api.cloudsmith.io/v2/openapi/"
 OVERLAYS=(cloudsmith-v2 cloudsmith-retries cloudsmith-pagination cloudsmith-auth)
 
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -16,11 +15,10 @@ export SPEAKEASY_DISABLE_TELEMETRY=true
 
 "$root_dir/scripts/install-generator.sh"
 
-curl -sSfL --max-time 60 -o "$work_dir/openapi.yaml" "$SPEC_URL"
 overlay_args=()
 for overlay in "${OVERLAYS[@]}"; do
   overlay_args+=(-overlay "$root_dir/.speakeasy/overlays/$overlay.yaml")
 done
-"$generator_dir/overlay" -s "$work_dir/openapi.yaml" "${overlay_args[@]}" -out "$work_dir/openapi.combined.yaml"
+"$generator_dir/overlay" -s "$root_dir/.speakeasy/openapi.yaml" "${overlay_args[@]}" -out "$work_dir/openapi.combined.yaml"
 
 "$generator_dir/generate" -s "$work_dir/openapi.combined.yaml" -o "$root_dir" -l go --license agpl-3.0-only
