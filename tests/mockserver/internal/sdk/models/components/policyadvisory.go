@@ -9,22 +9,22 @@ import (
 	"time"
 )
 
-// Epss - The EPSS details. Null if not available.
-type Epss struct {
+// PolicyAdvisoryEpss - The EPSS details. Null if not available.
+type PolicyAdvisoryEpss struct {
 	// The EPSS score. Null if not available.
 	Score *float64 `json:"score"`
 	// The EPSS percentile. Null if not available.
 	Percentile *float64 `json:"percentile"`
 }
 
-func (o *Epss) GetScore() *float64 {
+func (o *PolicyAdvisoryEpss) GetScore() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.Score
 }
 
-func (o *Epss) GetPercentile() *float64 {
+func (o *PolicyAdvisoryEpss) GetPercentile() *float64 {
 	if o == nil {
 		return nil
 	}
@@ -36,7 +36,7 @@ type PolicyAdvisory struct {
 	// The CVSS score details.
 	Cvss map[string]PolicyAdvisoryCvss `json:"cvss"`
 	// The EPSS details. Null if not available.
-	Epss *Epss `json:"epss"`
+	Epss *PolicyAdvisoryEpss `json:"epss"`
 	// The format of the vulnerable package.
 	Format string `json:"format"`
 	// The vulnerability identifier. E.g. CVE-2021-1234.
@@ -80,7 +80,7 @@ func (o *PolicyAdvisory) GetCvss() map[string]PolicyAdvisoryCvss {
 	return o.Cvss
 }
 
-func (o *PolicyAdvisory) GetEpss() *Epss {
+func (o *PolicyAdvisory) GetEpss() *PolicyAdvisoryEpss {
 	if o == nil {
 		return nil
 	}

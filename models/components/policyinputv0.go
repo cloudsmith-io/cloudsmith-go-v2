@@ -204,6 +204,14 @@ func (p *PolicyInputV0) GetPackageHuggingfacePackage() *PolicyHuggingfacePackage
 	return p.GetPackage().PolicyHuggingfacePackageTyped
 }
 
+func (p *PolicyInputV0) GetPackageMavenPackage() *PolicyMavenPackageTyped {
+	return p.GetPackage().PolicyMavenPackageTyped
+}
+
+func (p *PolicyInputV0) GetPackageSkillsPackage() *PolicySkillsPackageTyped {
+	return p.GetPackage().PolicySkillsPackageTyped
+}
+
 func (p *PolicyInputV0) GetRepository() PolicyRepository {
 	if p == nil {
 		return PolicyRepository{}

@@ -8,6 +8,11 @@ package components
 type PolicyInput2 struct {
 	// Serializer for V0 policy input.
 	V0 PolicyInputV0 `json:"v0"`
+	// Serializer for preview policy input.
+	//
+	// Preview carries input that isn't in a versioned schema yet, and may change
+	// shape before it graduates into one.
+	Preview *PolicyInputPreview `json:"preview,omitempty"`
 }
 
 func (o *PolicyInput2) GetV0() PolicyInputV0 {
@@ -15,4 +20,11 @@ func (o *PolicyInput2) GetV0() PolicyInputV0 {
 		return PolicyInputV0{}
 	}
 	return o.V0
+}
+
+func (o *PolicyInput2) GetPreview() *PolicyInputPreview {
+	if o == nil {
+		return nil
+	}
+	return o.Preview
 }

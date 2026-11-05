@@ -14,17 +14,31 @@ import (
 type PolicyActionInputType string
 
 const (
+	PolicyActionInputTypeBlockPackage      PolicyActionInputType = "BlockPackage"
 	PolicyActionInputTypeSetPackageState   PolicyActionInputType = "SetPackageState"
 	PolicyActionInputTypeAddPackageTags    PolicyActionInputType = "AddPackageTags"
 	PolicyActionInputTypeRemovePackageTags PolicyActionInputType = "RemovePackageTags"
 )
 
 type PolicyActionInput struct {
+	BlockPackagePolicyActionTypedInput      *BlockPackagePolicyActionTypedInput      `queryParam:"inline"`
 	SetPackageStatePolicyActionTypedInput   *SetPackageStatePolicyActionTypedInput   `queryParam:"inline"`
 	AddPackageTagsPolicyActionTypedInput    *AddPackageTagsPolicyActionTypedInput    `queryParam:"inline"`
 	RemovePackageTagsPolicyActionTypedInput *RemovePackageTagsPolicyActionTypedInput `queryParam:"inline"`
 
 	Type PolicyActionInputType
+}
+
+func CreatePolicyActionInputBlockPackage(blockPackage BlockPackagePolicyActionTypedInput) PolicyActionInput {
+	typ := PolicyActionInputTypeBlockPackage
+
+	typStr := string(typ)
+	blockPackage.ActionType = typStr
+
+	return PolicyActionInput{
+		BlockPackagePolicyActionTypedInput: &blockPackage,
+		Type:                               typ,
+	}
 }
 
 func CreatePolicyActionInputSetPackageState(setPackageState SetPackageStatePolicyActionTypedInput) PolicyActionInput {
@@ -75,6 +89,15 @@ func (u *PolicyActionInput) UnmarshalJSON(data []byte) error {
 	}
 
 	switch dis.ActionType {
+	case "BlockPackage":
+		blockPackagePolicyActionTypedInput := new(BlockPackagePolicyActionTypedInput)
+		if err := utils.UnmarshalJSON(data, &blockPackagePolicyActionTypedInput, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ActionType == BlockPackage) type BlockPackagePolicyActionTypedInput within PolicyActionInput: %w", string(data), err)
+		}
+
+		u.BlockPackagePolicyActionTypedInput = blockPackagePolicyActionTypedInput
+		u.Type = PolicyActionInputTypeBlockPackage
+		return nil
 	case "SetPackageState":
 		setPackageStatePolicyActionTypedInput := new(SetPackageStatePolicyActionTypedInput)
 		if err := utils.UnmarshalJSON(data, &setPackageStatePolicyActionTypedInput, "", true, nil); err != nil {
@@ -108,6 +131,10 @@ func (u *PolicyActionInput) UnmarshalJSON(data []byte) error {
 }
 
 func (u PolicyActionInput) MarshalJSON() ([]byte, error) {
+	if u.BlockPackagePolicyActionTypedInput != nil {
+		return utils.MarshalJSON(u.BlockPackagePolicyActionTypedInput, "", true)
+	}
+
 	if u.SetPackageStatePolicyActionTypedInput != nil {
 		return utils.MarshalJSON(u.SetPackageStatePolicyActionTypedInput, "", true)
 	}

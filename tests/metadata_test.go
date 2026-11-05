@@ -50,20 +50,23 @@ func TestMetadata_MetadataPackagesCreate(t *testing.T) {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesCreate(ctx, "<value>", components.ArtifactMetadataWriteRequest{
-		Content:        "<value>",
+	res, err := s.Metadata.MetadataPackagesCreate(ctx, "<value>", components.ArtifactMetadataWrite{
+		Content: map[string]any{
+			"key":  "<value>",
+			"key1": "<value>",
+		},
 		ContentType:    "<value>",
 		SourceIdentity: "<value>",
 	})
 	require.NoError(t, err)
 	assert.Equal(t, 201, res.HTTPMeta.Response.StatusCode)
-	assert.NotNil(t, res.ArtifactMetadataWrite)
-	assert.Equal(t, &components.ArtifactMetadataWrite{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
+	assert.NotNil(t, res.ArtifactMetadataEntry)
+	assert.Equal(t, &components.ArtifactMetadataEntry{
+		Content:        map[string]any{},
 		ContentType:    "<value>",
 		SourceIdentity: "<value>",
-	}, res.ArtifactMetadataWrite)
+		SlugPerm:       "<value>",
+	}, res.ArtifactMetadataEntry)
 
 }
 
@@ -83,8 +86,12 @@ func TestMetadata_MetadataPackagesRetrieve(t *testing.T) {
 	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
 	assert.NotNil(t, res.ArtifactMetadataRead)
 	assert.Equal(t, &components.ArtifactMetadataRead{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
+		SlugPerm: "<value>",
+		Content: map[string]any{
+			"key":  "<value>",
+			"key1": "<value>",
+			"key2": "<value>",
+		},
 		ContentType:    "<value>",
 		Classification: components.ClassificationEnumGeneric,
 		SourceKind:     components.SourceKindEnumThirdParty,
@@ -110,12 +117,12 @@ func TestMetadata_MetadataPackagesPartialUpdate(t *testing.T) {
 	res, err := s.Metadata.MetadataPackagesPartialUpdate(ctx, "<value>", "<value>", nil)
 	require.NoError(t, err)
 	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
-	assert.NotNil(t, res.ArtifactMetadataWrite)
-	assert.Equal(t, &components.ArtifactMetadataWrite{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
+	assert.NotNil(t, res.ArtifactMetadataEntry)
+	assert.Equal(t, &components.ArtifactMetadataEntry{
+		Content:        map[string]any{},
 		ContentType:    "<value>",
 		SourceIdentity: "<value>",
-	}, res.ArtifactMetadataWrite)
+		SlugPerm:       "<value>",
+	}, res.ArtifactMetadataEntry)
 
 }

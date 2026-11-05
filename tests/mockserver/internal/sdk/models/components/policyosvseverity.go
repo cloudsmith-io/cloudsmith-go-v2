@@ -33,6 +33,12 @@ type PolicyOSVSeverity struct {
 	Score string `json:"score"`
 	// A pre-calculated numerical score (added as a convenience by Cloudsmith) for CVSS severity types, based on the CVSS vector provided by OSV. For the UBUNTU severity type, this field is null.
 	NumericalScore *float64 `json:"numerical_score"`
+	// The origin of the severity score (NVD, CNA, or SELF). SELF is implied when the source is not provided.
+	//
+	// * `NVD` - The score was assigned by the National Vulnerability Database (NVD).
+	// * `CNA` - The score was assigned by a CVE Numbering Authority (CNA).
+	// * `SELF` - The score was assigned by the record's own database.
+	Source *PolicyOSVSeveritySourceEnum `json:"source,omitempty"`
 }
 
 func (o *PolicyOSVSeverity) GetType() PolicyOSVSeverityTypeEnum {
@@ -54,4 +60,11 @@ func (o *PolicyOSVSeverity) GetNumericalScore() *float64 {
 		return nil
 	}
 	return o.NumericalScore
+}
+
+func (o *PolicyOSVSeverity) GetSource() *PolicyOSVSeveritySourceEnum {
+	if o == nil {
+		return nil
+	}
+	return o.Source
 }

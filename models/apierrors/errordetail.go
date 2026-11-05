@@ -11,6 +11,8 @@ import (
 
 // ErrorDetail - A serializer for displaying a detail error message.
 type ErrorDetail struct {
+	// A machine-readable code for the error. Only set for validation errors.
+	Code *string `json:"code,omitzero"`
 	// An extended message for the response.
 	Detail string `json:"detail"`
 	// A Dictionary of related errors where key: Field and value: Array of Errors related to that field

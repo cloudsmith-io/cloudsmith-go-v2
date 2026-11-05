@@ -16,11 +16,15 @@ type PolicyPolymorphicPackageType string
 const (
 	PolicyPolymorphicPackageTypePackage            PolicyPolymorphicPackageType = "Package"
 	PolicyPolymorphicPackageTypeHuggingfacePackage PolicyPolymorphicPackageType = "HuggingfacePackage"
+	PolicyPolymorphicPackageTypeMavenPackage       PolicyPolymorphicPackageType = "MavenPackage"
+	PolicyPolymorphicPackageTypeSkillsPackage      PolicyPolymorphicPackageType = "SkillsPackage"
 )
 
 type PolicyPolymorphicPackage struct {
 	PolicyPackageTyped            *PolicyPackageTyped            `queryParam:"inline"`
 	PolicyHuggingfacePackageTyped *PolicyHuggingfacePackageTyped `queryParam:"inline"`
+	PolicyMavenPackageTyped       *PolicyMavenPackageTyped       `queryParam:"inline"`
+	PolicySkillsPackageTyped      *PolicySkillsPackageTyped      `queryParam:"inline"`
 
 	Type PolicyPolymorphicPackageType
 }
@@ -46,6 +50,30 @@ func CreatePolicyPolymorphicPackageHuggingfacePackage(huggingfacePackage PolicyH
 	return PolicyPolymorphicPackage{
 		PolicyHuggingfacePackageTyped: &huggingfacePackage,
 		Type:                          typ,
+	}
+}
+
+func CreatePolicyPolymorphicPackageMavenPackage(mavenPackage PolicyMavenPackageTyped) PolicyPolymorphicPackage {
+	typ := PolicyPolymorphicPackageTypeMavenPackage
+
+	typStr := string(typ)
+	mavenPackage.Format = typStr
+
+	return PolicyPolymorphicPackage{
+		PolicyMavenPackageTyped: &mavenPackage,
+		Type:                    typ,
+	}
+}
+
+func CreatePolicyPolymorphicPackageSkillsPackage(skillsPackage PolicySkillsPackageTyped) PolicyPolymorphicPackage {
+	typ := PolicyPolymorphicPackageTypeSkillsPackage
+
+	typStr := string(typ)
+	skillsPackage.Format = typStr
+
+	return PolicyPolymorphicPackage{
+		PolicySkillsPackageTyped: &skillsPackage,
+		Type:                     typ,
 	}
 }
 
@@ -79,6 +107,24 @@ func (u *PolicyPolymorphicPackage) UnmarshalJSON(data []byte) error {
 		u.PolicyHuggingfacePackageTyped = policyHuggingfacePackageTyped
 		u.Type = PolicyPolymorphicPackageTypeHuggingfacePackage
 		return nil
+	case "MavenPackage":
+		policyMavenPackageTyped := new(PolicyMavenPackageTyped)
+		if err := utils.UnmarshalJSON(data, &policyMavenPackageTyped, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Format == MavenPackage) type PolicyMavenPackageTyped within PolicyPolymorphicPackage: %w", string(data), err)
+		}
+
+		u.PolicyMavenPackageTyped = policyMavenPackageTyped
+		u.Type = PolicyPolymorphicPackageTypeMavenPackage
+		return nil
+	case "SkillsPackage":
+		policySkillsPackageTyped := new(PolicySkillsPackageTyped)
+		if err := utils.UnmarshalJSON(data, &policySkillsPackageTyped, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Format == SkillsPackage) type PolicySkillsPackageTyped within PolicyPolymorphicPackage: %w", string(data), err)
+		}
+
+		u.PolicySkillsPackageTyped = policySkillsPackageTyped
+		u.Type = PolicyPolymorphicPackageTypeSkillsPackage
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for PolicyPolymorphicPackage", string(data))
@@ -91,6 +137,14 @@ func (u PolicyPolymorphicPackage) MarshalJSON() ([]byte, error) {
 
 	if u.PolicyHuggingfacePackageTyped != nil {
 		return utils.MarshalJSON(u.PolicyHuggingfacePackageTyped, "", true)
+	}
+
+	if u.PolicyMavenPackageTyped != nil {
+		return utils.MarshalJSON(u.PolicyMavenPackageTyped, "", true)
+	}
+
+	if u.PolicySkillsPackageTyped != nil {
+		return utils.MarshalJSON(u.PolicySkillsPackageTyped, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type PolicyPolymorphicPackage: all fields are null")

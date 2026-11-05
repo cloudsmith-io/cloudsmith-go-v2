@@ -14,7 +14,7 @@ type ArtifactMetadataRead struct {
 	// The unique slug identifying this metadata entry.
 	SlugPerm string `json:"slug_perm"`
 	// The metadata payload as a JSON object.
-	Content any `json:"content"`
+	Content map[string]any `json:"content"`
 	// The content type describing the structure of the metadata payload.
 	ContentType string `json:"content_type"`
 	// The classification assigned to this metadata entry.
@@ -62,9 +62,9 @@ func (a *ArtifactMetadataRead) GetSlugPerm() string {
 	return a.SlugPerm
 }
 
-func (a *ArtifactMetadataRead) GetContent() any {
+func (a *ArtifactMetadataRead) GetContent() map[string]any {
 	if a == nil {
-		return nil
+		return map[string]any{}
 	}
 	return a.Content
 }

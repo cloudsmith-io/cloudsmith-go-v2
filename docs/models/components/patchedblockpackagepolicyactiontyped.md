@@ -1,0 +1,9 @@
+# PatchedBlockPackagePolicyActionTyped
+
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `ActionType`                                                                         | `*string`                                                                            | :heavy_minus_sign:                                                                   | N/A                                                                                  |
+| `Precedence`                                                                         | `*int64`                                                                             | :heavy_minus_sign:                                                                   | The order in which this action occurs relative to other actions for the same policy. |

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// PackageFormat - * `DEB` - Debian
+// WorkspacesPoliciesDecisionLogsV1ListPackageFormat - * `DEB` - Debian
 // * `RPM` - RedHat
 // * `RUBY` - Ruby
 // * `PYTHON` - Python
@@ -44,48 +44,52 @@ import (
 // * `GENERIC` - Generic
 // * `VSX` - VSX
 // * `MCP` - MCP
+// * `NIX` - Nix
+// * `SKILLS` - AI Skills
 // * `DEFAULT` - Default
-type PackageFormat string
+type WorkspacesPoliciesDecisionLogsV1ListPackageFormat string
 
 const (
-	PackageFormatDeb         PackageFormat = "DEB"
-	PackageFormatRpm         PackageFormat = "RPM"
-	PackageFormatRuby        PackageFormat = "RUBY"
-	PackageFormatPython      PackageFormat = "PYTHON"
-	PackageFormatMaven       PackageFormat = "MAVEN"
-	PackageFormatBower       PackageFormat = "BOWER"
-	PackageFormatDocker      PackageFormat = "DOCKER"
-	PackageFormatRaw         PackageFormat = "RAW"
-	PackageFormatChocolatey  PackageFormat = "CHOCOLATEY"
-	PackageFormatNpm         PackageFormat = "NPM"
-	PackageFormatNuget       PackageFormat = "NUGET"
-	PackageFormatVagrant     PackageFormat = "VAGRANT"
-	PackageFormatComposer    PackageFormat = "COMPOSER"
-	PackageFormatAlpine      PackageFormat = "ALPINE"
-	PackageFormatHelm        PackageFormat = "HELM"
-	PackageFormatConan       PackageFormat = "CONAN"
-	PackageFormatCargo       PackageFormat = "CARGO"
-	PackageFormatLuarocks    PackageFormat = "LUAROCKS"
-	PackageFormatCran        PackageFormat = "CRAN"
-	PackageFormatGo          PackageFormat = "GO"
-	PackageFormatDart        PackageFormat = "DART"
-	PackageFormatCocoapods   PackageFormat = "COCOAPODS"
-	PackageFormatTerraform   PackageFormat = "TERRAFORM"
-	PackageFormatP2          PackageFormat = "P2"
-	PackageFormatConda       PackageFormat = "CONDA"
-	PackageFormatHex         PackageFormat = "HEX"
-	PackageFormatSwift       PackageFormat = "SWIFT"
-	PackageFormatHuggingface PackageFormat = "HUGGINGFACE"
-	PackageFormatGeneric     PackageFormat = "GENERIC"
-	PackageFormatVsx         PackageFormat = "VSX"
-	PackageFormatMcp         PackageFormat = "MCP"
-	PackageFormatDefault     PackageFormat = "DEFAULT"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDeb         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DEB"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatRpm         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "RPM"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatRuby        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "RUBY"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatPython      WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "PYTHON"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatMaven       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "MAVEN"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatBower       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "BOWER"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDocker      WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DOCKER"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatRaw         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "RAW"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatChocolatey  WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CHOCOLATEY"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatNpm         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "NPM"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatNuget       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "NUGET"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatVagrant     WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "VAGRANT"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatComposer    WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "COMPOSER"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatAlpine      WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "ALPINE"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatHelm        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "HELM"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatConan       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CONAN"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatCargo       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CARGO"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatLuarocks    WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "LUAROCKS"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatCran        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CRAN"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatGo          WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "GO"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDart        WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DART"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatCocoapods   WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "COCOAPODS"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatTerraform   WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "TERRAFORM"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatP2          WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "P2"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatConda       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "CONDA"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatHex         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "HEX"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatSwift       WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "SWIFT"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatHuggingface WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "HUGGINGFACE"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatGeneric     WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "GENERIC"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatVsx         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "VSX"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatMcp         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "MCP"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatNix         WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "NIX"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatSkills      WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "SKILLS"
+	WorkspacesPoliciesDecisionLogsV1ListPackageFormatDefault     WorkspacesPoliciesDecisionLogsV1ListPackageFormat = "DEFAULT"
 )
 
-func (e PackageFormat) ToPointer() *PackageFormat {
+func (e WorkspacesPoliciesDecisionLogsV1ListPackageFormat) ToPointer() *WorkspacesPoliciesDecisionLogsV1ListPackageFormat {
 	return &e
 }
-func (e *PackageFormat) UnmarshalJSON(data []byte) error {
+func (e *WorkspacesPoliciesDecisionLogsV1ListPackageFormat) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -153,15 +157,21 @@ func (e *PackageFormat) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "MCP":
 		fallthrough
+	case "NIX":
+		fallthrough
+	case "SKILLS":
+		fallthrough
 	case "DEFAULT":
-		*e = PackageFormat(v)
+		*e = WorkspacesPoliciesDecisionLogsV1ListPackageFormat(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PackageFormat: %v", v)
+		return fmt.Errorf("invalid value for WorkspacesPoliciesDecisionLogsV1ListPackageFormat: %v", v)
 	}
 }
 
 type WorkspacesPoliciesDecisionLogsV1ListRequest struct {
+	// Return only logs newer than this `id`. This operates as an exclusive lower bound, so passing the newest `id` from a previous response fetches everything added since without repeating it. Prefer this over `created_after` for incremental fetches: `created_after` resolves only to the millisecond, and logs from a single evaluation commonly share one.
+	AfterID *string `queryParam:"style=form,explode=true,name=after_id"`
 	// Filter by `correlation_id`.
 	CorrelationID *string `queryParam:"style=form,explode=true,name=correlation_id"`
 	// Filter by the datetime at which the log was created. This operates as an inclusive lower bound (greater than or equal to).
@@ -171,7 +181,7 @@ type WorkspacesPoliciesDecisionLogsV1ListRequest struct {
 	// Filter by whether the policy matched the package.
 	Match optionalnullable.OptionalNullable[bool] `queryParam:"style=form,explode=true,name=match"`
 	// Type of package formats by which to filter logs (e.g. Nuget, Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
-	PackageFormat []PackageFormat `queryParam:"style=form,explode=true,name=package_format"`
+	PackageFormat []WorkspacesPoliciesDecisionLogsV1ListPackageFormat `queryParam:"style=form,explode=true,name=package_format"`
 	// Filter by package name.
 	PackageName *string `queryParam:"style=form,explode=true,name=package_name"`
 	// Filter by package identifier (`slug_perm`).
@@ -198,6 +208,13 @@ func (w *WorkspacesPoliciesDecisionLogsV1ListRequest) UnmarshalJSON(data []byte)
 		return err
 	}
 	return nil
+}
+
+func (o *WorkspacesPoliciesDecisionLogsV1ListRequest) GetAfterID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AfterID
 }
 
 func (o *WorkspacesPoliciesDecisionLogsV1ListRequest) GetCorrelationID() *string {
@@ -228,7 +245,7 @@ func (o *WorkspacesPoliciesDecisionLogsV1ListRequest) GetMatch() optionalnullabl
 	return o.Match
 }
 
-func (o *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageFormat() []PackageFormat {
+func (o *WorkspacesPoliciesDecisionLogsV1ListRequest) GetPackageFormat() []WorkspacesPoliciesDecisionLogsV1ListPackageFormat {
 	if o == nil {
 		return nil
 	}

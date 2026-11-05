@@ -64,13 +64,14 @@ func main() {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
-		PackageSlugPerm: "<value>",
+	res, err := s.Analytics.AnalyticsLogsPackageList(ctx, operations.AnalyticsLogsPackageListRequest{
+		Query:     cloudsmith.Pointer("package:semver OR package_format:ruby"),
+		Workspace: "<value>",
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	if res.PaginatedArtifactMetadataReadList != nil {
+	if res.PaginatedPackageLogsResponseList != nil {
 		// handle response
 	}
 }
@@ -107,13 +108,14 @@ func main() {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
-		PackageSlugPerm: "<value>",
+	res, err := s.Analytics.AnalyticsLogsPackageList(ctx, operations.AnalyticsLogsPackageListRequest{
+		Query:     cloudsmith.Pointer("package:semver OR package_format:ruby"),
+		Workspace: "<value>",
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	if res.PaginatedArtifactMetadataReadList != nil {
+	if res.PaginatedPackageLogsResponseList != nil {
 		// handle response
 	}
 }
@@ -127,6 +129,10 @@ func main() {
 <details open>
 <summary>Available methods</summary>
 
+### [Analytics](docs/sdks/analytics/README.md)
+
+* [AnalyticsLogsPackageList](docs/sdks/analytics/README.md#analyticslogspackagelist) - Returns package log events, including uploads, copies, deletes, etc.
+
 ### [Metadata](docs/sdks/metadata/README.md)
 
 * [MetadataPackagesList](docs/sdks/metadata/README.md#metadatapackageslist) - List metadata for a package
@@ -136,8 +142,20 @@ func main() {
 * [MetadataPackagesDestroy](docs/sdks/metadata/README.md#metadatapackagesdestroy) - Delete a package metadata entry
 * [MetadataValidateCreate](docs/sdks/metadata/README.md#metadatavalidatecreate) - Validate a metadata payload
 
+### [Packages](docs/sdks/packages/README.md)
+
+* [PackagesVulnerabilitiesList](docs/sdks/packages/README.md#packagesvulnerabilitieslist) - OSV advisory data for a specific package.
+* [PackagesVulnerabilitiesCountsList](docs/sdks/packages/README.md#packagesvulnerabilitiescountslist) - OSV advisory counts for a specific package.
+
 ### [Workspaces](docs/sdks/workspaces/README.md)
 
+* [WorkspacesDomainsList](docs/sdks/workspaces/README.md#workspacesdomainslist) - List active custom and Cloudsmith-owned domains available to a workspace. Cloudsmith-owned domains are the shared hostnames every workspace can use; custom domains are listed when enabled and validated, regardless of subscription status. Workspace membership is required, including for service accounts. Discovering a domain does not grant repository access.
+
+For client setup, pass both `repository` and `domain_type`, then take the first result as the preferred domain for that repository and purpose. Without `repository`, the response is a workspace-wide inventory: a `REPOSITORY` domain must only be used for the repository named in that entry. The endpoint returns results in preference order: `REPOSITORY` domains come first, then `WORKSPACE` domains, then `GLOBAL` domains. Within each custom domain scope, primary domains come before the rest, then the oldest domain comes first.
+
+Responses contain a `results` array. Follow the `Link` header's `next` relation until absent to discover all domains; an empty array means no domains match the filters. A hostname can appear under multiple domain types. Native types are only listed for package formats enabled for the request. Clients should tolerate new domain types.
+
+This endpoint discovers hostnames, not complete package-manager URLs. URL paths and authentication depend on the format and domain scope; custom domains are not necessarily a hostname-only replacement in an existing URL.
 * [WorkspacesPoliciesList](docs/sdks/workspaces/README.md#workspacespolicieslist) - List policies.
 * [WorkspacesPoliciesCreate](docs/sdks/workspaces/README.md#workspacespoliciescreate) - Create a policy.
 * [WorkspacesPoliciesRetrieve](docs/sdks/workspaces/README.md#workspacespoliciesretrieve) - Retrieve a policy.
@@ -164,6 +182,11 @@ Each log contains:
 No actions associated with the policy are executed. Instead, the endpoint reports what would happen to each package if the policy were active.
 * [WorkspacesPoliciesDecisionLogsV1List](docs/sdks/workspaces/README.md#workspacespoliciesdecisionlogsv1list) - List policy evaluation decision logs.
 * [WorkspacesPoliciesDecisionLogsV1Retrieve](docs/sdks/workspaces/README.md#workspacespoliciesdecisionlogsv1retrieve) - Retrieve the full decision log JSON from S3.
+* [WorkspacesPoliciesValidate](docs/sdks/workspaces/README.md#workspacespoliciesvalidate) - Check that a Rego policy compiles, without creating or updating anything. Use this to catch syntax and type errors while authoring a policy, before submitting it to the create or update endpoints, which apply the same check.
+
+Returns `is_valid`, plus a `findings` list describing each problem with a code, a message and, where known, the line it occurs on. A policy is valid when `findings` contains nothing of severity `error`. The submitted Rego is not stored.
+* [WorkspacesVulnerabilitiesRepoPackagesList](docs/sdks/workspaces/README.md#workspacesvulnerabilitiesrepopackageslist) - OSV advisory data for a specific repo.
+* [WorkspacesVulnerabilitiesPackagesList](docs/sdks/workspaces/README.md#workspacesvulnerabilitiespackageslist) - OSV advisory data for a specific workspace.
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -247,8 +270,9 @@ func main() {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
-		PackageSlugPerm: "<value>",
+	res, err := s.Analytics.AnalyticsLogsPackageList(ctx, operations.AnalyticsLogsPackageListRequest{
+		Query:     cloudsmith.Pointer("package:semver OR package_format:ruby"),
+		Workspace: "<value>",
 	}, operations.WithRetries(
 		retry.Config{
 			Strategy: "backoff",
@@ -263,7 +287,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if res.PaginatedArtifactMetadataReadList != nil {
+	if res.PaginatedPackageLogsResponseList != nil {
 		// handle response
 	}
 }
@@ -300,13 +324,14 @@ func main() {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
-		PackageSlugPerm: "<value>",
+	res, err := s.Analytics.AnalyticsLogsPackageList(ctx, operations.AnalyticsLogsPackageListRequest{
+		Query:     cloudsmith.Pointer("package:semver OR package_format:ruby"),
+		Workspace: "<value>",
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	if res.PaginatedArtifactMetadataReadList != nil {
+	if res.PaginatedPackageLogsResponseList != nil {
 		// handle response
 	}
 }
@@ -395,13 +420,14 @@ func main() {
 		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
 	)
 
-	res, err := s.Metadata.MetadataPackagesList(ctx, operations.MetadataPackagesListRequest{
-		PackageSlugPerm: "<value>",
+	res, err := s.Analytics.AnalyticsLogsPackageList(ctx, operations.AnalyticsLogsPackageListRequest{
+		Query:     cloudsmith.Pointer("package:semver OR package_format:ruby"),
+		Workspace: "<value>",
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	if res.PaginatedArtifactMetadataReadList != nil {
+	if res.PaginatedPackageLogsResponseList != nil {
 		// handle response
 	}
 }

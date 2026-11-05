@@ -4,7 +4,7 @@
 
 package cloudsmith
 
-// Generated from OpenAPI doc version 1.1193.0 (v2) and generator version internal
+// Generated from OpenAPI doc version 1.1491.0 (v2) and generator version internal
 
 import (
 	"context"
@@ -57,7 +57,9 @@ func Pointer[T any](v T) *T { return &v }
 // https://help.cloudsmith.io/reference/introduction - Cloudsmith API Reference
 type Cloudsmith struct {
 	SDKVersion string
+	Analytics  *Analytics
 	Metadata   *Metadata
+	Packages   *Packages
 	Workspaces *Workspaces
 
 	sdkConfiguration config.SDKConfiguration
@@ -135,12 +137,12 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Cloudsmith {
 	sdk := &Cloudsmith{
-		SDKVersion: "1.2.0",
+		SDKVersion: "1.3.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:         "speakeasy-sdk/go 1.2.0 internal 1.1193.0 (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
-			SDKVersion:        "1.2.0",
+			UserAgent:         "speakeasy-sdk/go 1.3.0 internal 1.1491.0 (v2) github.com/cloudsmith-io/cloudsmith-go-v2",
+			SDKVersion:        "1.3.0",
 			GenVersion:        "internal",
-			OpenAPIDocVersion: "1.1193.0 (v2)",
+			OpenAPIDocVersion: "1.1491.0 (v2)",
 			ServerList:        ServerList,
 		},
 		hooks: hooks.New(),
@@ -180,7 +182,9 @@ func New(opts ...SDKOption) *Cloudsmith {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
+	sdk.Analytics = newAnalytics(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Metadata = newMetadata(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Packages = newPackages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Workspaces = newWorkspaces(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk

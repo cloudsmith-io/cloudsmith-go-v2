@@ -5,562 +5,9 @@
 package components
 
 import (
-	"encoding/json"
-	"errors"
-	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 	"time"
-)
-
-type BlankEnum string
-
-const (
-	BlankEnumUnknown BlankEnum = ""
-)
-
-func (e BlankEnum) ToPointer() *BlankEnum {
-	return &e
-}
-func (e *BlankEnum) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "":
-		*e = BlankEnum(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BlankEnum: %v", v)
-	}
-}
-
-// CountryEnum - * `AF` - Afghanistan
-// * `AX` - Åland Islands
-// * `AL` - Albania
-// * `DZ` - Algeria
-// * `AS` - American Samoa
-// * `AD` - Andorra
-// * `AO` - Angola
-// * `AI` - Anguilla
-// * `AQ` - Antarctica
-// * `AG` - Antigua and Barbuda
-// * `AR` - Argentina
-// * `AM` - Armenia
-// * `AW` - Aruba
-// * `AU` - Australia
-// * `AT` - Austria
-// * `AZ` - Azerbaijan
-// * `BS` - Bahamas (The)
-// * `BH` - Bahrain
-// * `BD` - Bangladesh
-// * `BB` - Barbados
-// * `BY` - Belarus
-// * `BE` - Belgium
-// * `BZ` - Belize
-// * `BJ` - Benin
-// * `BM` - Bermuda
-// * `BT` - Bhutan
-// * `BO` - Bolivia
-// * `BQ` - Bonaire, Sint Eustatius and Saba
-// * `BA` - Bosnia and Herzegovina
-// * `BW` - Botswana
-// * `BV` - Bouvet Island
-// * `BR` - Brazil
-// * `IO` - British Indian Ocean Territory
-// * `BN` - Brunei
-// * `BG` - Bulgaria
-// * `BF` - Burkina Faso
-// * `BI` - Burundi
-// * `CV` - Cabo Verde
-// * `KH` - Cambodia
-// * `CM` - Cameroon
-// * `CA` - Canada
-// * `KY` - Cayman Islands
-// * `CF` - Central African Republic
-// * `TD` - Chad
-// * `CL` - Chile
-// * `CN` - China
-// * `CX` - Christmas Island
-// * `CC` - Cocos (Keeling) Islands
-// * `CO` - Colombia
-// * `KM` - Comoros
-// * `CG` - Congo
-// * `CK` - Cook Islands
-// * `CR` - Costa Rica
-// * `CI` - Côte d'Ivoire
-// * `HR` - Croatia
-// * `CU` - Cuba
-// * `CW` - Curaçao
-// * `CY` - Cyprus
-// * `CZ` - Czechia
-// * `CD` - Democratic Republic of the Congo
-// * `DK` - Denmark
-// * `DJ` - Djibouti
-// * `DM` - Dominica
-// * `DO` - Dominican Republic
-// * `EC` - Ecuador
-// * `EG` - Egypt
-// * `SV` - El Salvador
-// * `GQ` - Equatorial Guinea
-// * `ER` - Eritrea
-// * `EE` - Estonia
-// * `SZ` - Eswatini
-// * `ET` - Ethiopia
-// * `FK` - Falkland Islands (Malvinas)
-// * `FO` - Faroe Islands
-// * `FJ` - Fiji
-// * `FI` - Finland
-// * `FR` - France
-// * `GF` - French Guiana
-// * `PF` - French Polynesia
-// * `TF` - French Southern Territories
-// * `GA` - Gabon
-// * `GM` - Gambia
-// * `GE` - Georgia
-// * `DE` - Germany
-// * `GH` - Ghana
-// * `GI` - Gibraltar
-// * `GR` - Greece
-// * `GL` - Greenland
-// * `GD` - Grenada
-// * `GP` - Guadeloupe
-// * `GU` - Guam
-// * `GT` - Guatemala
-// * `GG` - Guernsey
-// * `GN` - Guinea
-// * `GW` - Guinea-Bissau
-// * `GY` - Guyana
-// * `HT` - Haiti
-// * `HM` - Heard Island and McDonald Islands
-// * `HN` - Honduras
-// * `HK` - Hong Kong
-// * `HU` - Hungary
-// * `IS` - Iceland
-// * `IN` - India
-// * `ID` - Indonesia
-// * `IR` - Iran
-// * `IQ` - Iraq
-// * `IE` - Ireland
-// * `IM` - Isle of Man
-// * `IL` - Israel
-// * `IT` - Italy
-// * `JM` - Jamaica
-// * `JP` - Japan
-// * `JE` - Jersey
-// * `JO` - Jordan
-// * `KZ` - Kazakhstan
-// * `KE` - Kenya
-// * `KI` - Kiribati
-// * `KW` - Kuwait
-// * `KG` - Kyrgyzstan
-// * `LA` - Laos
-// * `LV` - Latvia
-// * `LB` - Lebanon
-// * `LS` - Lesotho
-// * `LR` - Liberia
-// * `LY` - Libya
-// * `LI` - Liechtenstein
-// * `LT` - Lithuania
-// * `LU` - Luxembourg
-// * `MO` - Macao
-// * `MG` - Madagascar
-// * `MW` - Malawi
-// * `MY` - Malaysia
-// * `MV` - Maldives
-// * `ML` - Mali
-// * `MT` - Malta
-// * `MH` - Marshall Islands
-// * `MQ` - Martinique
-// * `MR` - Mauritania
-// * `MU` - Mauritius
-// * `YT` - Mayotte
-// * `MX` - Mexico
-// * `FM` - Micronesia
-// * `MD` - Moldova
-// * `MC` - Monaco
-// * `MN` - Mongolia
-// * `ME` - Montenegro
-// * `MS` - Montserrat
-// * `MA` - Morocco
-// * `MZ` - Mozambique
-// * `MM` - Myanmar
-// * `NA` - Namibia
-// * `NR` - Nauru
-// * `NP` - Nepal
-// * `NL` - Netherlands
-// * `NC` - New Caledonia
-// * `NZ` - New Zealand
-// * `NI` - Nicaragua
-// * `NE` - Niger
-// * `NG` - Nigeria
-// * `NU` - Niue
-// * `NF` - Norfolk Island
-// * `KP` - North Korea
-// * `MK` - North Macedonia
-// * `MP` - Northern Mariana Islands
-// * `NO` - Norway
-// * `OM` - Oman
-// * `PK` - Pakistan
-// * `PW` - Palau
-// * `PS` - Palestine
-// * `PA` - Panama
-// * `PG` - Papua New Guinea
-// * `PY` - Paraguay
-// * `PE` - Peru
-// * `PH` - Philippines
-// * `PN` - Pitcairn
-// * `PL` - Poland
-// * `PT` - Portugal
-// * `PR` - Puerto Rico
-// * `QA` - Qatar
-// * `RE` - Réunion
-// * `RO` - Romania
-// * `RU` - Russia
-// * `RW` - Rwanda
-// * `BL` - Saint Barthélemy
-// * `SH` - Saint Helena
-// * `KN` - Saint Kitts and Nevis
-// * `LC` - Saint Lucia
-// * `MF` - Saint Martin (French part)
-// * `PM` - Saint Pierre and Miquelon
-// * `VC` - Saint Vincent and the Grenadines
-// * `WS` - Samoa
-// * `SM` - San Marino
-// * `ST` - Sao Tome and Principe
-// * `SA` - Saudi Arabia
-// * `SN` - Senegal
-// * `RS` - Serbia
-// * `SC` - Seychelles
-// * `SL` - Sierra Leone
-// * `SG` - Singapore
-// * `SX` - Sint Maarten (Dutch part)
-// * `SK` - Slovakia
-// * `SI` - Slovenia
-// * `SB` - Solomon Islands
-// * `SO` - Somalia
-// * `ZA` - South Africa
-// * `GS` - South Georgia
-// * `KR` - South Korea
-// * `SS` - South Sudan
-// * `ES` - Spain
-// * `LK` - Sri Lanka
-// * `SD` - Sudan
-// * `SR` - Suriname
-// * `SJ` - Svalbard and Jan Mayen
-// * `SE` - Sweden
-// * `CH` - Switzerland
-// * `SY` - Syria
-// * `TW` - Taiwan
-// * `TJ` - Tajikistan
-// * `TZ` - Tanzania
-// * `TH` - Thailand
-// * `TL` - Timor-Leste
-// * `TG` - Togo
-// * `TK` - Tokelau
-// * `TO` - Tonga
-// * `TT` - Trinidad and Tobago
-// * `TN` - Tunisia
-// * `TR` - Türkiye
-// * `TM` - Turkmenistan
-// * `TC` - Turks and Caicos Islands
-// * `TV` - Tuvalu
-// * `UG` - Uganda
-// * `UA` - Ukraine
-// * `AE` - United Arab Emirates
-// * `GB` - United Kingdom
-// * `UM` - United States Minor Outlying Islands
-// * `US` - United States of America
-// * `UY` - Uruguay
-// * `UZ` - Uzbekistan
-// * `VU` - Vanuatu
-// * `VA` - Vatican City
-// * `VE` - Venezuela
-// * `VN` - Vietnam
-// * `VG` - Virgin Islands (British)
-// * `VI` - Virgin Islands (U.S.)
-// * `WF` - Wallis and Futuna
-// * `EH` - Western Sahara
-// * `YE` - Yemen
-// * `ZM` - Zambia
-// * `ZW` - Zimbabwe
-type CountryEnum string
-
-const (
-	CountryEnumAf CountryEnum = "AF"
-	CountryEnumAx CountryEnum = "AX"
-	CountryEnumAl CountryEnum = "AL"
-	CountryEnumDz CountryEnum = "DZ"
-	CountryEnumAs CountryEnum = "AS"
-	CountryEnumAd CountryEnum = "AD"
-	CountryEnumAo CountryEnum = "AO"
-	CountryEnumAi CountryEnum = "AI"
-	CountryEnumAq CountryEnum = "AQ"
-	CountryEnumAg CountryEnum = "AG"
-	CountryEnumAr CountryEnum = "AR"
-	CountryEnumAm CountryEnum = "AM"
-	CountryEnumAw CountryEnum = "AW"
-	CountryEnumAu CountryEnum = "AU"
-	CountryEnumAt CountryEnum = "AT"
-	CountryEnumAz CountryEnum = "AZ"
-	CountryEnumBs CountryEnum = "BS"
-	CountryEnumBh CountryEnum = "BH"
-	CountryEnumBd CountryEnum = "BD"
-	CountryEnumBb CountryEnum = "BB"
-	CountryEnumBy CountryEnum = "BY"
-	CountryEnumBe CountryEnum = "BE"
-	CountryEnumBz CountryEnum = "BZ"
-	CountryEnumBj CountryEnum = "BJ"
-	CountryEnumBm CountryEnum = "BM"
-	CountryEnumBt CountryEnum = "BT"
-	CountryEnumBo CountryEnum = "BO"
-	CountryEnumBq CountryEnum = "BQ"
-	CountryEnumBa CountryEnum = "BA"
-	CountryEnumBw CountryEnum = "BW"
-	CountryEnumBv CountryEnum = "BV"
-	CountryEnumBr CountryEnum = "BR"
-	CountryEnumIo CountryEnum = "IO"
-	CountryEnumBn CountryEnum = "BN"
-	CountryEnumBg CountryEnum = "BG"
-	CountryEnumBf CountryEnum = "BF"
-	CountryEnumBi CountryEnum = "BI"
-	CountryEnumCv CountryEnum = "CV"
-	CountryEnumKh CountryEnum = "KH"
-	CountryEnumCm CountryEnum = "CM"
-	CountryEnumCa CountryEnum = "CA"
-	CountryEnumKy CountryEnum = "KY"
-	CountryEnumCf CountryEnum = "CF"
-	CountryEnumTd CountryEnum = "TD"
-	CountryEnumCl CountryEnum = "CL"
-	CountryEnumCn CountryEnum = "CN"
-	CountryEnumCx CountryEnum = "CX"
-	CountryEnumCc CountryEnum = "CC"
-	CountryEnumCo CountryEnum = "CO"
-	CountryEnumKm CountryEnum = "KM"
-	CountryEnumCg CountryEnum = "CG"
-	CountryEnumCk CountryEnum = "CK"
-	CountryEnumCr CountryEnum = "CR"
-	CountryEnumCi CountryEnum = "CI"
-	CountryEnumHr CountryEnum = "HR"
-	CountryEnumCu CountryEnum = "CU"
-	CountryEnumCw CountryEnum = "CW"
-	CountryEnumCy CountryEnum = "CY"
-	CountryEnumCz CountryEnum = "CZ"
-	CountryEnumCd CountryEnum = "CD"
-	CountryEnumDk CountryEnum = "DK"
-	CountryEnumDj CountryEnum = "DJ"
-	CountryEnumDm CountryEnum = "DM"
-	CountryEnumDo CountryEnum = "DO"
-	CountryEnumEc CountryEnum = "EC"
-	CountryEnumEg CountryEnum = "EG"
-	CountryEnumSv CountryEnum = "SV"
-	CountryEnumGq CountryEnum = "GQ"
-	CountryEnumEr CountryEnum = "ER"
-	CountryEnumEe CountryEnum = "EE"
-	CountryEnumSz CountryEnum = "SZ"
-	CountryEnumEt CountryEnum = "ET"
-	CountryEnumFk CountryEnum = "FK"
-	CountryEnumFo CountryEnum = "FO"
-	CountryEnumFj CountryEnum = "FJ"
-	CountryEnumFi CountryEnum = "FI"
-	CountryEnumFr CountryEnum = "FR"
-	CountryEnumGf CountryEnum = "GF"
-	CountryEnumPf CountryEnum = "PF"
-	CountryEnumTf CountryEnum = "TF"
-	CountryEnumGa CountryEnum = "GA"
-	CountryEnumGm CountryEnum = "GM"
-	CountryEnumGe CountryEnum = "GE"
-	CountryEnumDe CountryEnum = "DE"
-	CountryEnumGh CountryEnum = "GH"
-	CountryEnumGi CountryEnum = "GI"
-	CountryEnumGr CountryEnum = "GR"
-	CountryEnumGl CountryEnum = "GL"
-	CountryEnumGd CountryEnum = "GD"
-	CountryEnumGp CountryEnum = "GP"
-	CountryEnumGu CountryEnum = "GU"
-	CountryEnumGt CountryEnum = "GT"
-	CountryEnumGg CountryEnum = "GG"
-	CountryEnumGn CountryEnum = "GN"
-	CountryEnumGw CountryEnum = "GW"
-	CountryEnumGy CountryEnum = "GY"
-	CountryEnumHt CountryEnum = "HT"
-	CountryEnumHm CountryEnum = "HM"
-	CountryEnumHn CountryEnum = "HN"
-	CountryEnumHk CountryEnum = "HK"
-	CountryEnumHu CountryEnum = "HU"
-	CountryEnumIs CountryEnum = "IS"
-	CountryEnumIn CountryEnum = "IN"
-	CountryEnumID CountryEnum = "ID"
-	CountryEnumIr CountryEnum = "IR"
-	CountryEnumIq CountryEnum = "IQ"
-	CountryEnumIe CountryEnum = "IE"
-	CountryEnumIm CountryEnum = "IM"
-	CountryEnumIl CountryEnum = "IL"
-	CountryEnumIt CountryEnum = "IT"
-	CountryEnumJm CountryEnum = "JM"
-	CountryEnumJp CountryEnum = "JP"
-	CountryEnumJe CountryEnum = "JE"
-	CountryEnumJo CountryEnum = "JO"
-	CountryEnumKz CountryEnum = "KZ"
-	CountryEnumKe CountryEnum = "KE"
-	CountryEnumKi CountryEnum = "KI"
-	CountryEnumKw CountryEnum = "KW"
-	CountryEnumKg CountryEnum = "KG"
-	CountryEnumLa CountryEnum = "LA"
-	CountryEnumLv CountryEnum = "LV"
-	CountryEnumLb CountryEnum = "LB"
-	CountryEnumLs CountryEnum = "LS"
-	CountryEnumLr CountryEnum = "LR"
-	CountryEnumLy CountryEnum = "LY"
-	CountryEnumLi CountryEnum = "LI"
-	CountryEnumLt CountryEnum = "LT"
-	CountryEnumLu CountryEnum = "LU"
-	CountryEnumMo CountryEnum = "MO"
-	CountryEnumMg CountryEnum = "MG"
-	CountryEnumMw CountryEnum = "MW"
-	CountryEnumMy CountryEnum = "MY"
-	CountryEnumMv CountryEnum = "MV"
-	CountryEnumMl CountryEnum = "ML"
-	CountryEnumMt CountryEnum = "MT"
-	CountryEnumMh CountryEnum = "MH"
-	CountryEnumMq CountryEnum = "MQ"
-	CountryEnumMr CountryEnum = "MR"
-	CountryEnumMu CountryEnum = "MU"
-	CountryEnumYt CountryEnum = "YT"
-	CountryEnumMx CountryEnum = "MX"
-	CountryEnumFm CountryEnum = "FM"
-	CountryEnumMd CountryEnum = "MD"
-	CountryEnumMc CountryEnum = "MC"
-	CountryEnumMn CountryEnum = "MN"
-	CountryEnumMe CountryEnum = "ME"
-	CountryEnumMs CountryEnum = "MS"
-	CountryEnumMa CountryEnum = "MA"
-	CountryEnumMz CountryEnum = "MZ"
-	CountryEnumMm CountryEnum = "MM"
-	CountryEnumNa CountryEnum = "NA"
-	CountryEnumNr CountryEnum = "NR"
-	CountryEnumNp CountryEnum = "NP"
-	CountryEnumNl CountryEnum = "NL"
-	CountryEnumNc CountryEnum = "NC"
-	CountryEnumNz CountryEnum = "NZ"
-	CountryEnumNi CountryEnum = "NI"
-	CountryEnumNe CountryEnum = "NE"
-	CountryEnumNg CountryEnum = "NG"
-	CountryEnumNu CountryEnum = "NU"
-	CountryEnumNf CountryEnum = "NF"
-	CountryEnumKp CountryEnum = "KP"
-	CountryEnumMk CountryEnum = "MK"
-	CountryEnumMp CountryEnum = "MP"
-	CountryEnumNo CountryEnum = "NO"
-	CountryEnumOm CountryEnum = "OM"
-	CountryEnumPk CountryEnum = "PK"
-	CountryEnumPw CountryEnum = "PW"
-	CountryEnumPs CountryEnum = "PS"
-	CountryEnumPa CountryEnum = "PA"
-	CountryEnumPg CountryEnum = "PG"
-	CountryEnumPy CountryEnum = "PY"
-	CountryEnumPe CountryEnum = "PE"
-	CountryEnumPh CountryEnum = "PH"
-	CountryEnumPn CountryEnum = "PN"
-	CountryEnumPl CountryEnum = "PL"
-	CountryEnumPt CountryEnum = "PT"
-	CountryEnumPr CountryEnum = "PR"
-	CountryEnumQa CountryEnum = "QA"
-	CountryEnumRe CountryEnum = "RE"
-	CountryEnumRo CountryEnum = "RO"
-	CountryEnumRu CountryEnum = "RU"
-	CountryEnumRw CountryEnum = "RW"
-	CountryEnumBl CountryEnum = "BL"
-	CountryEnumSh CountryEnum = "SH"
-	CountryEnumKn CountryEnum = "KN"
-	CountryEnumLc CountryEnum = "LC"
-	CountryEnumMf CountryEnum = "MF"
-	CountryEnumPm CountryEnum = "PM"
-	CountryEnumVc CountryEnum = "VC"
-	CountryEnumWs CountryEnum = "WS"
-	CountryEnumSm CountryEnum = "SM"
-	CountryEnumSt CountryEnum = "ST"
-	CountryEnumSa CountryEnum = "SA"
-	CountryEnumSn CountryEnum = "SN"
-	CountryEnumRs CountryEnum = "RS"
-	CountryEnumSc CountryEnum = "SC"
-	CountryEnumSl CountryEnum = "SL"
-	CountryEnumSg CountryEnum = "SG"
-	CountryEnumSx CountryEnum = "SX"
-	CountryEnumSk CountryEnum = "SK"
-	CountryEnumSi CountryEnum = "SI"
-	CountryEnumSb CountryEnum = "SB"
-	CountryEnumSo CountryEnum = "SO"
-	CountryEnumZa CountryEnum = "ZA"
-	CountryEnumGs CountryEnum = "GS"
-	CountryEnumKr CountryEnum = "KR"
-	CountryEnumSs CountryEnum = "SS"
-	CountryEnumEs CountryEnum = "ES"
-	CountryEnumLk CountryEnum = "LK"
-	CountryEnumSd CountryEnum = "SD"
-	CountryEnumSr CountryEnum = "SR"
-	CountryEnumSj CountryEnum = "SJ"
-	CountryEnumSe CountryEnum = "SE"
-	CountryEnumCh CountryEnum = "CH"
-	CountryEnumSy CountryEnum = "SY"
-	CountryEnumTw CountryEnum = "TW"
-	CountryEnumTj CountryEnum = "TJ"
-	CountryEnumTz CountryEnum = "TZ"
-	CountryEnumTh CountryEnum = "TH"
-	CountryEnumTl CountryEnum = "TL"
-	CountryEnumTg CountryEnum = "TG"
-	CountryEnumTk CountryEnum = "TK"
-	CountryEnumTo CountryEnum = "TO"
-	CountryEnumTt CountryEnum = "TT"
-	CountryEnumTn CountryEnum = "TN"
-	CountryEnumTr CountryEnum = "TR"
-	CountryEnumTm CountryEnum = "TM"
-	CountryEnumTc CountryEnum = "TC"
-	CountryEnumTv CountryEnum = "TV"
-	CountryEnumUg CountryEnum = "UG"
-	CountryEnumUa CountryEnum = "UA"
-	CountryEnumAe CountryEnum = "AE"
-	CountryEnumGb CountryEnum = "GB"
-	CountryEnumUm CountryEnum = "UM"
-	CountryEnumUs CountryEnum = "US"
-	CountryEnumUy CountryEnum = "UY"
-	CountryEnumUz CountryEnum = "UZ"
-	CountryEnumVu CountryEnum = "VU"
-	CountryEnumVa CountryEnum = "VA"
-	CountryEnumVe CountryEnum = "VE"
-	CountryEnumVn CountryEnum = "VN"
-	CountryEnumVg CountryEnum = "VG"
-	CountryEnumVi CountryEnum = "VI"
-	CountryEnumWf CountryEnum = "WF"
-	CountryEnumEh CountryEnum = "EH"
-	CountryEnumYe CountryEnum = "YE"
-	CountryEnumZm CountryEnum = "ZM"
-	CountryEnumZw CountryEnum = "ZW"
-)
-
-func (e CountryEnum) ToPointer() *CountryEnum {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CountryEnum) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "AF", "AX", "AL", "DZ", "AS", "AD", "AO", "AI", "AQ", "AG", "AR", "AM", "AW", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BQ", "BA", "BW", "BV", "BR", "IO", "BN", "BG", "BF", "BI", "CV", "KH", "CM", "CA", "KY", "CF", "TD", "CL", "CN", "CX", "CC", "CO", "KM", "CG", "CK", "CR", "CI", "HR", "CU", "CW", "CY", "CZ", "CD", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "GQ", "ER", "EE", "SZ", "ET", "FK", "FO", "FJ", "FI", "FR", "GF", "PF", "TF", "GA", "GM", "GE", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GG", "GN", "GW", "GY", "HT", "HM", "HN", "HK", "HU", "IS", "IN", "ID", "IR", "IQ", "IE", "IM", "IL", "IT", "JM", "JP", "JE", "JO", "KZ", "KE", "KI", "KW", "KG", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "ME", "MS", "MA", "MZ", "MM", "NA", "NR", "NP", "NL", "NC", "NZ", "NI", "NE", "NG", "NU", "NF", "KP", "MK", "MP", "NO", "OM", "PK", "PW", "PS", "PA", "PG", "PY", "PE", "PH", "PN", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "SH", "KN", "LC", "MF", "PM", "VC", "WS", "SM", "ST", "SA", "SN", "RS", "SC", "SL", "SG", "SX", "SK", "SI", "SB", "SO", "ZA", "GS", "KR", "SS", "ES", "LK", "SD", "SR", "SJ", "SE", "CH", "SY", "TW", "TJ", "TZ", "TH", "TL", "TG", "TK", "TO", "TT", "TN", "TR", "TM", "TC", "TV", "UG", "UA", "AE", "GB", "UM", "US", "UY", "UZ", "VU", "VA", "VE", "VN", "VG", "VI", "WF", "EH", "YE", "ZM", "ZW":
-			return true
-		}
-	}
-	return false
-}
-
-type CountryType string
-
-const (
-	CountryTypeCountryEnum CountryType = "CountryEnum"
-	CountryTypeBlankEnum   CountryType = "BlankEnum"
-	CountryTypeAny         CountryType = "any"
-	CountryTypeUnknown     CountryType = "Unknown"
 )
 
 // Country - The country your workspace is based in.
@@ -814,143 +261,273 @@ const (
 // * `YE` - Yemen
 // * `ZM` - Zambia
 // * `ZW` - Zimbabwe
-type Country struct {
-	CountryEnum *CountryEnum    `queryParam:"inline" union:"member"`
-	BlankEnum   *BlankEnum      `queryParam:"inline" union:"member"`
-	Any         any             `queryParam:"inline" union:"member"`
-	UnknownRaw  json.RawMessage `json:"-" union:"unknown"`
+type Country string
 
-	Type CountryType
+const (
+	CountryAf Country = "AF"
+	CountryAx Country = "AX"
+	CountryAl Country = "AL"
+	CountryDz Country = "DZ"
+	CountryAs Country = "AS"
+	CountryAd Country = "AD"
+	CountryAo Country = "AO"
+	CountryAi Country = "AI"
+	CountryAq Country = "AQ"
+	CountryAg Country = "AG"
+	CountryAr Country = "AR"
+	CountryAm Country = "AM"
+	CountryAw Country = "AW"
+	CountryAu Country = "AU"
+	CountryAt Country = "AT"
+	CountryAz Country = "AZ"
+	CountryBs Country = "BS"
+	CountryBh Country = "BH"
+	CountryBd Country = "BD"
+	CountryBb Country = "BB"
+	CountryBy Country = "BY"
+	CountryBe Country = "BE"
+	CountryBz Country = "BZ"
+	CountryBj Country = "BJ"
+	CountryBm Country = "BM"
+	CountryBt Country = "BT"
+	CountryBo Country = "BO"
+	CountryBq Country = "BQ"
+	CountryBa Country = "BA"
+	CountryBw Country = "BW"
+	CountryBv Country = "BV"
+	CountryBr Country = "BR"
+	CountryIo Country = "IO"
+	CountryBn Country = "BN"
+	CountryBg Country = "BG"
+	CountryBf Country = "BF"
+	CountryBi Country = "BI"
+	CountryCv Country = "CV"
+	CountryKh Country = "KH"
+	CountryCm Country = "CM"
+	CountryCa Country = "CA"
+	CountryKy Country = "KY"
+	CountryCf Country = "CF"
+	CountryTd Country = "TD"
+	CountryCl Country = "CL"
+	CountryCn Country = "CN"
+	CountryCx Country = "CX"
+	CountryCc Country = "CC"
+	CountryCo Country = "CO"
+	CountryKm Country = "KM"
+	CountryCg Country = "CG"
+	CountryCk Country = "CK"
+	CountryCr Country = "CR"
+	CountryCi Country = "CI"
+	CountryHr Country = "HR"
+	CountryCu Country = "CU"
+	CountryCw Country = "CW"
+	CountryCy Country = "CY"
+	CountryCz Country = "CZ"
+	CountryCd Country = "CD"
+	CountryDk Country = "DK"
+	CountryDj Country = "DJ"
+	CountryDm Country = "DM"
+	CountryDo Country = "DO"
+	CountryEc Country = "EC"
+	CountryEg Country = "EG"
+	CountrySv Country = "SV"
+	CountryGq Country = "GQ"
+	CountryEr Country = "ER"
+	CountryEe Country = "EE"
+	CountrySz Country = "SZ"
+	CountryEt Country = "ET"
+	CountryFk Country = "FK"
+	CountryFo Country = "FO"
+	CountryFj Country = "FJ"
+	CountryFi Country = "FI"
+	CountryFr Country = "FR"
+	CountryGf Country = "GF"
+	CountryPf Country = "PF"
+	CountryTf Country = "TF"
+	CountryGa Country = "GA"
+	CountryGm Country = "GM"
+	CountryGe Country = "GE"
+	CountryDe Country = "DE"
+	CountryGh Country = "GH"
+	CountryGi Country = "GI"
+	CountryGr Country = "GR"
+	CountryGl Country = "GL"
+	CountryGd Country = "GD"
+	CountryGp Country = "GP"
+	CountryGu Country = "GU"
+	CountryGt Country = "GT"
+	CountryGg Country = "GG"
+	CountryGn Country = "GN"
+	CountryGw Country = "GW"
+	CountryGy Country = "GY"
+	CountryHt Country = "HT"
+	CountryHm Country = "HM"
+	CountryHn Country = "HN"
+	CountryHk Country = "HK"
+	CountryHu Country = "HU"
+	CountryIs Country = "IS"
+	CountryIn Country = "IN"
+	CountryID Country = "ID"
+	CountryIr Country = "IR"
+	CountryIq Country = "IQ"
+	CountryIe Country = "IE"
+	CountryIm Country = "IM"
+	CountryIl Country = "IL"
+	CountryIt Country = "IT"
+	CountryJm Country = "JM"
+	CountryJp Country = "JP"
+	CountryJe Country = "JE"
+	CountryJo Country = "JO"
+	CountryKz Country = "KZ"
+	CountryKe Country = "KE"
+	CountryKi Country = "KI"
+	CountryKw Country = "KW"
+	CountryKg Country = "KG"
+	CountryLa Country = "LA"
+	CountryLv Country = "LV"
+	CountryLb Country = "LB"
+	CountryLs Country = "LS"
+	CountryLr Country = "LR"
+	CountryLy Country = "LY"
+	CountryLi Country = "LI"
+	CountryLt Country = "LT"
+	CountryLu Country = "LU"
+	CountryMo Country = "MO"
+	CountryMg Country = "MG"
+	CountryMw Country = "MW"
+	CountryMy Country = "MY"
+	CountryMv Country = "MV"
+	CountryMl Country = "ML"
+	CountryMt Country = "MT"
+	CountryMh Country = "MH"
+	CountryMq Country = "MQ"
+	CountryMr Country = "MR"
+	CountryMu Country = "MU"
+	CountryYt Country = "YT"
+	CountryMx Country = "MX"
+	CountryFm Country = "FM"
+	CountryMd Country = "MD"
+	CountryMc Country = "MC"
+	CountryMn Country = "MN"
+	CountryMe Country = "ME"
+	CountryMs Country = "MS"
+	CountryMa Country = "MA"
+	CountryMz Country = "MZ"
+	CountryMm Country = "MM"
+	CountryNa Country = "NA"
+	CountryNr Country = "NR"
+	CountryNp Country = "NP"
+	CountryNl Country = "NL"
+	CountryNc Country = "NC"
+	CountryNz Country = "NZ"
+	CountryNi Country = "NI"
+	CountryNe Country = "NE"
+	CountryNg Country = "NG"
+	CountryNu Country = "NU"
+	CountryNf Country = "NF"
+	CountryKp Country = "KP"
+	CountryMk Country = "MK"
+	CountryMp Country = "MP"
+	CountryNo Country = "NO"
+	CountryOm Country = "OM"
+	CountryPk Country = "PK"
+	CountryPw Country = "PW"
+	CountryPs Country = "PS"
+	CountryPa Country = "PA"
+	CountryPg Country = "PG"
+	CountryPy Country = "PY"
+	CountryPe Country = "PE"
+	CountryPh Country = "PH"
+	CountryPn Country = "PN"
+	CountryPl Country = "PL"
+	CountryPt Country = "PT"
+	CountryPr Country = "PR"
+	CountryQa Country = "QA"
+	CountryRe Country = "RE"
+	CountryRo Country = "RO"
+	CountryRu Country = "RU"
+	CountryRw Country = "RW"
+	CountryBl Country = "BL"
+	CountrySh Country = "SH"
+	CountryKn Country = "KN"
+	CountryLc Country = "LC"
+	CountryMf Country = "MF"
+	CountryPm Country = "PM"
+	CountryVc Country = "VC"
+	CountryWs Country = "WS"
+	CountrySm Country = "SM"
+	CountrySt Country = "ST"
+	CountrySa Country = "SA"
+	CountrySn Country = "SN"
+	CountryRs Country = "RS"
+	CountrySc Country = "SC"
+	CountrySl Country = "SL"
+	CountrySg Country = "SG"
+	CountrySx Country = "SX"
+	CountrySk Country = "SK"
+	CountrySi Country = "SI"
+	CountrySb Country = "SB"
+	CountrySo Country = "SO"
+	CountryZa Country = "ZA"
+	CountryGs Country = "GS"
+	CountryKr Country = "KR"
+	CountrySs Country = "SS"
+	CountryEs Country = "ES"
+	CountryLk Country = "LK"
+	CountrySd Country = "SD"
+	CountrySr Country = "SR"
+	CountrySj Country = "SJ"
+	CountrySe Country = "SE"
+	CountryCh Country = "CH"
+	CountrySy Country = "SY"
+	CountryTw Country = "TW"
+	CountryTj Country = "TJ"
+	CountryTz Country = "TZ"
+	CountryTh Country = "TH"
+	CountryTl Country = "TL"
+	CountryTg Country = "TG"
+	CountryTk Country = "TK"
+	CountryTo Country = "TO"
+	CountryTt Country = "TT"
+	CountryTn Country = "TN"
+	CountryTr Country = "TR"
+	CountryTm Country = "TM"
+	CountryTc Country = "TC"
+	CountryTv Country = "TV"
+	CountryUg Country = "UG"
+	CountryUa Country = "UA"
+	CountryAe Country = "AE"
+	CountryGb Country = "GB"
+	CountryUm Country = "UM"
+	CountryUs Country = "US"
+	CountryUy Country = "UY"
+	CountryUz Country = "UZ"
+	CountryVu Country = "VU"
+	CountryVa Country = "VA"
+	CountryVe Country = "VE"
+	CountryVn Country = "VN"
+	CountryVg Country = "VG"
+	CountryVi Country = "VI"
+	CountryWf Country = "WF"
+	CountryEh Country = "EH"
+	CountryYe Country = "YE"
+	CountryZm Country = "ZM"
+	CountryZw Country = "ZW"
+)
+
+func (e Country) ToPointer() *Country {
+	return &e
 }
 
-func CreateCountryCountryEnum(countryEnum CountryEnum) Country {
-	typ := CountryTypeCountryEnum
-
-	return Country{
-		CountryEnum: &countryEnum,
-		Type:        typ,
-	}
-}
-
-func CreateCountryBlankEnum(blankEnum BlankEnum) Country {
-	typ := CountryTypeBlankEnum
-
-	return Country{
-		BlankEnum: &blankEnum,
-		Type:      typ,
-	}
-}
-
-func CreateCountryAny(anyT any) Country {
-	typ := CountryTypeAny
-
-	return Country{
-		Any:  anyT,
-		Type: typ,
-	}
-}
-
-func CreateCountryUnknown(raw json.RawMessage) Country {
-	return Country{
-		UnknownRaw: raw,
-		Type:       CountryTypeUnknown,
-	}
-}
-
-func (u Country) GetUnknownRaw() json.RawMessage {
-	return u.UnknownRaw
-}
-
-func (u Country) IsUnknown() bool {
-	return u.Type == CountryTypeUnknown
-}
-
-func (u *Country) UnmarshalJSON(data []byte) error {
-	*u = Country{}
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var countryEnum CountryEnum = CountryEnum("")
-	if err := utils.UnmarshalJSON(data, &countryEnum, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CountryTypeCountryEnum,
-			Value: &countryEnum,
-		})
-	}
-
-	var blankEnum BlankEnum = BlankEnum("")
-	if err := utils.UnmarshalJSON(data, &blankEnum, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CountryTypeBlankEnum,
-			Value: &blankEnum,
-		})
-	}
-
-	var anyVar any = nil
-	if err := utils.UnmarshalJSON(data, &anyVar, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CountryTypeAny,
-			Value: anyVar,
-		})
-	}
-
-	if len(candidates) == 0 {
-		if !json.Valid(data) {
-			return fmt.Errorf("could not unmarshal `%s` into any supported union types for Country", string(data))
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Country) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AF", "AX", "AL", "DZ", "AS", "AD", "AO", "AI", "AQ", "AG", "AR", "AM", "AW", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BQ", "BA", "BW", "BV", "BR", "IO", "BN", "BG", "BF", "BI", "CV", "KH", "CM", "CA", "KY", "CF", "TD", "CL", "CN", "CX", "CC", "CO", "KM", "CG", "CK", "CR", "CI", "HR", "CU", "CW", "CY", "CZ", "CD", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "GQ", "ER", "EE", "SZ", "ET", "FK", "FO", "FJ", "FI", "FR", "GF", "PF", "TF", "GA", "GM", "GE", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GG", "GN", "GW", "GY", "HT", "HM", "HN", "HK", "HU", "IS", "IN", "ID", "IR", "IQ", "IE", "IM", "IL", "IT", "JM", "JP", "JE", "JO", "KZ", "KE", "KI", "KW", "KG", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "ME", "MS", "MA", "MZ", "MM", "NA", "NR", "NP", "NL", "NC", "NZ", "NI", "NE", "NG", "NU", "NF", "KP", "MK", "MP", "NO", "OM", "PK", "PW", "PS", "PA", "PG", "PY", "PE", "PH", "PN", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "SH", "KN", "LC", "MF", "PM", "VC", "WS", "SM", "ST", "SA", "SN", "RS", "SC", "SL", "SG", "SX", "SK", "SI", "SB", "SO", "ZA", "GS", "KR", "SS", "ES", "LK", "SD", "SR", "SJ", "SE", "CH", "SY", "TW", "TJ", "TZ", "TH", "TL", "TG", "TK", "TO", "TT", "TN", "TR", "TM", "TC", "TV", "UG", "UA", "AE", "GB", "UM", "US", "UY", "UZ", "VU", "VA", "VE", "VN", "VG", "VI", "WF", "EH", "YE", "ZM", "ZW":
+			return true
 		}
-		u.UnknownRaw = json.RawMessage(data)
-		u.Type = CountryTypeUnknown
-		return nil
 	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		u.UnknownRaw = json.RawMessage(data)
-		u.Type = CountryTypeUnknown
-		return nil
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(CountryType)
-	switch best.Type {
-	case CountryTypeCountryEnum:
-		u.CountryEnum = best.Value.(*CountryEnum)
-		return nil
-	case CountryTypeBlankEnum:
-		u.BlankEnum = best.Value.(*BlankEnum)
-		return nil
-	case CountryTypeAny:
-		u.Any = best.Value.(any)
-		return nil
-	}
-
-	if !json.Valid(data) {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Country", string(data))
-	}
-	u.UnknownRaw = json.RawMessage(data)
-	u.Type = CountryTypeUnknown
-	return nil
-}
-
-func (u Country) MarshalJSON() ([]byte, error) {
-	if u.CountryEnum != nil {
-		return utils.MarshalJSON(u.CountryEnum, "", true)
-	}
-
-	if u.BlankEnum != nil {
-		return utils.MarshalJSON(u.BlankEnum, "", true)
-	}
-
-	if u.Any != nil {
-		return utils.MarshalJSON(u.Any, "", true)
-	}
-
-	if u.UnknownRaw != nil {
-		return json.RawMessage(u.UnknownRaw), nil
-	}
-	return nil, errors.New("could not marshal union type Country: all fields are null")
+	return false
 }
 
 // PolicyWorkspace - Representation of a Workspace used in Policy input.

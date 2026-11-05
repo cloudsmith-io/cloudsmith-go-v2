@@ -10,8 +10,8 @@ import (
 
 type MetadataPackagesCreateRequest struct {
 	// The `slug_perm` of the package.
-	PackageSlugPerm string                                `pathParam:"style=simple,explode=false,name=package_slug_perm"`
-	Body            components.ArtifactMetadataWriteInput `request:"mediaType=application/json"`
+	PackageSlugPerm string                           `pathParam:"style=simple,explode=false,name=package_slug_perm"`
+	Body            components.ArtifactMetadataWrite `request:"mediaType=application/json"`
 }
 
 func (o *MetadataPackagesCreateRequest) GetPackageSlugPerm() string {
@@ -21,9 +21,9 @@ func (o *MetadataPackagesCreateRequest) GetPackageSlugPerm() string {
 	return o.PackageSlugPerm
 }
 
-func (o *MetadataPackagesCreateRequest) GetBody() components.ArtifactMetadataWriteInput {
+func (o *MetadataPackagesCreateRequest) GetBody() components.ArtifactMetadataWrite {
 	if o == nil {
-		return components.ArtifactMetadataWriteInput{}
+		return components.ArtifactMetadataWrite{}
 	}
 	return o.Body
 }
@@ -31,7 +31,7 @@ func (o *MetadataPackagesCreateRequest) GetBody() components.ArtifactMetadataWri
 type MetadataPackagesCreateResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
 	// The metadata entry was created successfully.
-	ArtifactMetadataWrite *components.ArtifactMetadataWrite
+	ArtifactMetadataEntry *components.ArtifactMetadataEntry
 }
 
 func (o *MetadataPackagesCreateResponse) GetHTTPMeta() components.HTTPMetadata {
@@ -41,9 +41,9 @@ func (o *MetadataPackagesCreateResponse) GetHTTPMeta() components.HTTPMetadata {
 	return o.HTTPMeta
 }
 
-func (o *MetadataPackagesCreateResponse) GetArtifactMetadataWrite() *components.ArtifactMetadataWrite {
+func (o *MetadataPackagesCreateResponse) GetArtifactMetadataEntry() *components.ArtifactMetadataEntry {
 	if o == nil {
 		return nil
 	}
-	return o.ArtifactMetadataWrite
+	return o.ArtifactMetadataEntry
 }

@@ -49,8 +49,12 @@ func testMetadataPackagesRetrieveMetadataPackagesRetrieve0(w http.ResponseWriter
 		return
 	}
 	var respBody *components.ArtifactMetadataRead = &components.ArtifactMetadataRead{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
+		SlugPerm: "<value>",
+		Content: map[string]any{
+			"key":  "<value>",
+			"key1": "<value>",
+			"key2": "<value>",
+		},
 		ContentType:    "<value>",
 		Classification: components.ClassificationEnumGeneric,
 		SourceKind:     components.SourceKindEnumThirdParty,

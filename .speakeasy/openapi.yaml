@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Cloudsmith API
-  version: 1.1193.0 (v2)
+  version: 1.1491.0 (v2)
   description: The API to the Cloudsmith Service
   termsOfService: https://help.cloudsmith.io/docs/legal-policies-overview
   contact:
@@ -12,6 +12,232 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
 paths:
+  /analytics/logs/package/{workspace}/:
+    get:
+      operationId: analytics_logs_package_list
+      description: Returns package log events, including uploads, copies, deletes,
+        etc.
+      parameters:
+      - in: query
+        name: end_time
+        schema:
+          type: string
+          format: date-time
+        description: End of the time range to filter logs. End time is exclusive,
+          i.e. an end time of `2025-01-01` results in a query that returns logs with
+          a timestamp of _before_ `2025-01-01T00:00:00`.
+      - in: query
+        name: event_action
+        schema:
+          type: array
+          items:
+            enum:
+            - SYNC
+            - DELETE
+            - COPY
+            - MOVE
+            - RESYNC
+            - REPUBLISH
+            - UNPUBLISH
+            - TAGS_CHANGED
+            - QUARANTINE
+            - RESTORE
+            - POLICY_VIOLATION
+            - HARD_DELETE
+            - HIDDEN
+            type: string
+            description: |-
+              * `SYNC` - sync
+              * `DELETE` - delete
+              * `COPY` - copy
+              * `MOVE` - move
+              * `RESYNC` - resync
+              * `REPUBLISH` - republish
+              * `UNPUBLISH` - unpublish
+              * `TAGS_CHANGED` - tags changed
+              * `QUARANTINE` - quarantined
+              * `RESTORE` - restored
+              * `POLICY_VIOLATION` - policy violation
+              * `HARD_DELETE` - hard delete
+              * `HIDDEN` - hidden
+        description: Type of sync action by which to filter logs (e.g. SYNC, DELETE,
+          COPY). Multiple actions can be provided e.g. `event_action=SYNC&event_action=DELETE`.
+      - in: query
+        name: event_actor
+        schema:
+          type: array
+          items:
+            type: string
+        description: Actor slug or unique identifier (slug-perm) by which to filter
+          logs. Multiple actors can be provided e.g. `event_actor=my-user&event_actor=W9iD9l2rNnrk`.
+      - in: query
+        name: event_actor_type
+        schema:
+          type: array
+          items:
+            enum:
+            - USER
+            - SERVICE
+            type: string
+            description: |-
+              * `USER` - User
+              * `SERVICE` - Service
+        description: Type of actor by which to filter logs (e.g. USER, SERVICE). Multiple
+          types can be provided e.g. `event_actor_type=USER&event_actor_type=SERVICE`.
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - csv
+          - json
+          default: json
+        description: Response format. Use `json` (default) for a paginated JSON response,
+          or `csv` to download the results as CSV.
+      - in: query
+        name: package
+        schema:
+          type: array
+          items:
+            type: string
+        description: Package name or unique identifier (slug-perm) by which to filter
+          logs. Multiple values can be provided e.g. `package=my-package&package=W9iD9l2rNnrk`.
+      - in: query
+        name: package_format
+        schema:
+          type: array
+          items:
+            enum:
+            - DEB
+            - RPM
+            - RUBY
+            - PYTHON
+            - MAVEN
+            - BOWER
+            - DOCKER
+            - RAW
+            - CHOCOLATEY
+            - NPM
+            - NUGET
+            - VAGRANT
+            - COMPOSER
+            - ALPINE
+            - HELM
+            - CONAN
+            - CARGO
+            - LUAROCKS
+            - CRAN
+            - GO
+            - DART
+            - COCOAPODS
+            - TERRAFORM
+            - P2
+            - CONDA
+            - HEX
+            - SWIFT
+            - HUGGINGFACE
+            - GENERIC
+            - VSX
+            - MCP
+            - NIX
+            - SKILLS
+            type: string
+            description: |-
+              * `DEB` - Debian
+              * `RPM` - RedHat
+              * `RUBY` - Ruby
+              * `PYTHON` - Python
+              * `MAVEN` - Maven
+              * `BOWER` - Bower
+              * `DOCKER` - Docker
+              * `RAW` - Raw
+              * `CHOCOLATEY` - Chocolatey
+              * `NPM` - npm
+              * `NUGET` - NuGet
+              * `VAGRANT` - Vagrant
+              * `COMPOSER` - Composer
+              * `ALPINE` - Alpine
+              * `HELM` - Helm
+              * `CONAN` - Conan
+              * `CARGO` - Cargo
+              * `LUAROCKS` - LuaRocks
+              * `CRAN` - CRAN
+              * `GO` - Go
+              * `DART` - Dart
+              * `COCOAPODS` - CocoaPods
+              * `TERRAFORM` - Terraform
+              * `P2` - P2
+              * `CONDA` - Conda
+              * `HEX` - Hex
+              * `SWIFT` - Swift
+              * `HUGGINGFACE` - HuggingFace
+              * `GENERIC` - Generic
+              * `VSX` - VSX
+              * `MCP` - MCP
+              * `NIX` - Nix
+              * `SKILLS` - AI Skills
+        description: Type of package formats by which to filter logs (e.g. Nuget,
+          Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: query
+        schema:
+          type: string
+        description: A search string for filtering logs. Legal prefixes are `package`
+          (alias `name`), `package_format` (alias `format`), `event_action`, `event_actor`,
+          `event_actor_type`, `repository` and `version`; a term with no prefix matches
+          the package name or identifier. Boolean operators may be used to construct
+          intricate queries. Omitting boolean operators is interpreted as an implicit
+          `AND`. The expression is combined (AND) with any other filter parameters.
+        examples:
+          PackageNamedSemverOrAnyRuby-formatPackage:
+            value: package:semver OR package_format:ruby
+            summary: Package named semver or any Ruby-format package
+      - in: query
+        name: repository
+        schema:
+          type: array
+          items:
+            type: string
+        description: List of repositories for filtering logs. Multiple repositories
+          can be provided e.g. `repository=test-repo&repository=another-repo`.
+      - in: query
+        name: start_time
+        schema:
+          type: string
+          format: date-time
+        description: Start of the time range to filter logs. Start time is inclusive,
+          i.e. a start time of `2025-01-01` results in a query that returns logs with
+          a timestamp starting from `2025-01-01T00:00:00`.
+      - in: path
+        name: workspace
+        schema:
+          type: string
+        description: The `name` of the Workspace.
+        required: true
+      tags:
+      - analytics
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPackageLogsResponseList'
+            text/csv:
+              schema:
+                type: string
+          description: ''
   /metadata/packages/{package_slug_perm}/:
     get:
       operationId: metadata_packages_list
@@ -79,9 +305,6 @@ paths:
           * `THIRD_PARTY` - Third Party
       tags:
       - metadata
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -157,15 +380,12 @@ paths:
             schema:
               $ref: '#/components/schemas/ArtifactMetadataWrite'
         required: true
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArtifactMetadataWrite'
+                $ref: '#/components/schemas/ArtifactMetadataEntry'
           description: The metadata entry was created successfully.
         '401':
           content:
@@ -265,9 +485,6 @@ paths:
         required: true
       tags:
       - metadata
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -333,15 +550,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PatchedArtifactMetadataWrite'
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArtifactMetadataWrite'
+                $ref: '#/components/schemas/ArtifactMetadataEntry'
           description: The metadata entry was updated successfully.
         '401':
           content:
@@ -440,9 +654,6 @@ paths:
         required: true
       tags:
       - metadata
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '204':
           description: The metadata entry was removed successfully.
@@ -507,9 +718,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ArtifactMetadataValidate'
         required: true
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           description: The payload is valid for the given content type.
@@ -554,6 +762,337 @@ paths:
                       - content_type cannot be changed after creation.
                   summary: content_type changed after creation
           description: The request body failed validation.
+  /packages/{package_slug_perm}/vulnerabilities/:
+    get:
+      operationId: packages_vulnerabilities_list
+      description: OSV advisory data for a specific package.
+      parameters:
+      - in: query
+        name: cvss_max
+        schema:
+          type: number
+          format: double
+          maximum: 10.0
+          minimum: 0.0
+        description: Maximum CVSS score (inclusive). Filters vulnerabilities whose
+          best classified severity has a numerical score <= this value. Use with cvss_min
+          for range filtering.
+      - in: query
+        name: cvss_min
+        schema:
+          type: number
+          format: double
+          maximum: 10.0
+          minimum: 0.0
+        description: Minimum CVSS score (inclusive). Filters vulnerabilities whose
+          best classified severity has a numerical score >= this value. Use with cvss_max
+          for range filtering.
+      - in: query
+        name: is_malware
+        schema:
+          type: boolean
+          nullable: true
+        description: Filter by malware classification (MAL- prefix or CWE-506). When
+          true, only malware entries are returned; when false, malware entries are
+          excluded.
+      - in: path
+        name: package_slug_perm
+        schema:
+          type: string
+          pattern: ^[a-zA-Z0-9]+$
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: primary_records
+        schema:
+          type: boolean
+          default: true
+        description: When true (default), only primary vulnerability records are returned,
+          excluding records that describe the same flaw. When false, all matched records
+          are returned including duplicates.
+      - in: query
+        name: sort
+        schema:
+          type: string
+          enum:
+          - -epss
+          - -severity
+          - epss
+          - severity
+          default: -severity
+        description: Field to sort by. Prepend `-` for descending order. `severity`
+          sorts by threat level, then CVSS score; within each threat level, vulnerabilities
+          without a CVSS score come last when descending and first when ascending.
+          `epss` sorts by the EPSS score of the vulnerability's CVE (`cve_id`); vulnerabilities
+          without an EPSS score always come last, and equal scores are ordered most
+          severe first in either direction.
+      - in: query
+        name: threat_level
+        schema:
+          enum:
+          - critical
+          - high
+          - important
+          - low
+          - malware
+          - medium
+          - moderate
+          - negligible
+          - none
+          - unimportant
+          - unknown
+          type: string
+          minLength: 1
+        description: |-
+          Filter by threat level. Matches the single best classified severity. Accepts normalized threat levels (critical, high, medium, low, unknown, malware) and vendor aliases (important, moderate, negligible, none, unimportant).
+
+          * `critical` - critical
+          * `high` - high
+          * `important` - important
+          * `low` - low
+          * `malware` - malware
+          * `medium` - medium
+          * `moderate` - moderate
+          * `negligible` - negligible
+          * `none` - none
+          * `unimportant` - unimportant
+          * `unknown` - unknown
+      - in: query
+        name: vulnerability_id
+        schema:
+          type: string
+          minLength: 1
+        description: Filter by OSV vulnerability identifier (e.g., CVE-2024-1234 or
+          GHSA-xxxx). Matching is exact and case-sensitive, and also checks the aliases
+          and upstream identifiers of each advisory.
+      tags:
+      - packages
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWebOSVVulnerabilityList'
+          description: ''
+  /packages/{package_slug_perm}/vulnerabilities/counts/:
+    get:
+      operationId: packages_vulnerabilities_counts_list
+      description: OSV advisory counts for a specific package.
+      parameters:
+      - in: path
+        name: package_slug_perm
+        schema:
+          type: string
+          pattern: ^[a-zA-Z0-9]+$
+        required: true
+      - in: query
+        name: primary_records
+        schema:
+          type: boolean
+          default: true
+        description: When true (default), only primary vulnerability records are returned,
+          excluding records that describe the same flaw. When false, all matched records
+          are returned including duplicates.
+      tags:
+      - packages
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebOSVSeverityCounts'
+          description: ''
+  /workspaces/{workspace}/domains/:
+    get:
+      operationId: workspaces_domains_list
+      description: |-
+        List active custom and Cloudsmith-owned domains available to a workspace. Cloudsmith-owned domains are the shared hostnames every workspace can use; custom domains are listed when enabled and validated, regardless of subscription status. Workspace membership is required, including for service accounts. Discovering a domain does not grant repository access.
+
+        For client setup, pass both `repository` and `domain_type`, then take the first result as the preferred domain for that repository and purpose. Without `repository`, the response is a workspace-wide inventory: a `REPOSITORY` domain must only be used for the repository named in that entry. The endpoint returns results in preference order: `REPOSITORY` domains come first, then `WORKSPACE` domains, then `GLOBAL` domains. Within each custom domain scope, primary domains come before the rest, then the oldest domain comes first.
+
+        Responses contain a `results` array. Follow the `Link` header's `next` relation until absent to discover all domains; an empty array means no domains match the filters. A hostname can appear under multiple domain types. Native types are only listed for package formats enabled for the request. Clients should tolerate new domain types.
+
+        This endpoint discovers hostnames, not complete package-manager URLs. URL paths and authentication depend on the format and domain scope; custom domains are not necessarily a hostname-only replacement in an existing URL.
+      parameters:
+      - in: query
+        name: domain_name
+        schema:
+          type: string
+          minLength: 1
+        description: Filter to the domain with this name. The match ignores case.
+      - in: query
+        name: domain_scope
+        schema:
+          enum:
+          - GLOBAL
+          - WORKSPACE
+          - REPOSITORY
+          type: string
+          minLength: 1
+        description: |-
+          Filter by the scope of the domain.
+
+          * `GLOBAL` - Global
+          * `WORKSPACE` - Workspace
+          * `REPOSITORY` - Repository
+      - in: query
+        name: domain_type
+        schema:
+          enum:
+          - DOWNLOAD
+          - UPLOAD
+          - CLOUDSMITH_API
+          - NATIVE_SKILLS
+          - NATIVE_CARGO
+          - NATIVE_COMPOSER
+          - NATIVE_CONAN
+          - NATIVE_CONDA
+          - NATIVE_DART
+          - NATIVE_DOCKER
+          - NATIVE_GENERIC
+          - NATIVE_GO
+          - NATIVE_HELM_OCI
+          - NATIVE_HEX
+          - NATIVE_HUGGINGFACE
+          - NATIVE_MAVEN
+          - NATIVE_NIX
+          - NATIVE_NPM
+          - NATIVE_NUGET
+          - NATIVE_PYTHON
+          - NATIVE_RUBY
+          - NATIVE_SWIFT
+          - NATIVE_TERRAFORM
+          - NATIVE_VSX
+          type: string
+          minLength: 1
+        description: |-
+          Filter by the purpose the domain serves.
+
+          * `DOWNLOAD` - Downloads
+          * `UPLOAD` - Uploads
+          * `CLOUDSMITH_API` - Cloudsmith API
+          * `NATIVE_SKILLS` - Native API: AI Skills
+          * `NATIVE_CARGO` - Native API: Cargo
+          * `NATIVE_COMPOSER` - Native API: Composer
+          * `NATIVE_CONAN` - Native API: Conan
+          * `NATIVE_CONDA` - Native API: Conda
+          * `NATIVE_DART` - Native API: Dart
+          * `NATIVE_DOCKER` - Native API: Docker
+          * `NATIVE_GENERIC` - Native API: Generic
+          * `NATIVE_GO` - Native API: Go
+          * `NATIVE_HELM_OCI` - Native API: Helm (OCI)
+          * `NATIVE_HEX` - Native API: Hex
+          * `NATIVE_HUGGINGFACE` - Native API: HuggingFace
+          * `NATIVE_MAVEN` - Native API: Maven
+          * `NATIVE_NIX` - Native API: Nix
+          * `NATIVE_NPM` - Native API: npm
+          * `NATIVE_NUGET` - Native API: NuGet
+          * `NATIVE_PYTHON` - Native API: Python
+          * `NATIVE_RUBY` - Native API: Ruby
+          * `NATIVE_SWIFT` - Native API: Swift
+          * `NATIVE_TERRAFORM` - Native API: Terraform
+          * `NATIVE_VSX` - Native API: VSX
+      - in: query
+        name: fields
+        schema:
+          type: string
+        description: Comma-separated fields to include in the response (e.g. `domain_name,domain_type`).
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: repository
+        schema:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+          minLength: 1
+        description: Filter to domains that serve this repository, plus the domains
+          that serve the whole workspace. Omit to list domains for all repositories.
+      - in: path
+        name: workspace
+        schema:
+          type: string
+        description: The `name` of the Workspace.
+        required: true
+      tags:
+      - workspaces
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDomainList'
+              examples:
+                PreferredRepositoryDomain:
+                  value:
+                    results:
+                    - domain_name: python.example.com
+                      domain_type: NATIVE_PYTHON
+                      repository: my-repository
+                      domain_scope: REPOSITORY
+                  summary: Preferred repository domain
+          description: Domains in preference order, with pagination in the headers.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+              examples:
+                RepositoryDoesNotExist:
+                  value:
+                    code: invalid
+                    detail: Invalid input.
+                    fields:
+                      repository:
+                      - Repository "my-repository" does not exist in this workspace.
+                  summary: repository does not exist
+          description: Invalid query parameters.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+          description: ''
   /workspaces/{workspace}/policies/:
     get:
       operationId: workspaces_policies_list
@@ -602,9 +1141,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -630,9 +1166,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Policy'
         required: true
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '201':
           content:
@@ -677,9 +1210,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -711,9 +1241,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Policy'
         required: true
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -744,9 +1271,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PatchedPolicy'
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -772,9 +1296,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '204':
           description: No response body
@@ -809,9 +1330,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -842,9 +1360,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PolicyAction'
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '201':
           content:
@@ -895,9 +1410,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -934,9 +1446,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PolicyAction'
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -973,9 +1482,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PatchedPolicyAction'
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -1007,9 +1513,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '204':
           description: No response body
@@ -1062,9 +1565,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -1077,6 +1577,18 @@ paths:
       operationId: workspaces_policies_decision_logs_v1_list
       description: List policy evaluation decision logs.
       parameters:
+      - in: query
+        name: after_id
+        schema:
+          type: string
+          pattern: ^[0-9A-Z]{26}$
+          maxLength: 26
+          minLength: 26
+        description: 'Return only logs newer than this `id`. This operates as an exclusive
+          lower bound, so passing the newest `id` from a previous response fetches
+          everything added since without repeating it. Prefer this over `created_after`
+          for incremental fetches: `created_after` resolves only to the millisecond,
+          and logs from a single evaluation commonly share one.'
       - in: query
         name: correlation_id
         schema:
@@ -1141,6 +1653,8 @@ paths:
             - GENERIC
             - VSX
             - MCP
+            - NIX
+            - SKILLS
             - DEFAULT
             type: string
             description: |-
@@ -1175,6 +1689,8 @@ paths:
               * `GENERIC` - Generic
               * `VSX` - VSX
               * `MCP` - MCP
+              * `NIX` - Nix
+              * `SKILLS` - AI Skills
               * `DEFAULT` - Default
         description: Type of package formats by which to filter logs (e.g. Nuget,
           Cargo, Raw). Multiple formats can be provided e.g. `package_format=Nuget&package_format=Cargo`.
@@ -1237,9 +1753,6 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
@@ -1326,6 +1839,7 @@ paths:
         name: decision_log_id
         schema:
           type: string
+          pattern: ^[0-9A-Z]{26}$
         required: true
       - in: query
         name: fields
@@ -1340,15 +1854,197 @@ paths:
         required: true
       tags:
       - workspaces
-      security:
-      - apikey: []
-      - basic: []
       responses:
         '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PolicyDecisionLog'
+          description: ''
+  /workspaces/{workspace}/policies/validate/:
+    post:
+      operationId: workspaces_policies_validate
+      description: |-
+        Check that a Rego policy compiles, without creating or updating anything. Use this to catch syntax and type errors while authoring a policy, before submitting it to the create or update endpoints, which apply the same check.
+
+        Returns `is_valid`, plus a `findings` list describing each problem with a code, a message and, where known, the line it occurs on. A policy is valid when `findings` contains nothing of severity `error`. The submitted Rego is not stored.
+      parameters:
+      - in: path
+        name: workspace
+        schema:
+          type: string
+        description: The `name` of the Workspace.
+        required: true
+      tags:
+      - workspaces
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyValidateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyValidateResponse'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+          description: ''
+  /workspaces/{workspace}/repos/{repo}/vulnerabilities/packages/:
+    get:
+      operationId: workspaces_vulnerabilities_repo_packages_list
+      description: OSV advisory data for a specific repo.
+      parameters:
+      - in: query
+        name: is_malware
+        schema:
+          type: boolean
+          nullable: true
+        description: Filter by malware classification (MAL- prefix or CWE-506). When
+          true, only malware entries are returned; when false, malware entries are
+          excluded.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: repo
+        schema:
+          type: string
+          pattern: ^[-_\w]+$
+        required: true
+      - in: query
+        name: threat_level
+        schema:
+          enum:
+          - critical
+          - high
+          - low
+          - malware
+          - medium
+          - unknown
+          type: string
+          minLength: 1
+        description: |-
+          Filter by the severity bucket. Accepted values: critical, high, medium, low, unknown, malware.
+
+          * `critical` - critical
+          * `high` - high
+          * `low` - low
+          * `malware` - malware
+          * `medium` - medium
+          * `unknown` - unknown
+      - in: query
+        name: vulnerability_id
+        schema:
+          type: string
+          minLength: 1
+        description: Filter by OSV vulnerability identifier (e.g., CVE-2024-1234 or
+          GHSA-xxxx). Matching is exact and case-sensitive, and also checks the aliases
+          and upstream identifiers of each advisory.
+      - in: path
+        name: workspace
+        schema:
+          type: string
+          pattern: ^[-_.\w]+$
+        required: true
+      tags:
+      - workspaces
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWebPackageVulnerabilitySummaryList'
+          description: ''
+  /workspaces/{workspace}/vulnerabilities/packages/:
+    get:
+      operationId: workspaces_vulnerabilities_packages_list
+      description: OSV advisory data for a specific workspace.
+      parameters:
+      - in: query
+        name: is_malware
+        schema:
+          type: boolean
+          nullable: true
+        description: Filter by malware classification (MAL- prefix or CWE-506). When
+          true, only malware entries are returned; when false, malware entries are
+          excluded.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: threat_level
+        schema:
+          enum:
+          - critical
+          - high
+          - low
+          - malware
+          - medium
+          - unknown
+          type: string
+          minLength: 1
+        description: |-
+          Filter by the severity bucket. Accepted values: critical, high, medium, low, unknown, malware.
+
+          * `critical` - critical
+          * `high` - high
+          * `low` - low
+          * `malware` - malware
+          * `medium` - medium
+          * `unknown` - unknown
+      - in: query
+        name: vulnerability_id
+        schema:
+          type: string
+          minLength: 1
+        description: Filter by OSV vulnerability identifier (e.g., CVE-2024-1234 or
+          GHSA-xxxx). Matching is exact and case-sensitive, and also checks the aliases
+          and upstream identifiers of each advisory.
+      - in: path
+        name: workspace
+        schema:
+          type: string
+          pattern: ^[-_.\w]+$
+        required: true
+      tags:
+      - workspaces
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWebPackageVulnerabilitySummaryList'
           description: ''
 components:
   schemas:
@@ -1399,6 +2095,33 @@ components:
         required:
         - action_type
       - $ref: '#/components/schemas/AddPackageTagsPolicyAction'
+    ArtifactMetadataEntry:
+      type: object
+      description: A package metadata entry.
+      properties:
+        content:
+          type: object
+          additionalProperties: {}
+          description: The metadata payload as a JSON object.
+        content_type:
+          type: string
+          description: The content type describing the structure of the metadata payload.
+          maxLength: 128
+        source_identity:
+          type: string
+          description: The identifier for the source of this metadata, for example
+            'upstream:npmjs'.
+          maxLength: 128
+        slug_perm:
+          type: string
+          readOnly: true
+          description: The unique slug identifying this metadata entry.
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - content
+      - content_type
+      - slug_perm
+      - source_identity
     ArtifactMetadataRead:
       type: object
       description: Serializer for GET list/retrieve on the effective metadata view.
@@ -1408,6 +2131,8 @@ components:
           readOnly: true
           description: The unique slug identifying this metadata entry.
         content:
+          type: object
+          additionalProperties: {}
           readOnly: true
           description: The metadata payload as a JSON object.
         content_type:
@@ -1476,6 +2201,8 @@ components:
         package slug to attach it to.
       properties:
         content:
+          type: object
+          additionalProperties: {}
           description: The metadata payload as a JSON object.
         content_type:
           type: string
@@ -1486,13 +2213,11 @@ components:
       - content_type
     ArtifactMetadataWrite:
       type: object
-      description: Serializer for POST create and PATCH update on artifact metadata.
+      description: Fields for creating or updating package metadata.
       properties:
-        slug_perm:
-          type: string
-          readOnly: true
-          pattern: ^[-a-zA-Z0-9_]+$
         content:
+          type: object
+          additionalProperties: {}
           description: The metadata payload as a JSON object.
         content_type:
           type: string
@@ -1506,7 +2231,6 @@ components:
       required:
       - content
       - content_type
-      - slug_perm
       - source_identity
     AvailabilityEnum:
       enum:
@@ -1518,9 +2242,47 @@ components:
         * `UNAVAILABLE` - Unavailable
         * `PARTIAL` - Partially complete
         * `COMPLETE` - Complete
-    BlankEnum:
-      enum:
-      - ''
+    BlockPackagePolicyAction:
+      type: object
+      properties:
+        precedence:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          description: The order in which this action occurs relative to other actions
+            for the same policy.
+        slug_perm:
+          type: string
+          readOnly: true
+          description: The Action identifier.
+          pattern: ^[-a-zA-Z0-9_]+$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date and time the policy was created.
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date and time the policy was updated.
+        effect:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - effect
+      - slug_perm
+      - updated_at
+    BlockPackagePolicyActionTyped:
+      allOf:
+      - type: object
+        properties:
+          action_type:
+            type: string
+        required:
+        - action_type
+      - $ref: '#/components/schemas/BlockPackagePolicyAction'
     ClassificationEnum:
       enum:
       - UNKNOWN
@@ -2039,10 +2801,137 @@ components:
         * `YE` - Yemen
         * `ZM` - Zambia
         * `ZW` - Zimbabwe
+    Domain:
+      type: object
+      description: A domain that serves a workspace, either custom or Cloudsmith-owned.
+      properties:
+        domain_name:
+          type: string
+          readOnly: true
+          description: The hostname clients address the domain by, without a scheme
+            or path. The same hostname may serve more than one domain type.
+        domain_type:
+          allOf:
+          - $ref: '#/components/schemas/DomainTypeEnum'
+          description: |-
+            The purpose the domain serves. A native API type names the package format, and the interface for a format served over OCI (e.g. `NATIVE_HELM_OCI`).
+
+            * `DOWNLOAD` - Downloads
+            * `UPLOAD` - Uploads
+            * `CLOUDSMITH_API` - Cloudsmith API
+            * `NATIVE_SKILLS` - Native API: AI Skills
+            * `NATIVE_CARGO` - Native API: Cargo
+            * `NATIVE_COMPOSER` - Native API: Composer
+            * `NATIVE_CONAN` - Native API: Conan
+            * `NATIVE_CONDA` - Native API: Conda
+            * `NATIVE_DART` - Native API: Dart
+            * `NATIVE_DOCKER` - Native API: Docker
+            * `NATIVE_GENERIC` - Native API: Generic
+            * `NATIVE_GO` - Native API: Go
+            * `NATIVE_HELM_OCI` - Native API: Helm (OCI)
+            * `NATIVE_HEX` - Native API: Hex
+            * `NATIVE_HUGGINGFACE` - Native API: HuggingFace
+            * `NATIVE_MAVEN` - Native API: Maven
+            * `NATIVE_NIX` - Native API: Nix
+            * `NATIVE_NPM` - Native API: npm
+            * `NATIVE_NUGET` - Native API: NuGet
+            * `NATIVE_PYTHON` - Native API: Python
+            * `NATIVE_RUBY` - Native API: Ruby
+            * `NATIVE_SWIFT` - Native API: Swift
+            * `NATIVE_TERRAFORM` - Native API: Terraform
+            * `NATIVE_VSX` - Native API: VSX
+          readOnly: true
+        repository:
+          type: string
+          nullable: true
+          readOnly: true
+          description: The slug of the repository the domain is restricted to, or
+            `null` if it serves the whole workspace.
+        domain_scope:
+          allOf:
+          - $ref: '#/components/schemas/DomainScopeEnum'
+          description: |-
+            The scope of the domain. `GLOBAL` for a Cloudsmith-owned domain, `WORKSPACE` for a custom domain without a repository, and `REPOSITORY` for a custom domain restricted to `repository`.
+
+            * `GLOBAL` - Global
+            * `WORKSPACE` - Workspace
+            * `REPOSITORY` - Repository
+          readOnly: true
+      required:
+      - domain_name
+      - domain_scope
+      - domain_type
+      - repository
+    DomainScopeEnum:
+      enum:
+      - GLOBAL
+      - WORKSPACE
+      - REPOSITORY
+      type: string
+      description: |-
+        * `GLOBAL` - Global
+        * `WORKSPACE` - Workspace
+        * `REPOSITORY` - Repository
+    DomainTypeEnum:
+      enum:
+      - DOWNLOAD
+      - UPLOAD
+      - CLOUDSMITH_API
+      - NATIVE_SKILLS
+      - NATIVE_CARGO
+      - NATIVE_COMPOSER
+      - NATIVE_CONAN
+      - NATIVE_CONDA
+      - NATIVE_DART
+      - NATIVE_DOCKER
+      - NATIVE_GENERIC
+      - NATIVE_GO
+      - NATIVE_HELM_OCI
+      - NATIVE_HEX
+      - NATIVE_HUGGINGFACE
+      - NATIVE_MAVEN
+      - NATIVE_NIX
+      - NATIVE_NPM
+      - NATIVE_NUGET
+      - NATIVE_PYTHON
+      - NATIVE_RUBY
+      - NATIVE_SWIFT
+      - NATIVE_TERRAFORM
+      - NATIVE_VSX
+      type: string
+      description: |-
+        * `DOWNLOAD` - Downloads
+        * `UPLOAD` - Uploads
+        * `CLOUDSMITH_API` - Cloudsmith API
+        * `NATIVE_SKILLS` - Native API: AI Skills
+        * `NATIVE_CARGO` - Native API: Cargo
+        * `NATIVE_COMPOSER` - Native API: Composer
+        * `NATIVE_CONAN` - Native API: Conan
+        * `NATIVE_CONDA` - Native API: Conda
+        * `NATIVE_DART` - Native API: Dart
+        * `NATIVE_DOCKER` - Native API: Docker
+        * `NATIVE_GENERIC` - Native API: Generic
+        * `NATIVE_GO` - Native API: Go
+        * `NATIVE_HELM_OCI` - Native API: Helm (OCI)
+        * `NATIVE_HEX` - Native API: Hex
+        * `NATIVE_HUGGINGFACE` - Native API: HuggingFace
+        * `NATIVE_MAVEN` - Native API: Maven
+        * `NATIVE_NIX` - Native API: Nix
+        * `NATIVE_NPM` - Native API: npm
+        * `NATIVE_NUGET` - Native API: NuGet
+        * `NATIVE_PYTHON` - Native API: Python
+        * `NATIVE_RUBY` - Native API: Ruby
+        * `NATIVE_SWIFT` - Native API: Swift
+        * `NATIVE_TERRAFORM` - Native API: Terraform
+        * `NATIVE_VSX` - Native API: VSX
     ErrorDetail:
       type: object
       description: A serializer for displaying a detail error message.
       properties:
+        code:
+          type: string
+          description: A machine-readable code for the error. Only set for validation
+            errors.
         detail:
           type: string
           description: An extended message for the response.
@@ -2056,6 +2945,108 @@ components:
             Array of Errors related to that field'
       required:
       - detail
+    EventActionEnum:
+      enum:
+      - SYNC
+      - DELETE
+      - COPY
+      - MOVE
+      - RESYNC
+      - REPUBLISH
+      - UNPUBLISH
+      - TAGS_CHANGED
+      - QUARANTINE
+      - RESTORE
+      - POLICY_VIOLATION
+      - HARD_DELETE
+      - HIDDEN
+      type: string
+      description: |-
+        * `SYNC` - sync
+        * `DELETE` - delete
+        * `COPY` - copy
+        * `MOVE` - move
+        * `RESYNC` - resync
+        * `REPUBLISH` - republish
+        * `UNPUBLISH` - unpublish
+        * `TAGS_CHANGED` - tags changed
+        * `QUARANTINE` - quarantined
+        * `RESTORE` - restored
+        * `POLICY_VIOLATION` - policy violation
+        * `HARD_DELETE` - hard delete
+        * `HIDDEN` - hidden
+    FormatEnum:
+      enum:
+      - DEB
+      - RPM
+      - RUBY
+      - PYTHON
+      - MAVEN
+      - BOWER
+      - DOCKER
+      - RAW
+      - CHOCOLATEY
+      - NPM
+      - NUGET
+      - VAGRANT
+      - COMPOSER
+      - ALPINE
+      - HELM
+      - CONAN
+      - CARGO
+      - LUAROCKS
+      - CRAN
+      - GO
+      - DART
+      - COCOAPODS
+      - TERRAFORM
+      - P2
+      - CONDA
+      - HEX
+      - SWIFT
+      - HUGGINGFACE
+      - GENERIC
+      - VSX
+      - MCP
+      - NIX
+      - SKILLS
+      - DEFAULT
+      type: string
+      description: |-
+        * `DEB` - Debian
+        * `RPM` - RedHat
+        * `RUBY` - Ruby
+        * `PYTHON` - Python
+        * `MAVEN` - Maven
+        * `BOWER` - Bower
+        * `DOCKER` - Docker
+        * `RAW` - Raw
+        * `CHOCOLATEY` - Chocolatey
+        * `NPM` - npm
+        * `NUGET` - NuGet
+        * `VAGRANT` - Vagrant
+        * `COMPOSER` - Composer
+        * `ALPINE` - Alpine
+        * `HELM` - Helm
+        * `CONAN` - Conan
+        * `CARGO` - Cargo
+        * `LUAROCKS` - LuaRocks
+        * `CRAN` - CRAN
+        * `GO` - Go
+        * `DART` - Dart
+        * `COCOAPODS` - CocoaPods
+        * `TERRAFORM` - Terraform
+        * `P2` - P2
+        * `CONDA` - Conda
+        * `HEX` - Hex
+        * `SWIFT` - Swift
+        * `HUGGINGFACE` - HuggingFace
+        * `GENERIC` - Generic
+        * `VSX` - VSX
+        * `MCP` - MCP
+        * `NIX` - Nix
+        * `SKILLS` - AI Skills
+        * `DEFAULT` - Default
     LicenseMatchTypeEnum:
       enum:
       - NONE
@@ -2090,9 +3081,170 @@ components:
       description: |-
         * `AUTOMATIC` - Automatically sourced
         * `MANUAL` - Manually sourced
-    NullEnum:
-      enum:
-      - null
+    PackageLogEventActor:
+      type: object
+      description: Details of the actor that performed the package log event.
+      properties:
+        slug_perm:
+          type: string
+          nullable: true
+          description: User unique identifier.
+        slug:
+          type: string
+          nullable: true
+          description: User slug.
+        email:
+          type: string
+          nullable: true
+          description: User email.
+        user_type:
+          nullable: true
+          description: |-
+            Kind of actor that performed the event.
+
+            * `USER` - User
+            * `SERVICE` - Service
+          allOf:
+          - $ref: '#/components/schemas/UserTypeEnum'
+    PackageLogPackage:
+      type: object
+      description: Details of a package in a package log event.
+      properties:
+        slug_perm:
+          type: string
+          description: Unique identifier of the package.
+        name:
+          type: string
+          description: Name of the package.
+        version:
+          type: string
+          description: Version of the package.
+        format:
+          allOf:
+          - $ref: '#/components/schemas/FormatEnum'
+          description: |-
+            Format of the package.
+
+            * `DEB` - Debian
+            * `RPM` - RedHat
+            * `RUBY` - Ruby
+            * `PYTHON` - Python
+            * `MAVEN` - Maven
+            * `BOWER` - Bower
+            * `DOCKER` - Docker
+            * `RAW` - Raw
+            * `CHOCOLATEY` - Chocolatey
+            * `NPM` - npm
+            * `NUGET` - NuGet
+            * `VAGRANT` - Vagrant
+            * `COMPOSER` - Composer
+            * `ALPINE` - Alpine
+            * `HELM` - Helm
+            * `CONAN` - Conan
+            * `CARGO` - Cargo
+            * `LUAROCKS` - LuaRocks
+            * `CRAN` - CRAN
+            * `GO` - Go
+            * `DART` - Dart
+            * `COCOAPODS` - CocoaPods
+            * `TERRAFORM` - Terraform
+            * `P2` - P2
+            * `CONDA` - Conda
+            * `HEX` - Hex
+            * `SWIFT` - Swift
+            * `HUGGINGFACE` - HuggingFace
+            * `GENERIC` - Generic
+            * `VSX` - VSX
+            * `MCP` - MCP
+            * `NIX` - Nix
+            * `SKILLS` - AI Skills
+            * `DEFAULT` - Default
+        size:
+          type: integer
+          description: Size of the package in bytes.
+      required:
+      - format
+      - name
+      - size
+      - slug_perm
+      - version
+    PackageLogRepository:
+      type: object
+      description: Details of a repository in a package log event.
+      properties:
+        slug_perm:
+          type: string
+          nullable: true
+          description: Unique identifier of the repository containing the package.
+        slug:
+          type: string
+          nullable: true
+          description: Slug of the repository containing the package.
+        name:
+          type: string
+          nullable: true
+          description: Name of the repository containing the package.
+    PackageLogsResponse:
+      type: object
+      description: A package log event.
+      properties:
+        event_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event occurred.
+        event_action:
+          allOf:
+          - $ref: '#/components/schemas/EventActionEnum'
+          description: |-
+            Action performed on the package.
+
+            * `SYNC` - sync
+            * `DELETE` - delete
+            * `COPY` - copy
+            * `MOVE` - move
+            * `RESYNC` - resync
+            * `REPUBLISH` - republish
+            * `UNPUBLISH` - unpublish
+            * `TAGS_CHANGED` - tags changed
+            * `QUARANTINE` - quarantined
+            * `RESTORE` - restored
+            * `POLICY_VIOLATION` - policy violation
+            * `HARD_DELETE` - hard delete
+            * `HIDDEN` - hidden
+        package:
+          allOf:
+          - $ref: '#/components/schemas/PackageLogPackage'
+          description: Details of the package involved in the log event.
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/PackageLogRepository'
+          nullable: true
+          description: Details of the repository containing the package.
+        event_actor:
+          allOf:
+          - $ref: '#/components/schemas/PackageLogEventActor'
+          nullable: true
+          description: Details of the actor that performed the event.
+        event_location:
+          type: string
+          nullable: true
+          description: Location where the event occurred.
+        was_deleted_by_retention_rule:
+          type: boolean
+          readOnly: true
+          description: Whether the package was deleted by a retention rule.
+        event_context:
+          type: string
+          description: Additional human-readable context for the event, such as tag
+            change details. May be empty, or formatted like "Updated from 'X' to 'Y'",
+            "Changed to 'Y'", or "Cleared from 'X'".
+          readOnly: true
+      required:
+      - event_action
+      - event_at
+      - event_context
+      - package
+      - was_deleted_by_retention_rule
     PackageStateEnum:
       enum:
       - AVAILABLE
@@ -2146,6 +3298,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ArtifactMetadataRead'
+    PaginatedDomainList:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Domain'
+    PaginatedPackageLogsResponseList:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageLogsResponse'
     PaginatedPolicyActionList:
       type: object
       required:
@@ -2182,6 +3352,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Policy'
+    PaginatedWebOSVVulnerabilityList:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebOSVVulnerability'
+    PaginatedWebPackageVulnerabilitySummaryList:
+      type: object
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebPackageVulnerabilitySummary'
     PatchedAddPackageTagsPolicyAction:
       type: object
       properties:
@@ -2223,13 +3411,11 @@ components:
       - $ref: '#/components/schemas/PatchedAddPackageTagsPolicyAction'
     PatchedArtifactMetadataWrite:
       type: object
-      description: Serializer for POST create and PATCH update on artifact metadata.
+      description: Fields for creating or updating package metadata.
       properties:
-        slug_perm:
-          type: string
-          readOnly: true
-          pattern: ^[-a-zA-Z0-9_]+$
         content:
+          type: object
+          additionalProperties: {}
           description: The metadata payload as a JSON object.
         content_type:
           type: string
@@ -2240,6 +3426,40 @@ components:
           description: The identifier for the source of this metadata, for example
             'upstream:npmjs'.
           maxLength: 128
+    PatchedBlockPackagePolicyAction:
+      type: object
+      properties:
+        precedence:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          description: The order in which this action occurs relative to other actions
+            for the same policy.
+        slug_perm:
+          type: string
+          readOnly: true
+          description: The Action identifier.
+          pattern: ^[-a-zA-Z0-9_]+$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date and time the policy was created.
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date and time the policy was updated.
+        effect:
+          type: string
+          readOnly: true
+    PatchedBlockPackagePolicyActionTyped:
+      allOf:
+      - type: object
+        properties:
+          action_type:
+            type: string
+      - $ref: '#/components/schemas/PatchedBlockPackagePolicyAction'
     PatchedPolicy:
       type: object
       properties:
@@ -2260,6 +3480,7 @@ components:
         rego:
           type: string
           description: The rego code which constitutes the Policy logic.
+          maxLength: 262144
         enabled:
           type: boolean
           description: If true, the policy is enabled.
@@ -2293,12 +3514,14 @@ components:
             policies.
     PatchedPolicyAction:
       oneOf:
+      - $ref: '#/components/schemas/PatchedBlockPackagePolicyActionTyped'
       - $ref: '#/components/schemas/PatchedSetPackageStatePolicyActionTyped'
       - $ref: '#/components/schemas/PatchedAddPackageTagsPolicyActionTyped'
       - $ref: '#/components/schemas/PatchedRemovePackageTagsPolicyActionTyped'
       discriminator:
         propertyName: action_type
         mapping:
+          BlockPackage: '#/components/schemas/PatchedBlockPackagePolicyActionTyped'
           SetPackageState: '#/components/schemas/PatchedSetPackageStatePolicyActionTyped'
           AddPackageTags: '#/components/schemas/PatchedAddPackageTagsPolicyActionTyped'
           RemovePackageTags: '#/components/schemas/PatchedRemovePackageTagsPolicyActionTyped'
@@ -2397,6 +3620,7 @@ components:
         rego:
           type: string
           description: The rego code which constitutes the Policy logic.
+          maxLength: 262144
         enabled:
           type: boolean
           description: If true, the policy is enabled.
@@ -2438,12 +3662,14 @@ components:
       - version
     PolicyAction:
       oneOf:
+      - $ref: '#/components/schemas/BlockPackagePolicyActionTyped'
       - $ref: '#/components/schemas/SetPackageStatePolicyActionTyped'
       - $ref: '#/components/schemas/AddPackageTagsPolicyActionTyped'
       - $ref: '#/components/schemas/RemovePackageTagsPolicyActionTyped'
       discriminator:
         propertyName: action_type
         mapping:
+          BlockPackage: '#/components/schemas/BlockPackagePolicyActionTyped'
           SetPackageState: '#/components/schemas/SetPackageStatePolicyActionTyped'
           AddPackageTags: '#/components/schemas/AddPackageTagsPolicyActionTyped'
           RemovePackageTags: '#/components/schemas/RemovePackageTagsPolicyActionTyped'
@@ -2780,6 +4006,34 @@ components:
           maxLength: 64
       required:
       - slug
+    PolicyEPSSScore:
+      type: object
+      description: The EPSS score and percentile of a CVE, and where they came from.
+      properties:
+        score:
+          type: number
+          format: double
+          description: The probability of exploitation in the next 30 days, from 0
+            to 1.
+        percentile:
+          type: number
+          format: double
+          description: The proportion of scored CVEs with the same or a lower score,
+            from 0 to 1.
+        modified:
+          type: string
+          format: date-time
+          description: The date of the EPSS file that last changed this score or percentile.
+        model_version:
+          type: string
+          nullable: true
+          description: The version of the EPSS model behind the latest EPSS file,
+            e.g. v2025.03.14. Null until an EPSS file has named one.
+      required:
+      - model_version
+      - modified
+      - percentile
+      - score
     PolicyHuggingfaceCard:
       oneOf:
       - $ref: '#/components/schemas/PolicyHuggingfaceUnknownCardTyped'
@@ -3370,8 +4624,43 @@ components:
       properties:
         v0:
           $ref: '#/components/schemas/PolicyInputV0'
+        preview:
+          $ref: '#/components/schemas/PolicyInputPreview'
       required:
       - v0
+    PolicyInputPreview:
+      type: object
+      description: |-
+        Serializer for preview policy input.
+
+        Preview carries input that isn't in a versioned schema yet, and may change
+        shape before it graduates into one.
+      properties:
+        package:
+          $ref: '#/components/schemas/PolicyInputPreviewPackage'
+      required:
+      - package
+    PolicyInputPreviewPackage:
+      type: object
+      description: Serializer for the preview package policy input.
+      properties:
+        vulnerabilities:
+          $ref: '#/components/schemas/PolicyInputPreviewVulnerabilities'
+      required:
+      - vulnerabilities
+    PolicyInputPreviewVulnerabilities:
+      type: object
+      description: Serializer for the preview package vulnerabilities policy input.
+      properties:
+        groups:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PolicyVulnerabilityGroup'
+          description: 'The package''s matched OSV records, grouped by the flaw they
+            describe and keyed on the group key: a CVE where one exists, else the
+            record''s ID.'
+      required:
+      - groups
     PolicyInputV0:
       type: object
       description: Serializer for V0 policy input.
@@ -3414,6 +4703,184 @@ components:
       - package
       - repository
       - workspace
+    PolicyMavenPackage:
+      type: object
+      description: |-
+        The details of a Maven package for policy purposes.
+
+        This extends the common package fields with the group ID, which together
+        with ``name`` (the artifact ID) identifies a Maven package.
+      properties:
+        architectures:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyArchitecture'
+        checksum_md5:
+          type: string
+          readOnly: true
+        checksum_sha1:
+          type: string
+          readOnly: true
+        checksum_sha256:
+          type: string
+          readOnly: true
+        checksum_sha512:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+          description: A textual description of this package.
+          maxLength: 12288
+        distro:
+          $ref: '#/components/schemas/PolicyDistribution'
+        distro_version:
+          $ref: '#/components/schemas/PolicyDistributionVersion'
+        epoch:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          description: The epoch of the package version (if any).
+        extension:
+          type: string
+          readOnly: true
+        filename:
+          type: string
+          maxLength: 255
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyPackageFile'
+        format:
+          type: string
+        group:
+          type: string
+          nullable: true
+          description: The Maven group ID, e.g. org.apache.commons. Together with
+            name (the artifact ID) this identifies the package.
+        indexed:
+          type: boolean
+        is_local:
+          type: boolean
+          description: Whether the package is cached in the repository or proxied
+            from an upstream
+          readOnly: true
+        last_downloaded_at:
+          type: string
+          format: date-time
+          description: The last time the package was downloaded.
+        license:
+          $ref: '#/components/schemas/PolicyPackageLicense'
+        name:
+          type: string
+          nullable: true
+          description: The name of this package.
+          maxLength: 200
+        num_files:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        package_type:
+          $ref: '#/components/schemas/PackageTypeEnum'
+        release:
+          type: string
+          nullable: true
+          description: The release of the package version (if any).
+          maxLength: 96
+        security_scan_completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The datetime the security scanning was completed.
+        security_scan_started_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The datetime the security scanning was started.
+        security_scan_status:
+          $ref: '#/components/schemas/SecurityScanStatusEnum'
+        security_scan_status_updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The datetime the security scanning status was updated.
+        size:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: The calculated size of the package.
+        slug:
+          type: string
+          readOnly: true
+          description: The public unique identifier for the package.
+          pattern: ^[-a-zA-Z0-9_]+$
+        slug_perm:
+          type: string
+          maxLength: 16
+          pattern: ^[-a-zA-Z0-9_]+$
+        subtype:
+          type: string
+          nullable: true
+          readOnly: true
+        summary:
+          type: string
+          nullable: true
+          description: A one-liner synopsis of this package.
+          maxLength: 255
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyPackageTag'
+        uploaded_at:
+          type: string
+          format: date-time
+          description: The date this package was uploaded.
+        uploader:
+          $ref: '#/components/schemas/PolicyUploader'
+        upstream_metadata:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUpstreamMetadata'
+          nullable: true
+          description: Additional information in the form of arbitrary metadata that
+            may be copied or added from the upstream source during upstream caching.
+            For example the published at timestamp, or attestations etc.
+        version:
+          type: string
+          nullable: true
+          description: The raw version for this package.
+          maxLength: 255
+      required:
+      - architectures
+      - checksum_md5
+      - checksum_sha1
+      - checksum_sha256
+      - checksum_sha512
+      - distro
+      - distro_version
+      - extension
+      - filename
+      - files
+      - format
+      - group
+      - is_local
+      - last_downloaded_at
+      - license
+      - package_type
+      - security_scan_status
+      - slug
+      - subtype
+      - tags
+    PolicyMavenPackageTyped:
+      allOf:
+      - type: object
+        properties:
+          format:
+            type: string
+        required:
+        - format
+      - $ref: '#/components/schemas/PolicyMavenPackage'
     PolicyOSVAffected:
       type: object
       description: |-
@@ -3543,10 +5010,29 @@ components:
           description: A pre-calculated numerical score (added as a convenience by
             Cloudsmith) for CVSS severity types, based on the CVSS vector provided
             by OSV. For the UBUNTU severity type, this field is null.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PolicyOSVSeveritySourceEnum'
+          description: |-
+            The origin of the severity score (NVD, CNA, or SELF). SELF is implied when the source is not provided.
+
+            * `NVD` - The score was assigned by the National Vulnerability Database (NVD).
+            * `CNA` - The score was assigned by a CVE Numbering Authority (CNA).
+            * `SELF` - The score was assigned by the record's own database.
       required:
       - numerical_score
       - score
       - type
+    PolicyOSVSeveritySourceEnum:
+      enum:
+      - NVD
+      - CNA
+      - SELF
+      type: string
+      description: |-
+        * `NVD` - The score was assigned by the National Vulnerability Database (NVD).
+        * `CNA` - The score was assigned by a CVE Numbering Authority (CNA).
+        * `SELF` - The score was assigned by the record's own database.
     PolicyOSVSeverityTypeEnum:
       enum:
       - Ubuntu
@@ -3909,7 +5395,8 @@ components:
           type: string
           maxLength: 255
         is_primary:
-          type: string
+          type: boolean
+          description: Check if this is a primary package file (has no tag).
           readOnly: true
         size:
           type: integer
@@ -4030,11 +5517,15 @@ components:
       oneOf:
       - $ref: '#/components/schemas/PolicyPackageTyped'
       - $ref: '#/components/schemas/PolicyHuggingfacePackageTyped'
+      - $ref: '#/components/schemas/PolicyMavenPackageTyped'
+      - $ref: '#/components/schemas/PolicySkillsPackageTyped'
       discriminator:
         propertyName: format
         mapping:
           Package: '#/components/schemas/PolicyPackageTyped'
           HuggingfacePackage: '#/components/schemas/PolicyHuggingfacePackageTyped'
+          MavenPackage: '#/components/schemas/PolicyMavenPackageTyped'
+          SkillsPackage: '#/components/schemas/PolicySkillsPackageTyped'
     PolicyRepository:
       type: object
       description: The details of the package repository for policy purposes.
@@ -4147,6 +5638,237 @@ components:
       - fingerprint
       - fingerprint_short
       - public_key
+    PolicySkillsPackage:
+      type: object
+      description: |-
+        The details of an AI Skills package for policy purposes.
+
+        Adds what a Claude Code plugin bundles; `plugin` is null for a single skill,
+        and `subtype` is "plugin" or "skill".
+      properties:
+        architectures:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyArchitecture'
+        checksum_md5:
+          type: string
+          readOnly: true
+        checksum_sha1:
+          type: string
+          readOnly: true
+        checksum_sha256:
+          type: string
+          readOnly: true
+        checksum_sha512:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+          description: A textual description of this package.
+          maxLength: 12288
+        distro:
+          $ref: '#/components/schemas/PolicyDistribution'
+        distro_version:
+          $ref: '#/components/schemas/PolicyDistributionVersion'
+        epoch:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          description: The epoch of the package version (if any).
+        extension:
+          type: string
+          readOnly: true
+        filename:
+          type: string
+          maxLength: 255
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyPackageFile'
+        format:
+          type: string
+        indexed:
+          type: boolean
+        is_local:
+          type: boolean
+          description: Whether the package is cached in the repository or proxied
+            from an upstream
+          readOnly: true
+        last_downloaded_at:
+          type: string
+          format: date-time
+          description: The last time the package was downloaded.
+        license:
+          $ref: '#/components/schemas/PolicyPackageLicense'
+        name:
+          type: string
+          nullable: true
+          description: The name of this package.
+          maxLength: 200
+        num_files:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        package_type:
+          $ref: '#/components/schemas/PackageTypeEnum'
+        plugin:
+          allOf:
+          - $ref: '#/components/schemas/PolicySkillsPlugin'
+          readOnly: true
+          nullable: true
+        release:
+          type: string
+          nullable: true
+          description: The release of the package version (if any).
+          maxLength: 96
+        security_scan_completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The datetime the security scanning was completed.
+        security_scan_started_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The datetime the security scanning was started.
+        security_scan_status:
+          $ref: '#/components/schemas/SecurityScanStatusEnum'
+        security_scan_status_updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The datetime the security scanning status was updated.
+        size:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: The calculated size of the package.
+        slug:
+          type: string
+          readOnly: true
+          description: The public unique identifier for the package.
+          pattern: ^[-a-zA-Z0-9_]+$
+        slug_perm:
+          type: string
+          maxLength: 16
+          pattern: ^[-a-zA-Z0-9_]+$
+        subtype:
+          allOf:
+          - $ref: '#/components/schemas/SubtypeEnum'
+          description: Distinguish skills from plugins in shared/cross-format package
+            listings and policies.
+          readOnly: true
+        summary:
+          type: string
+          nullable: true
+          description: A one-liner synopsis of this package.
+          maxLength: 255
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyPackageTag'
+        uploaded_at:
+          type: string
+          format: date-time
+          description: The date this package was uploaded.
+        uploader:
+          $ref: '#/components/schemas/PolicyUploader'
+        upstream_metadata:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUpstreamMetadata'
+          nullable: true
+          description: Additional information in the form of arbitrary metadata that
+            may be copied or added from the upstream source during upstream caching.
+            For example the published at timestamp, or attestations etc.
+        version:
+          type: string
+          nullable: true
+          description: The raw version for this package.
+          maxLength: 255
+      required:
+      - architectures
+      - checksum_md5
+      - checksum_sha1
+      - checksum_sha256
+      - checksum_sha512
+      - distro
+      - distro_version
+      - extension
+      - filename
+      - files
+      - format
+      - is_local
+      - last_downloaded_at
+      - license
+      - package_type
+      - plugin
+      - security_scan_status
+      - slug
+      - subtype
+      - tags
+    PolicySkillsPackageTyped:
+      allOf:
+      - type: object
+        properties:
+          format:
+            type: string
+        required:
+        - format
+      - $ref: '#/components/schemas/PolicySkillsPackage'
+    PolicySkillsPlugin:
+      type: object
+      description: |-
+        What a Claude Code plugin bundles, for policy purposes.
+
+        `hooks`, `mcp_servers`, `lsp_servers`, `monitors` and `executables` run code
+        on the user's machine once the plugin is enabled. They are detected on a
+        best-effort basis, so a policy that must not allow code should match
+        `subtype == "plugin"` rather than rely on them being false.
+      properties:
+        skills:
+          type: array
+          items:
+            type: string
+        agents:
+          type: array
+          items:
+            type: string
+        commands:
+          type: array
+          items:
+            type: string
+        output_styles:
+          type: array
+          items:
+            type: string
+        workflows:
+          type: array
+          items:
+            type: string
+        hooks:
+          type: boolean
+        mcp_servers:
+          type: boolean
+        lsp_servers:
+          type: boolean
+        monitors:
+          type: boolean
+        executables:
+          type: boolean
+      required:
+      - agents
+      - commands
+      - executables
+      - hooks
+      - lsp_servers
+      - mcp_servers
+      - monitors
+      - output_styles
+      - skills
+      - workflows
     PolicyUploader:
       type: object
       description: The package uploader for policy puposes.
@@ -4171,9 +5893,33 @@ components:
         slug_perm:
           type: string
           readOnly: true
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyUploaderTeam'
+          readOnly: true
+          description: The teams the uploader belongs to in the package's workspace.
+            Only present when the policy reads it, and empty when the input is serialized
+            without a workspace.
       required:
       - first_name
       - last_name
+      - slug
+      - slug_perm
+      - teams
+    PolicyUploaderTeam:
+      type: object
+      description: A team the package uploader belongs to, for policy purposes.
+      properties:
+        slug:
+          type: string
+        slug_perm:
+          type: string
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
       - slug
       - slug_perm
     PolicyUpstreamMetadata:
@@ -4184,6 +5930,72 @@ components:
           type: string
           format: date-time
           nullable: true
+    PolicyValidateFinding:
+      type: object
+      description: A single finding emitted by the validate endpoint.
+      properties:
+        severity:
+          type: string
+          description: Finding severity. Currently always 'error'.
+        code:
+          type: string
+          description: Machine-readable finding code (e.g. 'rego_type_error', 'policy_compile_error').
+        message:
+          type: string
+          description: Human-readable finding message.
+        line:
+          type: integer
+          nullable: true
+          description: 1-indexed line number in the source, if known.
+      required:
+      - code
+      - line
+      - message
+      - severity
+    PolicyValidateRequest:
+      type: object
+      description: Request body for POST .../policies/validate/.
+      properties:
+        rego:
+          type: string
+          description: The Rego policy source to validate. Maximum 256 KB. Not persisted.
+          maxLength: 262144
+      required:
+      - rego
+    PolicyValidateResponse:
+      type: object
+      description: Response body for POST .../policies/validate/.
+      properties:
+        is_valid:
+          type: boolean
+          description: True when no finding has severity 'error'.
+        findings:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyValidateFinding'
+        raw:
+          type: string
+          description: Full raw OPA output; empty when the policy is valid.
+      required:
+      - findings
+      - is_valid
+      - raw
+    PolicyVulnerabilityGroup:
+      type: object
+      description: The OSV records matched to a package that describe one flaw.
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+          description: The IDs of the package's matched OSV records in this group.
+        epss:
+          allOf:
+          - $ref: '#/components/schemas/PolicyEPSSScore'
+          description: The EPSS score of the group's CVE. Omitted when the group isn't
+            keyed on a CVE, or the CVE has no current score.
+      required:
+      - ids
     PolicyWorkspace:
       type: object
       description: Representation of a Workspace used in Policy input.
@@ -4445,10 +6257,8 @@ components:
             * `YE` - Yemen
             * `ZM` - Zambia
             * `ZW` - Zimbabwe
-          oneOf:
+          allOf:
           - $ref: '#/components/schemas/CountryEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
         location:
           type: string
           nullable: true
@@ -4647,6 +6457,478 @@ components:
         * `UNKNOWN` - Unknown
         * `QUEUED` - Queued
         * `SAFE` - Safe
+    SubtypeEnum:
+      enum:
+      - skill
+      - plugin
+      type: string
+    UserTypeEnum:
+      enum:
+      - USER
+      - SERVICE
+      type: string
+      description: |-
+        * `USER` - User
+        * `SERVICE` - Service
+    WebOSVAffected:
+      type: object
+      description: |-
+        Extended OSV Affected serializer for frontend consumption.
+
+        Uses WebOSVSeveritySerializer to include parsed CVSS components.
+      properties:
+        database_specific:
+          nullable: true
+          description: a JSON object holding additional information about the vulnerability
+            as defined by the database from which the record was obtained. The meaning
+            of the values within the object is entirely defined by the database. In
+            general, the canonical database for a particular ecosystem should record
+            its information in ecosystem_specific, allowing other aggregator databases
+            to put their own summaries in database_specific. For example, databases
+            that add additional information such as computed CVSS scores for ecosystems
+            that do not provide them could add that information here. Note that this
+            is a single field with key “database_specific”, which itself contains
+            a JSON object with unspecified fields.
+        ecosystem_specific:
+          nullable: true
+          description: A JSON object holding additional information about the vulnerability
+            as defined by the ecosystem for which the record applies. The meaning
+            of the values within the object is entirely defined by the ecosystem.
+            For example, the Go ecosystem includes here information about the affected
+            functions and which modules the packages were found in, along with severity
+            in the Go project-specific severity scale. Note that this is a single
+            field with key “ecosystem_specific”, which itself contains a JSON object
+            with unspecified fields.
+        package:
+          allOf:
+          - $ref: '#/components/schemas/PolicyOSVPackage'
+          nullable: true
+        ranges:
+          nullable: true
+          description: The affected object’s ranges field is a JSON array of objects
+            describing the affected ranges of versions. In the range object, the type
+            property is required. It specifies the type of version range being recorded
+            and defines the interpretation of the events object’s introduced, fixed,
+            and any type-specific fields. The ranges object’s events field is a JSON
+            array of objects. Each object describes a single version that either introduces
+            a vulnerability, fixes a vulnerability, describes the last known affected
+            version, or sets an upper limit on the range being described.
+        severity:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebOSVSeverity'
+          nullable: true
+        versions:
+          type: array
+          items:
+            type: string
+            description: A JSON array of strings. Each string is a single affected
+              version in whatever version syntax is used by the given package ecosystem.
+              When there is no well-defined packaging ecosystem specified (for example,
+              general C/C++ libraries), GIT commit ranges are typically the best way
+              to define vulnerable version ranges. In this case, versions specified
+              in this array cannot be relied upon to conform to any particular syntax
+              (e.g. they could be the upstream Git version tags derived from these
+              GIT commit ranges, which is what OSV.dev populates this field with).
+              In this situation, the GIT commit ranges in affected[].ranges should
+              be used to match vulnerabilities by Git commit hashes.
+            maxLength: 255
+          nullable: true
+      required:
+      - package
+      - severity
+    WebOSVCvss:
+      type: object
+      description: Parsed CVSS details extracted from a CVSS severity entry.
+      properties:
+        vector:
+          type: string
+          nullable: true
+          description: The original CVSS vector string.
+        base_score:
+          type: number
+          format: double
+          nullable: true
+          description: The numerical CVSS base score.
+        version:
+          type: string
+          nullable: true
+          description: The CVSS version (e.g. '2.0', '3.0', '3.1', '4.0').
+        groups:
+          type: array
+          items: {}
+          nullable: true
+          description: Parsed metric groups for display.
+    WebOSVSeverity:
+      type: object
+      description: |-
+        Extended OSV Severity serializer for frontend consumption.
+
+        Reshapes the raw OSV severity entry for display:
+
+        - ``label`` — normalized severity label (e.g. "critical", "high")
+        - ``raw_label`` — original vendor label when it differs from ``label``
+          (non-CVSS types only)
+        - ``cvss`` — present only for CVSS types; contains ``vector``,
+          ``base_score``, and parsed metric ``groups``
+        - ``type`` — severity type string (e.g. "CVSS_V3", "OTHER")
+
+        The parent ``score`` and ``numerical_score`` fields are excluded
+        because they are provided through ``label`` / ``cvss``.
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/WebOSVSeverityTypeEnum'
+          description: "The type of severity being described. OSV schema types (CVSS_V4,\
+            \ CVSS_V3, CVSS_V2, Ubuntu) or OTHER for vendor-provided labels.\n\n*\
+            \ `Ubuntu` - An \"Ubuntu\" severity type indicates that the associated\
+            \ score is a lowercased string\n    representing the Ubuntu priority.\n\
+            \n    If a severity has this type, the associated \"score\" will be one\
+            \ of \"negligible\",\n    \"low\", \"medium\", \"high\", or \"critical\"\
+            .\n\n    See https://ubuntu.com/security/cves/about#priority for more\
+            \ information.\n    \n* `CVSS_V2` - A \"CVSS_V2\" severity type indicates\
+            \ that the associated score is a CVSS vector\n    string using a version\
+            \ of the Common Vulnerability Scoring System notation that\n    is ==\
+            \ 2.0 (e.g.\"AV:L/AC:M/Au:N/C:N/I:P/A:C\").\n    \n* `CVSS_V3` - A \"\
+            CVSS_V3\" severity type indicates that the associated score is a CVSS\
+            \ vector string\n    using a version of the Common Vulnerability Scoring\
+            \ System notation that\n    is >= 3.0 and < 4.0 (e.g.\"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:N/A:N\"\
+            ).\n    \n* `CVSS_V4` - A \"CVSS_V4\" severity type indicates that the\
+            \ associated score is a CVSS vector string\n    using a version of the\
+            \ Common Vulnerability Scoring System notation that\n    is >= 4.0 and\
+            \ < 5.0 (e.g. \"CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N\"\
+            ).\n    \n* `OTHER` - A vendor-issued severity extracted from the OSV\
+            \ record."
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PolicyOSVSeveritySourceEnum'
+          description: |-
+            The origin of the severity score (NVD, CNA, or SELF). SELF is implied when the source is not provided.
+
+            * `NVD` - The score was assigned by the National Vulnerability Database (NVD).
+            * `CNA` - The score was assigned by a CVE Numbering Authority (CNA).
+            * `SELF` - The score was assigned by the record's own database.
+        cvss:
+          allOf:
+          - $ref: '#/components/schemas/WebOSVCvss'
+          nullable: true
+          readOnly: true
+          description: CVSS details including vector, base_score, and parsed metric
+            groups. Only populated for CVSS severity types.
+        label:
+          type: string
+          description: Normalized severity label derived from the CVSS vector or vendor-provided
+            label (e.g. 'critical', 'high', 'medium', 'low').
+          readOnly: true
+        raw_label:
+          type: string
+          nullable: true
+          description: 'The original severity label as provided in the OSV data, included
+            only when it differs from the normalized label. '
+          readOnly: true
+      required:
+      - cvss
+      - label
+      - raw_label
+      - type
+    WebOSVSeverityCounts:
+      type: object
+      description: Aggregate counts of OSV vulnerabilities by severity.
+      properties:
+        total:
+          type: integer
+          readOnly: true
+        malware:
+          type: integer
+          readOnly: true
+        critical:
+          type: integer
+          readOnly: true
+        high:
+          type: integer
+          readOnly: true
+        medium:
+          type: integer
+          readOnly: true
+        low:
+          type: integer
+          readOnly: true
+        unknown:
+          type: integer
+          readOnly: true
+      required:
+      - critical
+      - high
+      - low
+      - malware
+      - medium
+      - total
+      - unknown
+    WebOSVSeverityTypeEnum:
+      enum:
+      - Ubuntu
+      - CVSS_V2
+      - CVSS_V3
+      - CVSS_V4
+      - OTHER
+      type: string
+      description: "* `Ubuntu` - An \"Ubuntu\" severity type indicates that the associated\
+        \ score is a lowercased string\n    representing the Ubuntu priority.\n\n\
+        \    If a severity has this type, the associated \"score\" will be one of\
+        \ \"negligible\",\n    \"low\", \"medium\", \"high\", or \"critical\".\n\n\
+        \    See https://ubuntu.com/security/cves/about#priority for more information.\n\
+        \    \n* `CVSS_V2` - A \"CVSS_V2\" severity type indicates that the associated\
+        \ score is a CVSS vector\n    string using a version of the Common Vulnerability\
+        \ Scoring System notation that\n    is == 2.0 (e.g.\"AV:L/AC:M/Au:N/C:N/I:P/A:C\"\
+        ).\n    \n* `CVSS_V3` - A \"CVSS_V3\" severity type indicates that the associated\
+        \ score is a CVSS vector string\n    using a version of the Common Vulnerability\
+        \ Scoring System notation that\n    is >= 3.0 and < 4.0 (e.g.\"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:N/A:N\"\
+        ).\n    \n* `CVSS_V4` - A \"CVSS_V4\" severity type indicates that the associated\
+        \ score is a CVSS vector string\n    using a version of the Common Vulnerability\
+        \ Scoring System notation that\n    is >= 4.0 and < 5.0 (e.g. \"CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N\"\
+        ).\n    \n* `OTHER` - A vendor-issued severity extracted from the OSV record."
+    WebOSVVulnerability:
+      type: object
+      description: |-
+        Extended OSV Vulnerability serializer for frontend consumption.
+
+        Extends PolicyOSVVulnerabilitySerializer with additional fields or
+        formatting without leaking these changes into EPM.
+      properties:
+        affected:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebOSVAffected'
+          nullable: true
+        aliases:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          nullable: true
+          description: A list of IDs of the same vulnerability in other databases.
+            This allows one database to claim that its own entry describes the same
+            vulnerability as one or more entries in other databases. Note that the
+            vulnerability IDs referenced here may or may not exist in the overall
+            data set. Aliases should be considered symmetric (if A is an alias of
+            B, then B is an alias of A) and transitive (If A aliases B and B aliases
+            C, then A aliases C).
+        credits:
+          nullable: true
+          description: A JSON array providing a way to give credit for the discovery,
+            confirmation, patch, or other events in the life cycle of a vulnerability.
+            Each of the objects in the credits array must contain at minimum a name
+            field specifying the name of the individual or entity being credited,
+            using whatever notation they prefer. It can also optionally include a
+            contact JSON array.
+        database_specific:
+          nullable: true
+          description: Additional information about the vulnerability as defined by
+            the database from which the record was obtained. This is a JSON object
+            with unspecified fields, and the meaning of the values within the object
+            is entirely defined by the database.
+        details:
+          type: string
+          nullable: true
+          description: Additional English textual details about the vulnerability.
+            This field contains CommonMark markdown (a subset of GitHub-Flavored Markdown).
+        id:
+          type: string
+        modified:
+          type: string
+          format: date-time
+          description: The time the osv.dev vulnerability entry was last modified.
+        published:
+          type: string
+          format: date-time
+          nullable: true
+          description: The time the entry should be considered to have been published
+        references:
+          nullable: true
+          description: a list of JSON objects describing references. Each object has
+            a string field type specifying the type of reference, and a string field
+            url. The url is the fully-qualified URL (including the scheme, typically
+            “https://”) linking to additional information, advisories, issue tracker
+            entries, and so on about the vulnerability itself. The type specifies
+            what kind of reference the URL is.
+        related:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          nullable: true
+          description: A list of closely related vulnerabilities, such as a similar
+            but completely different vulnerability or cases that do not satisfy the
+            strict definition of aliases or upstream. Related vulnerabilities are
+            symmetric but not transitive.
+        schema_version:
+          type: string
+          nullable: true
+          description: The version of the OSV schema a particular vulnerability was
+            exported with. The value should be a string matching the OSV Schema version,
+            which follows the SemVer 2.0.0 format, with no leading “v” prefix. If
+            no value is specified, it should be assumed to be 1.0.0, matching version
+            1.0 of the OSV Schema.
+          maxLength: 128
+        severity:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebOSVSeverity'
+          nullable: true
+        summary:
+          type: string
+          nullable: true
+          description: A one-line, English textual summary of the vulnerability. It
+            is recommended that this field be kept short, on the order of no more
+            than 120 characters.
+        upstream:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          nullable: true
+          description: A list of IDs of upstream vulnerabilities that are referred
+            to by the vulnerability entry. For example, a downstream package ecosystem
+            (such as a Linux distribution) may issue its own advisories that include
+            (possibly multiple) upstream vulnerabilities. Upstream should be considered
+            transitive but not symmetric.
+        withdrawn:
+          type: string
+          format: date-time
+          nullable: true
+          description: The time the entry should be considered to have been withdrawn.
+            If the field is missing, then the entry has not been withdrawn. Any rationale
+            for why the vulnerability has been withdrawn should go into the summary
+            text.
+        vulnerability_id:
+          type: string
+          description: The vulnerability identifier (alias for 'id' field).
+          readOnly: true
+        cve_id:
+          type: string
+          nullable: true
+          description: The CVE identifier for the vulnerability, if it exists.
+          readOnly: true
+        title:
+          type: string
+          nullable: true
+          description: The vulnerability title (alias for 'summary' field).
+          readOnly: true
+        source:
+          type: string
+          nullable: true
+          description: The source database of the vulnerability, extracted from the
+            vulnerability ID prefix (e.g., 'GHSA', 'CVE', 'PYSEC', 'MAL').
+          readOnly: true
+        source_name:
+          type: string
+          nullable: true
+          description: The full name of the source database (e.g., 'GitHub Security
+            Advisory Database', 'National Vulnerability Database').
+          readOnly: true
+        purl:
+          type: string
+          nullable: true
+          description: The Package URL (purl) of the first affected package, if available.
+          readOnly: true
+        package_name:
+          type: string
+          nullable: true
+          description: The name of the first affected package, if available.
+          readOnly: true
+        best_severity:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: The highest-version severity score available, preferring affected
+            object > severity object, then preferring CVSS V4 > V3.1 > V3 > V2 > vendor
+            severity.
+          readOnly: true
+        highest_severity:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: The severity with the highest numerical score or label across
+            all affected entries and the vulnerability.
+          readOnly: true
+        is_malware:
+          type: boolean
+          description: Whether this vulnerability is classified as malware (MAL- prefix
+            or CWE-506).
+          readOnly: true
+        epss:
+          allOf:
+          - $ref: '#/components/schemas/PolicyEPSSScore'
+          nullable: true
+          readOnly: true
+          description: The EPSS score of the vulnerability's CVE (cve_id), if it has
+            one.
+      required:
+      - affected
+      - best_severity
+      - cve_id
+      - epss
+      - highest_severity
+      - id
+      - is_malware
+      - modified
+      - package_name
+      - purl
+      - severity
+      - source
+      - source_name
+      - title
+      - vulnerability_id
+    WebPackageVulnerabilitySummary:
+      type: object
+      properties:
+        slug_perm:
+          type: string
+          readOnly: true
+          description: The unique identifier for the package.
+        repository:
+          type: string
+          readOnly: true
+          description: The repository this package belongs to.
+        name:
+          type: string
+          readOnly: true
+          description: The package name.
+        version:
+          type: string
+          readOnly: true
+          description: The package version.
+        downloads:
+          type: integer
+          readOnly: true
+        format:
+          type: string
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+          description: The synchronisation status of the package.
+        uploaded_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: When the package was uploaded.
+        vulnerability_counts:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Breakdown of vulnerabilities by severity level.
+          readOnly: true
+      required:
+      - downloads
+      - format
+      - name
+      - repository
+      - slug_perm
+      - status
+      - uploaded_at
+      - version
+      - vulnerability_counts
   securitySchemes:
     apikey:
       type: apiKey
@@ -4660,3 +6942,6 @@ servers:
 externalDocs:
   url: https://help.cloudsmith.io/reference/introduction
   description: Cloudsmith API Reference
+security:
+- apikey: []
+- basic: []

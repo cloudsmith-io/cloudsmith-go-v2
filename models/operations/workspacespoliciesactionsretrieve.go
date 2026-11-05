@@ -57,6 +57,13 @@ func (w *WorkspacesPoliciesActionsRetrieveResponse) GetPolicyAction() *component
 	return w.PolicyAction
 }
 
+func (w *WorkspacesPoliciesActionsRetrieveResponse) GetPolicyActionBlockPackage() *components.BlockPackagePolicyActionTyped {
+	if v := w.GetPolicyAction(); v != nil {
+		return v.BlockPackagePolicyActionTyped
+	}
+	return nil
+}
+
 func (w *WorkspacesPoliciesActionsRetrieveResponse) GetPolicyActionSetPackageState() *components.SetPackageStatePolicyActionTyped {
 	if v := w.GetPolicyAction(); v != nil {
 		return v.SetPackageStatePolicyActionTyped

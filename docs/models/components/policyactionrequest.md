@@ -3,6 +3,12 @@
 
 ## Supported Types
 
+### BlockPackagePolicyActionTypedRequest
+
+```go
+policyActionRequest := components.CreatePolicyActionRequestBlockPackage(components.BlockPackagePolicyActionTypedRequest{/* values here */})
+```
+
 ### SetPackageStatePolicyActionTypedRequest
 
 ```go
@@ -27,6 +33,8 @@ Use the `Type` field to determine which variant is active, then access the corre
 
 ```go
 switch policyActionRequest.Type {
+	case components.PolicyActionRequestTypeBlockPackage:
+		// policyActionRequest.BlockPackagePolicyActionTypedRequest is populated
 	case components.PolicyActionRequestTypeSetPackageState:
 		// policyActionRequest.SetPackageStatePolicyActionTypedRequest is populated
 	case components.PolicyActionRequestTypeAddPackageTags:

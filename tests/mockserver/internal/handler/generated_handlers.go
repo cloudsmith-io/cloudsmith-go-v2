@@ -14,8 +14,12 @@ import (
 // GeneratedHandlers returns all generated handlers.
 func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *tracking.RequestTracker) []*GeneratedHandler {
 	return []*GeneratedHandler{
+		NewGeneratedHandler(ctx, http.MethodGet, "/analytics/logs/package/{workspace}/", pathGetAnalyticsLogsPackageWorkspace(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/metadata/packages/{package_slug_perm}/", pathGetMetadataPackagesPackageSlugPerm(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/metadata/packages/{package_slug_perm}/{slug_perm}/", pathGetMetadataPackagesPackageSlugPermSlugPerm(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/packages/{package_slug_perm}/vulnerabilities/", pathGetPackagesPackageSlugPermVulnerabilities(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/packages/{package_slug_perm}/vulnerabilities/counts/", pathGetPackagesPackageSlugPermVulnerabilitiesCounts(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/domains/", pathGetWorkspacesWorkspaceDomains(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/policies/", pathGetWorkspacesWorkspacePolicies(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/policies/decision-logs-v1/", pathGetWorkspacesWorkspacePoliciesDecisionLogsV1(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/policies/decision-logs-v1/{decision_log_id}/", pathGetWorkspacesWorkspacePoliciesDecisionLogsV1DecisionLogID(dir, rt)),
@@ -23,11 +27,14 @@ func GeneratedHandlers(ctx context.Context, dir *logging.HTTPFileDirectory, rt *
 		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/policies/{policy}/actions/", pathGetWorkspacesWorkspacePoliciesPolicyActions(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/policies/{policy}/actions/{action}/", pathGetWorkspacesWorkspacePoliciesPolicyActionsAction(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/policies/{policy}/simulate/", pathGetWorkspacesWorkspacePoliciesPolicySimulate(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/repos/{repo}/vulnerabilities/packages/", pathGetWorkspacesWorkspaceReposRepoVulnerabilitiesPackages(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodGet, "/workspaces/{workspace}/vulnerabilities/packages/", pathGetWorkspacesWorkspaceVulnerabilitiesPackages(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/metadata/packages/{package_slug_perm}/{slug_perm}/", pathPatchMetadataPackagesPackageSlugPermSlugPerm(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/workspaces/{workspace}/policies/{policy}/", pathPatchWorkspacesWorkspacePoliciesPolicy(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPatch, "/workspaces/{workspace}/policies/{policy}/actions/{action}/", pathPatchWorkspacesWorkspacePoliciesPolicyActionsAction(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPost, "/metadata/packages/{package_slug_perm}/", pathPostMetadataPackagesPackageSlugPerm(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPost, "/workspaces/{workspace}/policies/", pathPostWorkspacesWorkspacePolicies(dir, rt)),
+		NewGeneratedHandler(ctx, http.MethodPost, "/workspaces/{workspace}/policies/validate/", pathPostWorkspacesWorkspacePoliciesValidate(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPost, "/workspaces/{workspace}/policies/{policy}/actions/", pathPostWorkspacesWorkspacePoliciesPolicyActions(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPut, "/workspaces/{workspace}/policies/{policy}/", pathPutWorkspacesWorkspacePoliciesPolicy(dir, rt)),
 		NewGeneratedHandler(ctx, http.MethodPut, "/workspaces/{workspace}/policies/{policy}/actions/{action}/", pathPutWorkspacesWorkspacePoliciesPolicyActionsAction(dir, rt)),

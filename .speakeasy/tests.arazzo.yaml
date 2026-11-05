@@ -36,7 +36,9 @@ workflows:
         requestBody:
           contentType: application/json
           payload:
-            content: <value>
+            content:
+              key: <value>
+              key1: <value>
             content_type: <value>
             source_identity: <value>
         successCriteria:
@@ -44,7 +46,7 @@ workflows:
           - condition: $response.header.Content-Type == application/json
           - context: $response.body
             condition: |
-              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","source_identity":"<value>"}
+              {"content":{},"content_type":"<value>","source_identity":"<value>","slug_perm":"<value>"}
             type: simple
     x-speakeasy-test-group: metadata
     x-speakeasy-test-rebuild: true
@@ -64,7 +66,7 @@ workflows:
           - condition: $response.header.Content-Type == application/json
           - context: $response.body
             condition: |
-              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","classification":"GENERIC","source_kind":"THIRD_PARTY","source_identity":"<value>","is_canonical":false,"source_table":"<value>","created_at":"2024-08-04T09:44:08.732Z"}
+              {"slug_perm":"<value>","content":{"key":"<value>","key1":"<value>","key2":"<value>"},"content_type":"<value>","classification":"GENERIC","source_kind":"THIRD_PARTY","source_identity":"<value>","is_canonical":false,"source_table":"<value>","created_at":"2024-08-04T09:44:08.732Z"}
             type: simple
     x-speakeasy-test-group: metadata
     x-speakeasy-test-rebuild: true
@@ -84,7 +86,7 @@ workflows:
           - condition: $response.header.Content-Type == application/json
           - context: $response.body
             condition: |
-              {"slug_perm":"<value>","content":"<value>","content_type":"<value>","source_identity":"<value>"}
+              {"content":{},"content_type":"<value>","source_identity":"<value>","slug_perm":"<value>"}
             type: simple
     x-speakeasy-test-group: metadata
     x-speakeasy-test-rebuild: true
@@ -462,6 +464,167 @@ workflows:
           - context: $response.body
             condition: |
               {"correlation_id":"5d0374a7-0667-42d5-bbd3-e230e41cdfa4","policy":{"created_at":"2026-11-11T07:45:14.285Z","name":"<value>","rego":"<value>","read_only":false,"slug_perm":"<value>","updated_at":"2025-04-09T19:29:36.919Z","version":526642},"started_at":"2025-11-01T03:46:01.833Z","ended_at":"2026-09-27T14:35:11.388Z","policy_input":{"v0":{"package":{"format":"HuggingfacePackage","architectures":[{"name":"<value>"}],"files":[{"file_extension":"<value>","oid":"<id>","size":537019,"path":"/opt"}],"is_local":false,"last_downloaded_at":"2026-09-23T00:43:31.883Z","license":{"raw_license_file_contents":{"sha256":"<value>","raw_text":"<value>"},"oss_license":{"full_name":"Karl Rau","license_text":"<value>","spdx_identifier":"<value>"},"source":"AUTOMATIC","match":"UNKNOWN","similarity":326595,"override":"IGNORED"},"num_files":382506,"package_type":"OTHER","security_scan_status":"UNSUPPORTED_PACKAGE","slug":"<value>","tags":[{"name":"<value>","source":"MANUAL","tag_type":"SOME_VERSION"}]},"repository":{"ecdsa_keys":[{"fingerprint_short":"<value>","fingerprint":"<value>","public_key":"<value>"}],"gpg_keys":[{"comment":"Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support","fingerprint_short":"<value>","fingerprint":"<value>","public_key":"<value>"}],"name":"<value>","open_source_license":null,"repository_type":"PRIVATE","storage_region":"<value>"},"workspace":{"name":"<value>","slug":"<value>","slug_perm":"<value>"}}},"policy_output":"<value>","actions":[{"action_type":"RemovePackageTags","slug_perm":"<value>","created_at":"2025-04-14T10:55:17.857Z","updated_at":"2026-12-10T21:36:06.359Z","effect":"<value>","tags":["<value 1>"]}],"parsed_actions":"<value>"}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: analytics_logs_package_list-PackageNamedSemverOrAnyRuby-formatPackage
+    steps:
+      - stepId: test
+        operationId: analytics_logs_package_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: format
+            in: query
+            value: json
+          - name: query
+            in: query
+            value: package:semver OR package_format:ruby
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"event_at":"2025-10-05T07:29:58.002Z","event_action":"RESYNC","package":{"slug_perm":"<value>","name":"<value>","version":"<value>","format":"BOWER","size":778198},"was_deleted_by_retention_rule":true,"event_context":"<value>"}]}
+            type: simple
+    x-speakeasy-test-group: analytics
+    x-speakeasy-test-rebuild: true
+  - workflowId: analytics_logs_package_list
+    steps:
+      - stepId: test
+        operationId: analytics_logs_package_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+          - name: format
+            in: query
+            value: json
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"event_at":"2025-10-05T07:29:58.002Z","event_action":"RESYNC","package":{"slug_perm":"<value>","name":"<value>","version":"<value>","format":"BOWER","size":778198},"was_deleted_by_retention_rule":true,"event_context":"<value>"}]}
+            type: simple
+    x-speakeasy-test-group: analytics
+    x-speakeasy-test-rebuild: true
+  - workflowId: packages_vulnerabilities_list
+    steps:
+      - stepId: test
+        operationId: packages_vulnerabilities_list
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+          - name: primary_records
+            in: query
+            value: true
+          - name: sort
+            in: query
+            value: -severity
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[]}
+            type: simple
+    x-speakeasy-test-group: packages
+    x-speakeasy-test-rebuild: true
+  - workflowId: packages_vulnerabilities_counts_list
+    steps:
+      - stepId: test
+        operationId: packages_vulnerabilities_counts_list
+        parameters:
+          - name: package_slug_perm
+            in: path
+            value: <value>
+          - name: primary_records
+            in: query
+            value: true
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              [{"total":8725,"malware":468612,"critical":753409,"high":255790,"medium":65328,"low":90148,"unknown":660873}]
+            type: simple
+    x-speakeasy-test-group: packages
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_domains_list-PreferredRepositoryDomain
+    steps:
+      - stepId: test
+        operationId: workspaces_domains_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"domain_name":"python.example.com","domain_type":"NATIVE_PYTHON","repository":"my-repository","domain_scope":"REPOSITORY"}]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_policies_validate
+    steps:
+      - stepId: test
+        operationId: workspaces_policies_validate
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+        requestBody:
+          contentType: application/json
+          payload:
+            rego: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"is_valid":false,"findings":[],"raw":"<value>"}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_vulnerabilities_repo_packages_list
+    steps:
+      - stepId: test
+        operationId: workspaces_vulnerabilities_repo_packages_list
+        parameters:
+          - name: repo
+            in: path
+            value: <value>
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[]}
+            type: simple
+    x-speakeasy-test-group: workspaces
+    x-speakeasy-test-rebuild: true
+  - workflowId: workspaces_vulnerabilities_packages_list
+    steps:
+      - stepId: test
+        operationId: workspaces_vulnerabilities_packages_list
+        parameters:
+          - name: workspace
+            in: path
+            value: <value>
+        successCriteria:
+          - condition: $statusCode == 200
+          - condition: $response.header.Content-Type == application/json
+          - context: $response.body
+            condition: |
+              {"results":[{"slug_perm":"<value>","repository":"<value>","name":"<value>","version":"<value>","downloads":130462,"format":"<value>","status":"<value>","uploaded_at":"2024-02-09T12:32:12.690Z","vulnerability_counts":{"key":504192,"key1":269972,"key2":156891}}]}
             type: simple
     x-speakeasy-test-group: workspaces
     x-speakeasy-test-rebuild: true

@@ -665,3 +665,121 @@ func TestWorkspaces_WorkspacesPoliciesDecisionLogsV1Retrieve(t *testing.T) {
 	}, res.PolicyDecisionLog)
 
 }
+
+func TestWorkspaces_WorkspacesDomainsListPreferredRepositoryDomain(t *testing.T) {
+	ctx := context.Background()
+
+	testHTTPClient := createTestHTTPClient("workspaces_domains_list-PreferredRepositoryDomain")
+
+	s := cloudsmith.New(
+		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
+		cloudsmith.WithClient(testHTTPClient),
+		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+	)
+
+	res, err := s.Workspaces.WorkspacesDomainsList(ctx, operations.WorkspacesDomainsListRequest{
+		Workspace: "<value>",
+	})
+	require.NoError(t, err)
+	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
+	assert.NotNil(t, res.PaginatedDomainList)
+	assert.Equal(t, &components.PaginatedDomainList{
+		Results: []components.Domain{
+			components.Domain{
+				DomainName:  "python.example.com",
+				DomainType:  components.DomainTypeNativePython,
+				Repository:  cloudsmith.Pointer("my-repository"),
+				DomainScope: components.DomainScopeRepository,
+			},
+		},
+	}, res.PaginatedDomainList)
+
+}
+
+func TestWorkspaces_WorkspacesPoliciesValidate(t *testing.T) {
+	ctx := context.Background()
+
+	testHTTPClient := createTestHTTPClient("workspaces_policies_validate")
+
+	s := cloudsmith.New(
+		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
+		cloudsmith.WithClient(testHTTPClient),
+		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+	)
+
+	res, err := s.Workspaces.WorkspacesPoliciesValidate(ctx, "<value>", components.PolicyValidateRequest{
+		Rego: "<value>",
+	})
+	require.NoError(t, err)
+	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
+	assert.NotNil(t, res.PolicyValidateResponse)
+	assert.Equal(t, &components.PolicyValidateResponse{
+		IsValid:  false,
+		Findings: []components.PolicyValidateFinding{},
+		Raw:      "<value>",
+	}, res.PolicyValidateResponse)
+
+}
+
+func TestWorkspaces_WorkspacesVulnerabilitiesRepoPackagesList(t *testing.T) {
+	ctx := context.Background()
+
+	testHTTPClient := createTestHTTPClient("workspaces_vulnerabilities_repo_packages_list")
+
+	s := cloudsmith.New(
+		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
+		cloudsmith.WithClient(testHTTPClient),
+		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+	)
+
+	res, err := s.Workspaces.WorkspacesVulnerabilitiesRepoPackagesList(ctx, operations.WorkspacesVulnerabilitiesRepoPackagesListRequest{
+		Repo:      "<value>",
+		Workspace: "<value>",
+	})
+	require.NoError(t, err)
+	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
+	assert.NotNil(t, res.PaginatedWebPackageVulnerabilitySummaryList)
+	assert.Equal(t, &components.PaginatedWebPackageVulnerabilitySummaryList{
+		Results: []components.WebPackageVulnerabilitySummary{},
+	}, res.PaginatedWebPackageVulnerabilitySummaryList)
+
+}
+
+func TestWorkspaces_WorkspacesVulnerabilitiesPackagesList(t *testing.T) {
+	ctx := context.Background()
+
+	testHTTPClient := createTestHTTPClient("workspaces_vulnerabilities_packages_list")
+
+	s := cloudsmith.New(
+		cloudsmith.WithServerURL(utils.GetEnv("TEST_SERVER_URL", "http://localhost:18080")),
+		cloudsmith.WithClient(testHTTPClient),
+		cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+	)
+
+	res, err := s.Workspaces.WorkspacesVulnerabilitiesPackagesList(ctx, operations.WorkspacesVulnerabilitiesPackagesListRequest{
+		Workspace: "<value>",
+	})
+	require.NoError(t, err)
+	assert.Equal(t, 200, res.HTTPMeta.Response.StatusCode)
+	assert.NotNil(t, res.PaginatedWebPackageVulnerabilitySummaryList)
+	assert.Equal(t, &components.PaginatedWebPackageVulnerabilitySummaryList{
+		Results: []components.WebPackageVulnerabilitySummary{
+			components.WebPackageVulnerabilitySummary{
+				SlugPerm:   "<value>",
+				Repository: "<value>",
+				Name:       "<value>",
+				Version:    "<value>",
+				Downloads:  130462,
+				Format:     "<value>",
+				Status:     "<value>",
+				UploadedAt: types.MustTimeFromString("2024-02-09T12:32:12.690Z"),
+				VulnerabilityCounts: map[string]int64{
+					"key":  504192,
+					"key1": 269972,
+					"key2": 156891,
+				},
+			},
+		},
+	}, res.PaginatedWebPackageVulnerabilitySummaryList)
+
+}

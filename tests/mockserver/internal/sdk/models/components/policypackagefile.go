@@ -16,7 +16,8 @@ type PolicyPackageFile struct {
 	ChecksumSha256 optionalnullable.OptionalNullable[string] `json:"checksum_sha256,omitempty"`
 	ChecksumSha512 optionalnullable.OptionalNullable[string] `json:"checksum_sha512,omitempty"`
 	Filename       string                                    `json:"filename"`
-	IsPrimary      string                                    `json:"is_primary"`
+	// Check if this is a primary package file (has no tag).
+	IsPrimary bool `json:"is_primary"`
 	// The calculated size of the file.
 	Size     *int64  `json:"size,omitempty"`
 	SlugPerm *string `json:"slug_perm,omitempty"`
@@ -70,9 +71,9 @@ func (o *PolicyPackageFile) GetFilename() string {
 	return o.Filename
 }
 
-func (o *PolicyPackageFile) GetIsPrimary() string {
+func (o *PolicyPackageFile) GetIsPrimary() bool {
 	if o == nil {
-		return ""
+		return false
 	}
 	return o.IsPrimary
 }

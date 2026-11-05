@@ -4,17 +4,17 @@
 
 package components
 
-// PatchedArtifactMetadataWrite - Serializer for POST create and PATCH update on artifact metadata.
+// PatchedArtifactMetadataWrite - Fields for creating or updating package metadata.
 type PatchedArtifactMetadataWrite struct {
 	// The metadata payload as a JSON object.
-	Content any `json:"content,omitempty"`
+	Content map[string]any `json:"content,omitempty"`
 	// The content type describing the structure of the metadata payload.
 	ContentType *string `json:"content_type,omitempty"`
 	// The identifier for the source of this metadata, for example 'upstream:npmjs'.
 	SourceIdentity *string `json:"source_identity,omitempty"`
 }
 
-func (o *PatchedArtifactMetadataWrite) GetContent() any {
+func (o *PatchedArtifactMetadataWrite) GetContent() map[string]any {
 	if o == nil {
 		return nil
 	}

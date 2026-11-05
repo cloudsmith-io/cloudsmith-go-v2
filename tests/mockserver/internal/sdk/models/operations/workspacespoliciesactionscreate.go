@@ -37,6 +37,13 @@ func (o *WorkspacesPoliciesActionsCreateRequest) GetBody() *components.PolicyAct
 	return o.Body
 }
 
+func (o *WorkspacesPoliciesActionsCreateRequest) GetBodyBlockPackage() *components.BlockPackagePolicyActionTypedInput {
+	if v := o.GetBody(); v != nil {
+		return v.BlockPackagePolicyActionTypedInput
+	}
+	return nil
+}
+
 func (o *WorkspacesPoliciesActionsCreateRequest) GetBodySetPackageState() *components.SetPackageStatePolicyActionTypedInput {
 	if v := o.GetBody(); v != nil {
 		return v.SetPackageStatePolicyActionTypedInput
@@ -75,6 +82,13 @@ func (o *WorkspacesPoliciesActionsCreateResponse) GetPolicyAction() *components.
 		return nil
 	}
 	return o.PolicyAction
+}
+
+func (o *WorkspacesPoliciesActionsCreateResponse) GetPolicyActionBlockPackage() *components.BlockPackagePolicyActionTyped {
+	if v := o.GetPolicyAction(); v != nil {
+		return v.BlockPackagePolicyActionTyped
+	}
+	return nil
 }
 
 func (o *WorkspacesPoliciesActionsCreateResponse) GetPolicyActionSetPackageState() *components.SetPackageStatePolicyActionTyped {

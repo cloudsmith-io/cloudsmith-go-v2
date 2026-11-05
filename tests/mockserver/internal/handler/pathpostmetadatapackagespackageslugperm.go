@@ -52,11 +52,11 @@ func testMetadataPackagesCreateMetadataPackagesCreate0(w http.ResponseWriter, re
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	var respBody *components.ArtifactMetadataWrite = &components.ArtifactMetadataWrite{
-		SlugPerm:       "<value>",
-		Content:        "<value>",
+	var respBody *components.ArtifactMetadataEntry = &components.ArtifactMetadataEntry{
+		Content:        map[string]any{},
 		ContentType:    "<value>",
 		SourceIdentity: "<value>",
+		SlugPerm:       "<value>",
 	}
 	respBodyBytes, err := utils.MarshalJSON(respBody, "", true)
 

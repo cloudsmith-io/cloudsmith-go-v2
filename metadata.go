@@ -283,7 +283,7 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 
 // MetadataPackagesCreate - Attach metadata to a package
 // Attach arbitrary metadata to a package.
-func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteRequest, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
+func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
 	request := operations.MetadataPackagesCreateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		Body:            body,
@@ -469,12 +469,12 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -975,12 +975,12 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

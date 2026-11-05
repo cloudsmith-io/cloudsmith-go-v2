@@ -90,15 +90,18 @@ func main() {
         cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
     )
 
-    res, err := s.Metadata.MetadataPackagesCreate(ctx, "<value>", components.ArtifactMetadataWriteRequest{
-        Content: "<value>",
+    res, err := s.Metadata.MetadataPackagesCreate(ctx, "<value>", components.ArtifactMetadataWrite{
+        Content: map[string]any{
+            "key": "<value>",
+            "key1": "<value>",
+        },
         ContentType: "<value>",
         SourceIdentity: "<value>",
     })
     if err != nil {
         log.Fatal(err)
     }
-    if res.ArtifactMetadataWrite != nil {
+    if res.ArtifactMetadataEntry != nil {
         // handle response
     }
 }
@@ -106,12 +109,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                                                          | Type                                                                                               | Required                                                                                           | Description                                                                                        |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `ctx`                                                                                              | [context.Context](https://pkg.go.dev/context#Context)                                              | :heavy_check_mark:                                                                                 | The context to use for the request.                                                                |
-| `packageSlugPerm`                                                                                  | `string`                                                                                           | :heavy_check_mark:                                                                                 | The `slug_perm` of the package.                                                                    |
-| `body`                                                                                             | [components.ArtifactMetadataWriteRequest](../../models/components/artifactmetadatawriterequest.md) | :heavy_check_mark:                                                                                 | N/A                                                                                                |
-| `opts`                                                                                             | [][operations.Option](../../models/operations/option.md)                                           | :heavy_minus_sign:                                                                                 | The options for this request.                                                                      |
+| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `ctx`                                                                                | [context.Context](https://pkg.go.dev/context#Context)                                | :heavy_check_mark:                                                                   | The context to use for the request.                                                  |
+| `packageSlugPerm`                                                                    | `string`                                                                             | :heavy_check_mark:                                                                   | The `slug_perm` of the package.                                                      |
+| `body`                                                                               | [components.ArtifactMetadataWrite](../../models/components/artifactmetadatawrite.md) | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `opts`                                                                               | [][operations.Option](../../models/operations/option.md)                             | :heavy_minus_sign:                                                                   | The options for this request.                                                        |
 
 ### Response
 
@@ -204,7 +207,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if res.ArtifactMetadataWrite != nil {
+    if res.ArtifactMetadataEntry != nil {
         // handle response
     }
 }
@@ -309,7 +312,10 @@ func main() {
     )
 
     res, err := s.Metadata.MetadataValidateCreate(ctx, components.ArtifactMetadataValidate{
-        Content: "<value>",
+        Content: map[string]any{
+            "key": "<value>",
+            "key1": "<value>",
+        },
         ContentType: "<value>",
     })
     if err != nil {

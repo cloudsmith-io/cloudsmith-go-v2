@@ -14,17 +14,31 @@ import (
 type PatchedPolicyActionType string
 
 const (
+	PatchedPolicyActionTypeBlockPackage      PatchedPolicyActionType = "BlockPackage"
 	PatchedPolicyActionTypeSetPackageState   PatchedPolicyActionType = "SetPackageState"
 	PatchedPolicyActionTypeAddPackageTags    PatchedPolicyActionType = "AddPackageTags"
 	PatchedPolicyActionTypeRemovePackageTags PatchedPolicyActionType = "RemovePackageTags"
 )
 
 type PatchedPolicyAction struct {
+	PatchedBlockPackagePolicyActionTyped      *PatchedBlockPackagePolicyActionTyped      `queryParam:"inline"`
 	PatchedSetPackageStatePolicyActionTyped   *PatchedSetPackageStatePolicyActionTyped   `queryParam:"inline"`
 	PatchedAddPackageTagsPolicyActionTyped    *PatchedAddPackageTagsPolicyActionTyped    `queryParam:"inline"`
 	PatchedRemovePackageTagsPolicyActionTyped *PatchedRemovePackageTagsPolicyActionTyped `queryParam:"inline"`
 
 	Type PatchedPolicyActionType
+}
+
+func CreatePatchedPolicyActionBlockPackage(blockPackage PatchedBlockPackagePolicyActionTyped) PatchedPolicyAction {
+	typ := PatchedPolicyActionTypeBlockPackage
+
+	typStr := string(typ)
+	blockPackage.ActionType = &typStr
+
+	return PatchedPolicyAction{
+		PatchedBlockPackagePolicyActionTyped: &blockPackage,
+		Type:                                 typ,
+	}
 }
 
 func CreatePatchedPolicyActionSetPackageState(setPackageState PatchedSetPackageStatePolicyActionTyped) PatchedPolicyAction {
@@ -75,6 +89,15 @@ func (u *PatchedPolicyAction) UnmarshalJSON(data []byte) error {
 	}
 
 	switch dis.ActionType {
+	case "BlockPackage":
+		patchedBlockPackagePolicyActionTyped := new(PatchedBlockPackagePolicyActionTyped)
+		if err := utils.UnmarshalJSON(data, &patchedBlockPackagePolicyActionTyped, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ActionType == BlockPackage) type PatchedBlockPackagePolicyActionTyped within PatchedPolicyAction: %w", string(data), err)
+		}
+
+		u.PatchedBlockPackagePolicyActionTyped = patchedBlockPackagePolicyActionTyped
+		u.Type = PatchedPolicyActionTypeBlockPackage
+		return nil
 	case "SetPackageState":
 		patchedSetPackageStatePolicyActionTyped := new(PatchedSetPackageStatePolicyActionTyped)
 		if err := utils.UnmarshalJSON(data, &patchedSetPackageStatePolicyActionTyped, "", true, nil); err != nil {
@@ -108,6 +131,10 @@ func (u *PatchedPolicyAction) UnmarshalJSON(data []byte) error {
 }
 
 func (u PatchedPolicyAction) MarshalJSON() ([]byte, error) {
+	if u.PatchedBlockPackagePolicyActionTyped != nil {
+		return utils.MarshalJSON(u.PatchedBlockPackagePolicyActionTyped, "", true)
+	}
+
 	if u.PatchedSetPackageStatePolicyActionTyped != nil {
 		return utils.MarshalJSON(u.PatchedSetPackageStatePolicyActionTyped, "", true)
 	}

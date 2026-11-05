@@ -52,7 +52,7 @@ func (m *MetadataPackagesPartialUpdateRequest) GetBody() *components.PatchedArti
 type MetadataPackagesPartialUpdateResponse struct {
 	HTTPMeta components.HTTPMetadata `json:"-"`
 	// The metadata entry was updated successfully.
-	ArtifactMetadataWrite *components.ArtifactMetadataWrite
+	ArtifactMetadataEntry *components.ArtifactMetadataEntry
 }
 
 func (m MetadataPackagesPartialUpdateResponse) MarshalJSON() ([]byte, error) {
@@ -73,9 +73,9 @@ func (m *MetadataPackagesPartialUpdateResponse) GetHTTPMeta() components.HTTPMet
 	return m.HTTPMeta
 }
 
-func (m *MetadataPackagesPartialUpdateResponse) GetArtifactMetadataWrite() *components.ArtifactMetadataWrite {
+func (m *MetadataPackagesPartialUpdateResponse) GetArtifactMetadataEntry() *components.ArtifactMetadataEntry {
 	if m == nil {
 		return nil
 	}
-	return m.ArtifactMetadataWrite
+	return m.ArtifactMetadataEntry
 }

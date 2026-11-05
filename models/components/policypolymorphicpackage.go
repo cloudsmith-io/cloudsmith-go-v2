@@ -16,12 +16,16 @@ type PolicyPolymorphicPackageType string
 const (
 	PolicyPolymorphicPackageTypePackage            PolicyPolymorphicPackageType = "Package"
 	PolicyPolymorphicPackageTypeHuggingfacePackage PolicyPolymorphicPackageType = "HuggingfacePackage"
+	PolicyPolymorphicPackageTypeMavenPackage       PolicyPolymorphicPackageType = "MavenPackage"
+	PolicyPolymorphicPackageTypeSkillsPackage      PolicyPolymorphicPackageType = "SkillsPackage"
 	PolicyPolymorphicPackageTypeUnknown            PolicyPolymorphicPackageType = "UNKNOWN"
 )
 
 type PolicyPolymorphicPackage struct {
 	PolicyPackageTyped            *PolicyPackageTyped            `queryParam:"inline" union:"member"`
 	PolicyHuggingfacePackageTyped *PolicyHuggingfacePackageTyped `queryParam:"inline" union:"member"`
+	PolicyMavenPackageTyped       *PolicyMavenPackageTyped       `queryParam:"inline" union:"member"`
+	PolicySkillsPackageTyped      *PolicySkillsPackageTyped      `queryParam:"inline" union:"member"`
 	UnknownRaw                    json.RawMessage                `json:"-" union:"unknown"`
 
 	Type PolicyPolymorphicPackageType
@@ -48,6 +52,30 @@ func CreatePolicyPolymorphicPackageHuggingfacePackage(huggingfacePackage PolicyH
 	return PolicyPolymorphicPackage{
 		PolicyHuggingfacePackageTyped: &huggingfacePackage,
 		Type:                          typ,
+	}
+}
+
+func CreatePolicyPolymorphicPackageMavenPackage(mavenPackage PolicyMavenPackageTyped) PolicyPolymorphicPackage {
+	typ := PolicyPolymorphicPackageTypeMavenPackage
+
+	typStr := string(typ)
+	mavenPackage.Format = typStr
+
+	return PolicyPolymorphicPackage{
+		PolicyMavenPackageTyped: &mavenPackage,
+		Type:                    typ,
+	}
+}
+
+func CreatePolicyPolymorphicPackageSkillsPackage(skillsPackage PolicySkillsPackageTyped) PolicyPolymorphicPackage {
+	typ := PolicyPolymorphicPackageTypeSkillsPackage
+
+	typStr := string(typ)
+	skillsPackage.Format = typStr
+
+	return PolicyPolymorphicPackage{
+		PolicySkillsPackageTyped: &skillsPackage,
+		Type:                     typ,
 	}
 }
 
@@ -114,6 +142,24 @@ func (u *PolicyPolymorphicPackage) UnmarshalJSON(data []byte) (err error) {
 		u.PolicyHuggingfacePackageTyped = policyHuggingfacePackageTyped
 		u.Type = PolicyPolymorphicPackageTypeHuggingfacePackage
 		return nil
+	case "MavenPackage":
+		policyMavenPackageTyped := new(PolicyMavenPackageTyped)
+		if err := utils.UnmarshalJSON(data, &policyMavenPackageTyped, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Format == MavenPackage) type PolicyMavenPackageTyped within PolicyPolymorphicPackage: %w", string(data), err)
+		}
+
+		u.PolicyMavenPackageTyped = policyMavenPackageTyped
+		u.Type = PolicyPolymorphicPackageTypeMavenPackage
+		return nil
+	case "SkillsPackage":
+		policySkillsPackageTyped := new(PolicySkillsPackageTyped)
+		if err := utils.UnmarshalJSON(data, &policySkillsPackageTyped, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Format == SkillsPackage) type PolicySkillsPackageTyped within PolicyPolymorphicPackage: %w", string(data), err)
+		}
+
+		u.PolicySkillsPackageTyped = policySkillsPackageTyped
+		u.Type = PolicyPolymorphicPackageTypeSkillsPackage
+		return nil
 	default:
 		u.UnknownRaw = json.RawMessage(data)
 		u.Type = PolicyPolymorphicPackageTypeUnknown
@@ -129,6 +175,14 @@ func (u PolicyPolymorphicPackage) MarshalJSON() ([]byte, error) {
 
 	if u.PolicyHuggingfacePackageTyped != nil {
 		return utils.MarshalJSON(u.PolicyHuggingfacePackageTyped, "", true)
+	}
+
+	if u.PolicyMavenPackageTyped != nil {
+		return utils.MarshalJSON(u.PolicyMavenPackageTyped, "", true)
+	}
+
+	if u.PolicySkillsPackageTyped != nil {
+		return utils.MarshalJSON(u.PolicySkillsPackageTyped, "", true)
 	}
 
 	if u.UnknownRaw != nil {

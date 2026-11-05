@@ -1,18 +1,19 @@
 lockVersion: 2.0.0
 id: fa09069b-9ac8-46b5-9c53-1b755611b6b3
 management:
-  docChecksum: f3ffe3597a52bf176a3ca1af809191ca
-  docVersion: 1.1193.0 (v2)
+  docChecksum: e3313a62d45c69813e007aed64e53b69
+  docVersion: 1.1491.0 (v2)
   speakeasyVersion: internal
   generationVersion: internal
-  releaseVersion: 1.2.0
-  configChecksum: e3bc91d52e159fb2d56aabf8e94e9e4a
+  releaseVersion: 1.3.0
+  configChecksum: 4e4c0d9dd7b2bb0b0f57c5c0c7d9eb97
 persistentEdits:
   generation_id: 149105a5-affa-4fa7-b3e5-dc07c86b3b37
   pristine_commit_hash: d16e17b28f12a4f19322d2f563975f68e301b0de
   pristine_tree_hash: 40e53ccfe2f76bf77070cfc53ea1b79e5a498ce4
 features:
   go:
+    acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.15
     core: 3.16.5
@@ -43,6 +44,7 @@ trackedFiles:
   USAGE.md:
     id: 3aed33ce6e6f
     pristine_git_object: 4daa52d05091c86dc9ebe79779688d7e466a2ce3
+  analytics.go: {}
   cloudsmith.go:
     id: b5bdaee6b3ef
     pristine_git_object: 23a81b0092e501695238f7f7177a397a91ed5e13
@@ -55,6 +57,7 @@ trackedFiles:
   docs/models/components/addpackagetagspolicyactiontypedrequest.md:
     id: 8350e59957df
     pristine_git_object: 4b08e5d0f4e795cd62dc1f1c830f685926abd9ef
+  docs/models/components/artifactmetadataentry.md: {}
   docs/models/components/artifactmetadataread.md:
     id: fd128e7a28ab
     pristine_git_object: 1a7cf1c404843846f1b58556a39ddd4e30372771
@@ -64,15 +67,11 @@ trackedFiles:
   docs/models/components/artifactmetadatawrite.md:
     id: e485d13e2297
     pristine_git_object: 60a3ca958c6f4933b06543c024e96785b26f37c0
-  docs/models/components/artifactmetadatawriterequest.md:
-    id: 36bc62498a7b
-    pristine_git_object: 109c8125aa1f20899aa69024094503d16c6147d3
   docs/models/components/availabilityenum.md:
     id: 283c1cc60385
     pristine_git_object: cf03fe57af45203fa9cb2cc6000b6c840442dfa7
-  docs/models/components/blankenum.md:
-    id: 544ea3eea486
-    pristine_git_object: d8033fd32861b046e1c38e6b18ec14c47e0bdcc5
+  docs/models/components/blockpackagepolicyactiontyped.md: {}
+  docs/models/components/blockpackagepolicyactiontypedrequest.md: {}
   docs/models/components/card.md:
     id: d54a90b51617
     pristine_git_object: 1b4e028205a3c4bdb19a06f06d170e33cd35d926
@@ -85,12 +84,13 @@ trackedFiles:
   docs/models/components/country.md:
     id: bece05c056e0
     pristine_git_object: 171e69eb017d071bba16f0c35f7167c2b5285fa2
-  docs/models/components/countryenum.md:
-    id: a0c12451c152
-    pristine_git_object: 59a3b22aa246e07ae0326d01a7a7474264318666
-  docs/models/components/epss.md:
-    id: b1a4e45a09f2
-    pristine_git_object: ab527dba1c6cac3194b1bb9460f380baa987a102
+  docs/models/components/cvss.md: {}
+  docs/models/components/domain.md: {}
+  docs/models/components/domainscope.md: {}
+  docs/models/components/domaintype.md: {}
+  docs/models/components/eventactionenum.md: {}
+  docs/models/components/eventactor.md: {}
+  docs/models/components/formatenum.md: {}
   docs/models/components/httpmetadata.md:
     id: 728948c70168
     pristine_git_object: df1fdd59f3c85e4ba70573ff7954b12ac1d33d08
@@ -115,9 +115,8 @@ trackedFiles:
   docs/models/components/osslicense.md:
     id: 6b9359f85611
     pristine_git_object: e12c7e97c6d682192a2a08b38d5974836e639ef4
-  docs/models/components/package.md:
-    id: 30a6f928495d
-    pristine_git_object: 5eea7240a7291ea0b620905ceca49f496f17556b
+  docs/models/components/packagelogpackage.md: {}
+  docs/models/components/packagelogsresponse.md: {}
   docs/models/components/packagestateenum.md:
     id: b8526117bd6b
     pristine_git_object: 2b3decf4c1ea8eb292feec908a0bc87312a40f70
@@ -133,6 +132,8 @@ trackedFiles:
   docs/models/components/paginatedartifactmetadatareadlist.md:
     id: 6c7758cde03f
     pristine_git_object: 8a813511563b0020720bb1d037139e653da2f57a
+  docs/models/components/paginateddomainlist.md: {}
+  docs/models/components/paginatedpackagelogsresponselist.md: {}
   docs/models/components/paginatedpolicyactionlist.md:
     id: 77fc33fe8d84
     pristine_git_object: 8634c19143a748f14fa659e6b692d9f4395e8fa9
@@ -145,12 +146,15 @@ trackedFiles:
   docs/models/components/paginatedpolicylist.md:
     id: 27d4e6ade947
     pristine_git_object: 019cf031516144eeb9e9b79b641a052560a6eaef
+  docs/models/components/paginatedwebosvvulnerabilitylist.md: {}
+  docs/models/components/paginatedwebpackagevulnerabilitysummarylist.md: {}
   docs/models/components/patchedaddpackagetagspolicyactiontyped.md:
     id: b043d94e6b7c
     pristine_git_object: 47b32a48bfc7bd0a693ffd3cf60f7e2fea56a222
   docs/models/components/patchedartifactmetadatawrite.md:
     id: 8c52bf892e2f
     pristine_git_object: 575ffa61bece0b3b3bdf15fe0882090bc7955994
+  docs/models/components/patchedblockpackagepolicyactiontyped.md: {}
   docs/models/components/patchedpolicy.md:
     id: da2105828b9b
     pristine_git_object: df7e51b7e7bbf64ac233857b8016a697ae57487e
@@ -166,6 +170,7 @@ trackedFiles:
   docs/models/components/picklescan.md:
     id: e130c2ba8769
     pristine_git_object: 2624370cc2685f812661dcb033e15d537ab454b3
+  docs/models/components/plugin.md: {}
   docs/models/components/policy.md:
     id: 66c097e1389b
     pristine_git_object: 0235a704a7dec06756f57ceec97ad7b21a7cfdc8
@@ -181,6 +186,7 @@ trackedFiles:
   docs/models/components/policyadvisorycvss.md:
     id: 52d86ead3808
     pristine_git_object: 76a728201074b55b34292e05b66aa6d91766cebd
+  docs/models/components/policyadvisoryepss.md: {}
   docs/models/components/policyadvisorysource.md:
     id: e303f54cc21a
     pristine_git_object: fd2ed90eaf80b3be2d7b43de0f62eb374d15de60
@@ -202,6 +208,7 @@ trackedFiles:
   docs/models/components/policydistributionversion.md:
     id: 3aacbe63af1a
     pristine_git_object: 6eda1eef69c6da213d9e4cf0a426a61c2376b5b7
+  docs/models/components/policyepssscore.md: {}
   docs/models/components/policyhuggingfacedatasetcardtyped.md:
     id: cecd330b11f4
     pristine_git_object: 4c61c413d883948da91b8975a69e3cb833298995
@@ -232,15 +239,22 @@ trackedFiles:
   docs/models/components/policyinput.md:
     id: d9d87b57468b
     pristine_git_object: eb4a6e63980d8aaa74866c29b87f3e4b1e43cbc9
+  docs/models/components/policyinputpreview.md: {}
+  docs/models/components/policyinputpreviewpackage.md: {}
+  docs/models/components/policyinputpreviewvulnerabilities.md: {}
   docs/models/components/policyinputv0.md:
     id: 6ead7b4f81c7
     pristine_git_object: 2495d65b181398c24e2819acd372e50e6ccbeaf0
+  docs/models/components/policymavenpackagetyped.md: {}
+  docs/models/components/policymavenpackagetypedupstreammetadata.md: {}
   docs/models/components/policyosvaffected.md:
     id: 27fcbe41db30
     pristine_git_object: 69b81e008ff860188dff8e44b568768a6c406888
+  docs/models/components/policyosvaffectedpackage.md: {}
   docs/models/components/policyosvseverity.md:
     id: 9c86a1c78c80
     pristine_git_object: ae3aefb62172f92c6c9ca81305cae714a4bad7b6
+  docs/models/components/policyosvseveritysourceenum.md: {}
   docs/models/components/policyosvseveritytypeenum.md:
     id: 2c3722f2fb2a
     pristine_git_object: 30edbfd206d0ec75cf72c609b1f1cb3914435967
@@ -277,9 +291,16 @@ trackedFiles:
   docs/models/components/policyrequest.md:
     id: 5b0df41b845f
     pristine_git_object: 06778709880e1e8e38b2cf60474a1d2af67a984b
+  docs/models/components/policyskillspackagetyped.md: {}
+  docs/models/components/policyskillspackagetypedupstreammetadata.md: {}
   docs/models/components/policyuploader.md:
     id: f073d2e2261d
     pristine_git_object: f970ad5c644b832d130699b785f19e090bbebe79
+  docs/models/components/policyuploaderteam.md: {}
+  docs/models/components/policyvalidatefinding.md: {}
+  docs/models/components/policyvalidaterequest.md: {}
+  docs/models/components/policyvalidateresponse.md: {}
+  docs/models/components/policyvulnerabilitygroup.md: {}
   docs/models/components/policyworkspace.md:
     id: c2c00cd8299c
     pristine_git_object: 0a01376e2245a38c25c4434b814828a84c695800
@@ -295,6 +316,7 @@ trackedFiles:
   docs/models/components/removepackagetagspolicyactiontypedrequest.md:
     id: df22edf30487
     pristine_git_object: 769822f4a5bc044c60b09d41f65b285d7ec71a2e
+  docs/models/components/repository.md: {}
   docs/models/components/repositorytypeenum.md:
     id: 04cc5dbf3747
     pristine_git_object: 9ad63be75491b8103837eea5336142895a7e7b05
@@ -322,9 +344,27 @@ trackedFiles:
   docs/models/components/statusenum.md:
     id: 5edeeaf64bff
     pristine_git_object: 084fc50433f65143935b7f4befd4ef0dc672869b
+  docs/models/components/subtype.md: {}
+  docs/models/components/usertype.md: {}
+  docs/models/components/webosvaffected.md: {}
+  docs/models/components/webosvaffectedpackage.md: {}
+  docs/models/components/webosvseverity.md: {}
+  docs/models/components/webosvseveritycounts.md: {}
+  docs/models/components/webosvseveritytypeenum.md: {}
+  docs/models/components/webosvvulnerability.md: {}
+  docs/models/components/webosvvulnerabilityepss.md: {}
+  docs/models/components/webpackagevulnerabilitysummary.md: {}
+  docs/models/operations/analyticslogspackagelistpackageformat.md: {}
+  docs/models/operations/analyticslogspackagelistrequest.md: {}
+  docs/models/operations/analyticslogspackagelistresponse.md: {}
   docs/models/operations/classification.md:
     id: 373bd044d69e
     pristine_git_object: 879a1a8cb4d82f5f483711012ffb7ff1a117048a
+  docs/models/operations/domainscope.md: {}
+  docs/models/operations/domaintype.md: {}
+  docs/models/operations/eventaction.md: {}
+  docs/models/operations/eventactortype.md: {}
+  docs/models/operations/format.md: {}
   docs/models/operations/metadatapackagescreaterequest.md:
     id: 721757da28a1
     pristine_git_object: 0206d251c39cf90f31383083227b842fd522ef2b
@@ -361,12 +401,17 @@ trackedFiles:
   docs/models/operations/option.md:
     id: 2ac1bd52a5fb
     pristine_git_object: 9ba71800d6faa283124eed5b162f788e2cc30416
-  docs/models/operations/packageformat.md:
-    id: fba2c62ed15e
-    pristine_git_object: 78aee2c9e7b0f243773a9a8f8288f2f2ffda35dc
+  docs/models/operations/packagesvulnerabilitiescountslistrequest.md: {}
+  docs/models/operations/packagesvulnerabilitiescountslistresponse.md: {}
+  docs/models/operations/packagesvulnerabilitieslistrequest.md: {}
+  docs/models/operations/packagesvulnerabilitieslistresponse.md: {}
+  docs/models/operations/packagesvulnerabilitieslistthreatlevel.md: {}
+  docs/models/operations/sort.md: {}
   docs/models/operations/sourcekind.md:
     id: 8b196c048977
     pristine_git_object: 82e3137d524f3122f12adf23c8a9587ff94b3244
+  docs/models/operations/workspacesdomainslistrequest.md: {}
+  docs/models/operations/workspacesdomainslistresponse.md: {}
   docs/models/operations/workspacespoliciesactionscreaterequest.md:
     id: f14fb3b0249a
     pristine_git_object: 869661168c5a52646ebb9448d3d5d1ce3cca70b0
@@ -409,6 +454,7 @@ trackedFiles:
   docs/models/operations/workspacespoliciescreateresponse.md:
     id: 37163a373a14
     pristine_git_object: 2d7a6d6956101075434a2145c04d8709bb70961d
+  docs/models/operations/workspacespoliciesdecisionlogsv1listpackageformat.md: {}
   docs/models/operations/workspacespoliciesdecisionlogsv1listrequest.md:
     id: 0134d2f8642b
     pristine_git_object: 46b97390c3fc91fc866b0140e62364445eeb580c
@@ -457,9 +503,19 @@ trackedFiles:
   docs/models/operations/workspacespoliciesupdateresponse.md:
     id: 7dcb95365b53
     pristine_git_object: 75c08ed9c07ae8b78044fa47ca0624ee5a602043
+  docs/models/operations/workspacespoliciesvalidaterequest.md: {}
+  docs/models/operations/workspacespoliciesvalidateresponse.md: {}
+  docs/models/operations/workspacesvulnerabilitiespackageslistrequest.md: {}
+  docs/models/operations/workspacesvulnerabilitiespackageslistresponse.md: {}
+  docs/models/operations/workspacesvulnerabilitiespackageslistthreatlevel.md: {}
+  docs/models/operations/workspacesvulnerabilitiesrepopackageslistrequest.md: {}
+  docs/models/operations/workspacesvulnerabilitiesrepopackageslistresponse.md: {}
+  docs/models/operations/workspacesvulnerabilitiesrepopackageslistthreatlevel.md: {}
+  docs/sdks/analytics/README.md: {}
   docs/sdks/metadata/README.md:
     id: de871ca7dbeb
     pristine_git_object: ce1f4ca4b0eacf7cf8fd568c232392e6347b8157
+  docs/sdks/packages/README.md: {}
   docs/sdks/workspaces/README.md:
     id: 1f5b051a6380
     pristine_git_object: 76d6cbe646d62f75adcd49c91b8c2f0e4e1b6436
@@ -527,6 +583,7 @@ trackedFiles:
   models/components/addpackagetagspolicyactiontypedrequest.go:
     id: 0c2b52ae4ca9
     pristine_git_object: 6461973c35bac07bd0b0b9cafc040e2226b243d7
+  models/components/artifactmetadataentry.go: {}
   models/components/artifactmetadataread.go:
     id: 1c99be9fb1c2
     pristine_git_object: 5de5ae6a3a8fe10146dcc5e259834efe1999a86e
@@ -536,15 +593,17 @@ trackedFiles:
   models/components/artifactmetadatawrite.go:
     id: b27019cb1c70
     pristine_git_object: 2d0cf263f30e7ab7855c7b208655646ad818b45f
-  models/components/artifactmetadatawriterequest.go:
-    id: 5142b39fa22c
-    pristine_git_object: ade48658f178fe1eed8396c92cb1317b90194caa
   models/components/availabilityenum.go:
     id: c94e8edafd49
     pristine_git_object: 699aeaf4d6ebc4356f213ecc1aee2fabf44da564
+  models/components/blockpackagepolicyactiontyped.go: {}
+  models/components/blockpackagepolicyactiontypedrequest.go: {}
   models/components/classificationenum.go:
     id: 1b37f06c5a66
     pristine_git_object: fd8bcc77f8fddc6eedb388f213f570d33adf2940
+  models/components/domain.go: {}
+  models/components/eventactionenum.go: {}
+  models/components/formatenum.go: {}
   models/components/httpmetadata.go:
     id: 790bad4a7abb
     pristine_git_object: 512e38677539554b76e4ab0d71010d39657c8cdd
@@ -557,6 +616,8 @@ trackedFiles:
   models/components/licensesourceenum.go:
     id: f730b6fffa80
     pristine_git_object: 9c3890d56834198be914f0d63a612cc924bf8f4d
+  models/components/packagelogpackage.go: {}
+  models/components/packagelogsresponse.go: {}
   models/components/packagestateenum.go:
     id: 37ef4628ae2a
     pristine_git_object: fc16a31869af97321d21cc554436eb3c8a0d1e00
@@ -572,6 +633,8 @@ trackedFiles:
   models/components/paginatedartifactmetadatareadlist.go:
     id: 6af73e398c06
     pristine_git_object: a170f64d8e3c96486c6fc07426542024c6135d98
+  models/components/paginateddomainlist.go: {}
+  models/components/paginatedpackagelogsresponselist.go: {}
   models/components/paginatedpolicyactionlist.go:
     id: ebc3b04eee65
     pristine_git_object: a6039a680f405b8b686fb91db864a6b68865e60e
@@ -584,12 +647,15 @@ trackedFiles:
   models/components/paginatedpolicylist.go:
     id: 416be70cb64b
     pristine_git_object: ab310d6b1b3eb31eec24cb29a927bc104c81ebff
+  models/components/paginatedwebosvvulnerabilitylist.go: {}
+  models/components/paginatedwebpackagevulnerabilitysummarylist.go: {}
   models/components/patchedaddpackagetagspolicyactiontyped.go:
     id: ad3ddfef0748
     pristine_git_object: 8230ce62626c66070322a216c39d722ba08a8819
   models/components/patchedartifactmetadatawrite.go:
     id: 3e5ad4de5b52
     pristine_git_object: dd32761f4ffa1afa479b6d7af9221d3e9666c4dc
+  models/components/patchedblockpackagepolicyactiontyped.go: {}
   models/components/patchedpolicy.go:
     id: b43c80518bb7
     pristine_git_object: d3d06701fc3e40eebbd9b81f590ac16987b4b96a
@@ -638,6 +704,7 @@ trackedFiles:
   models/components/policydistributionversion.go:
     id: 9317c73532e5
     pristine_git_object: 4b3f5f95e052bc31ef1e9db232c535f169504b25
+  models/components/policyepssscore.go: {}
   models/components/policyhuggingfaceevalresult.go:
     id: 86cc21dffdd5
     pristine_git_object: ed8e2ade994552b07cb23bf568e5a12b728d6303
@@ -656,15 +723,20 @@ trackedFiles:
   models/components/policyinput.go:
     id: ec3571adafa2
     pristine_git_object: 01591a1777727042232692e9be970492ca812a2c
+  models/components/policyinputpreview.go: {}
+  models/components/policyinputpreviewpackage.go: {}
+  models/components/policyinputpreviewvulnerabilities.go: {}
   models/components/policyinputv0.go:
     id: b34daceeada1
     pristine_git_object: f8b30366f3364b2d384862ece1a561e55b537d75
+  models/components/policymavenpackagetyped.go: {}
   models/components/policyosvaffected.go:
     id: 3b000e602871
     pristine_git_object: 83058ae3d6057823cf1a6089ed332f17c041259b
   models/components/policyosvseverity.go:
     id: 14cae9cc2d71
     pristine_git_object: 4797d1337a53819057946d0e2f38c5153c15f4dc
+  models/components/policyosvseveritysourceenum.go: {}
   models/components/policyosvseveritytypeenum.go:
     id: e0b25e04f2ef
     pristine_git_object: 072143dd81ba4cda80d328f60720bdf181ab41c3
@@ -698,9 +770,15 @@ trackedFiles:
   models/components/policyrequest.go:
     id: a19ebd415746
     pristine_git_object: 7a2811c1cef8b9f5e4f06e533bdb2889a1d3f18e
+  models/components/policyskillspackagetyped.go: {}
   models/components/policyuploader.go:
     id: 63e23651c562
     pristine_git_object: ef86df098b48484667cb4e5301e5ca151695b899
+  models/components/policyuploaderteam.go: {}
+  models/components/policyvalidatefinding.go: {}
+  models/components/policyvalidaterequest.go: {}
+  models/components/policyvalidateresponse.go: {}
+  models/components/policyvulnerabilitygroup.go: {}
   models/components/policyworkspace.go:
     id: 99cbe8c32750
     pristine_git_object: 647516845853ed9e9901eb02b2d0a5afd8577dd2
@@ -737,6 +815,13 @@ trackedFiles:
   models/components/statusenum.go:
     id: 4efc21ee90a3
     pristine_git_object: 436465486c9db9d28a0a460aeafcf508cbb89bb5
+  models/components/webosvaffected.go: {}
+  models/components/webosvseverity.go: {}
+  models/components/webosvseveritycounts.go: {}
+  models/components/webosvseveritytypeenum.go: {}
+  models/components/webosvvulnerability.go: {}
+  models/components/webpackagevulnerabilitysummary.go: {}
+  models/operations/analyticslogspackagelist.go: {}
   models/operations/metadatapackagescreate.go:
     id: 36b0f7d02af6
     pristine_git_object: 9c1493592ecd0aab07b18df91290cc1237de135c
@@ -758,6 +843,9 @@ trackedFiles:
   models/operations/options.go:
     id: d20dd4db9865
     pristine_git_object: e7f0cc1a3cf35604cd0051f5ad1734004f5af193
+  models/operations/packagesvulnerabilitiescountslist.go: {}
+  models/operations/packagesvulnerabilitieslist.go: {}
+  models/operations/workspacesdomainslist.go: {}
   models/operations/workspacespoliciesactionscreate.go:
     id: e48fb70f85ab
     pristine_git_object: b7449a278d80c2449ea756146eeabd2d76e827d8
@@ -803,15 +891,20 @@ trackedFiles:
   models/operations/workspacespoliciesupdate.go:
     id: bb480188eb5d
     pristine_git_object: e77609bfb36db71d8841b0cc0b9fcbba408bf0c6
+  models/operations/workspacespoliciesvalidate.go: {}
+  models/operations/workspacesvulnerabilitiespackageslist.go: {}
+  models/operations/workspacesvulnerabilitiesrepopackageslist.go: {}
   optionalnullable/optionalnullable.go:
     id: ce60f259ead3
     pristine_git_object: 8126dce4f6adf693060f0822eaa245a5e1ad2f99
   optionalnullable/optionalnullable_test.go:
     id: ad67101ebca3
     pristine_git_object: e4de2227825e21222b503b5aef50943be6efd119
+  packages.go: {}
   retry/config.go:
     id: 82d673cb0389
     pristine_git_object: f84c242fc8f05a915ca2050afd2f94380effb0b5
+  tests/analytics_test.go: {}
   tests/files.go:
     id: 359d10a9a396
     pristine_git_object: 0e7b2318e689e74519db2b5c50080a9c067f0dde
@@ -862,12 +955,16 @@ trackedFiles:
   tests/mockserver/internal/handler/generated_handlers.go:
     id: 61ac4f7cce9e
     pristine_git_object: dc02c100e80c2c0015d6109f9d4cd74c48d10107
+  tests/mockserver/internal/handler/pathgetanalyticslogspackageworkspace.go: {}
   tests/mockserver/internal/handler/pathgetmetadatapackagespackageslugperm.go:
     id: 8aebcc37d6cc
     pristine_git_object: 7f2f7e6ddb5c852fe4a01185bd09ca618df7729d
   tests/mockserver/internal/handler/pathgetmetadatapackagespackageslugpermslugperm.go:
     id: 7148cce27f89
     pristine_git_object: 7d830cb1e0de8a0b57625646a02dd9616ce50cf2
+  tests/mockserver/internal/handler/pathgetpackagespackageslugpermvulnerabilities.go: {}
+  tests/mockserver/internal/handler/pathgetpackagespackageslugpermvulnerabilitiescounts.go: {}
+  tests/mockserver/internal/handler/pathgetworkspacesworkspacedomains.go: {}
   tests/mockserver/internal/handler/pathgetworkspacesworkspacepolicies.go:
     id: e8c711a37cbd
     pristine_git_object: 0ce509e28db0f17578cceff1de3311b4f750e5d0
@@ -889,6 +986,8 @@ trackedFiles:
   tests/mockserver/internal/handler/pathgetworkspacesworkspacepoliciespolicysimulate.go:
     id: 86adb61b1e92
     pristine_git_object: 4e4e14e075251f7f84f0d76e33d7ac38eb65952f
+  tests/mockserver/internal/handler/pathgetworkspacesworkspacereposrepovulnerabilitiespackages.go: {}
+  tests/mockserver/internal/handler/pathgetworkspacesworkspacevulnerabilitiespackages.go: {}
   tests/mockserver/internal/handler/pathpatchmetadatapackagespackageslugpermslugperm.go:
     id: 7870c341c6e4
     pristine_git_object: a1d2419c6ae6afafd8908666c39ba95763a81afd
@@ -907,6 +1006,7 @@ trackedFiles:
   tests/mockserver/internal/handler/pathpostworkspacesworkspacepoliciespolicyactions.go:
     id: 5645eb5e7a61
     pristine_git_object: 7bba38ed294241d4ac3e0db3ce309f745f7042de
+  tests/mockserver/internal/handler/pathpostworkspacesworkspacepoliciesvalidate.go: {}
   tests/mockserver/internal/handler/pathputworkspacesworkspacepoliciespolicy.go:
     id: 71773c594732
     pristine_git_object: ccc6c590ca0aba65cf50e257535cf5dfe2af370a
@@ -946,6 +1046,7 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/addpackagetagspolicyactiontypedinput.go:
     id: 4770fdff33c9
     pristine_git_object: db55ab3a196d36b4cd5240ec6487b276b76408f5
+  tests/mockserver/internal/sdk/models/components/artifactmetadataentry.go: {}
   tests/mockserver/internal/sdk/models/components/artifactmetadataread.go:
     id: 6f6c81c658ad
     pristine_git_object: 6e7acdb6d3e6b4038bd8ff460f9e9edcf9c25308
@@ -955,15 +1056,17 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/artifactmetadatawrite.go:
     id: 07c48af17419
     pristine_git_object: e95787bf89a3af86338a86b462735794c5c97bae
-  tests/mockserver/internal/sdk/models/components/artifactmetadatawriteinput.go:
-    id: f1b75e9b829d
-    pristine_git_object: f03c3a5cef2ffec06ebdc44cebd15c2196c7317e
   tests/mockserver/internal/sdk/models/components/availabilityenum.go:
     id: 88769e0d693c
     pristine_git_object: 2a6bac45a1ad08108b6d2119901c4cc5f6e66777
+  tests/mockserver/internal/sdk/models/components/blockpackagepolicyactiontyped.go: {}
+  tests/mockserver/internal/sdk/models/components/blockpackagepolicyactiontypedinput.go: {}
   tests/mockserver/internal/sdk/models/components/classificationenum.go:
     id: 3a7644cf0df2
     pristine_git_object: 0904e12825eddde8144dc56985ea236cfb414c03
+  tests/mockserver/internal/sdk/models/components/domain.go: {}
+  tests/mockserver/internal/sdk/models/components/eventactionenum.go: {}
+  tests/mockserver/internal/sdk/models/components/formatenum.go: {}
   tests/mockserver/internal/sdk/models/components/httpmetadata.go:
     id: f8e74e13e446
     pristine_git_object: 02acebe09c3fb5cb54d627f24f358f10cd4a534b
@@ -976,6 +1079,8 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/licensesourceenum.go:
     id: a8b03ffd73a2
     pristine_git_object: f163b32ffd39e12ca0221dab09d2525fc42bad60
+  tests/mockserver/internal/sdk/models/components/packagelogpackage.go: {}
+  tests/mockserver/internal/sdk/models/components/packagelogsresponse.go: {}
   tests/mockserver/internal/sdk/models/components/packagestateenum.go:
     id: 19bb814426fc
     pristine_git_object: 897556484e6eef02106ee1cbe5fd526b82748bfe
@@ -991,6 +1096,8 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/paginatedartifactmetadatareadlist.go:
     id: d101db5d8871
     pristine_git_object: ce76cffb40c566a67b8d017383b6d5207cd60d40
+  tests/mockserver/internal/sdk/models/components/paginateddomainlist.go: {}
+  tests/mockserver/internal/sdk/models/components/paginatedpackagelogsresponselist.go: {}
   tests/mockserver/internal/sdk/models/components/paginatedpolicyactionlist.go:
     id: a95a9c38e327
     pristine_git_object: db0e739cbd066ff43d9edd5f0f11fcb982e2a412
@@ -1003,12 +1110,15 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/paginatedpolicylist.go:
     id: fbdb7c5b7b66
     pristine_git_object: 100cc2e0dc609e1d43c0cccd591d7f3a9d3629a4
+  tests/mockserver/internal/sdk/models/components/paginatedwebosvvulnerabilitylist.go: {}
+  tests/mockserver/internal/sdk/models/components/paginatedwebpackagevulnerabilitysummarylist.go: {}
   tests/mockserver/internal/sdk/models/components/patchedaddpackagetagspolicyactiontyped.go:
     id: bae95624be8a
     pristine_git_object: 12fc5522989db96b633a48fdcd9f8be7eb566ac8
   tests/mockserver/internal/sdk/models/components/patchedartifactmetadatawrite.go:
     id: 8dbc0d288203
     pristine_git_object: 8625f4b237bc2eba1fa89a415d21f160c8ce21a6
+  tests/mockserver/internal/sdk/models/components/patchedblockpackagepolicyactiontyped.go: {}
   tests/mockserver/internal/sdk/models/components/patchedpolicy.go:
     id: 9abeaa9e5a6a
     pristine_git_object: 90b79be6d09e4ab0a32a610b10ac7e8488cbf88d
@@ -1057,6 +1167,7 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/policydistributionversion.go:
     id: 40148f8e84b0
     pristine_git_object: d8504ecd30a35b2a0d5a182999289a7078ed0b5e
+  tests/mockserver/internal/sdk/models/components/policyepssscore.go: {}
   tests/mockserver/internal/sdk/models/components/policyhuggingfaceevalresult.go:
     id: 3106c70e2247
     pristine_git_object: d7784cdfd4cc9af5e48fac70629a1cbf4ad79a91
@@ -1078,15 +1189,20 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/policyinput2.go:
     id: c9651706f079
     pristine_git_object: f7ae73032f419ecbeaeb6f1f725d18d331a385a7
+  tests/mockserver/internal/sdk/models/components/policyinputpreview.go: {}
+  tests/mockserver/internal/sdk/models/components/policyinputpreviewpackage.go: {}
+  tests/mockserver/internal/sdk/models/components/policyinputpreviewvulnerabilities.go: {}
   tests/mockserver/internal/sdk/models/components/policyinputv0.go:
     id: 3b43446921db
     pristine_git_object: 7430ff8934287fb7c10885bfb180413658697cc6
+  tests/mockserver/internal/sdk/models/components/policymavenpackagetyped.go: {}
   tests/mockserver/internal/sdk/models/components/policyosvaffected.go:
     id: a3c58993943e
     pristine_git_object: a31a0676560f72fa4a1981f7ad724b9ea26034e4
   tests/mockserver/internal/sdk/models/components/policyosvseverity.go:
     id: 0a75bbc72ac1
     pristine_git_object: 3da84f0157f9b7c961942cde89be83ab7ab12d60
+  tests/mockserver/internal/sdk/models/components/policyosvseveritysourceenum.go: {}
   tests/mockserver/internal/sdk/models/components/policyosvseveritytypeenum.go:
     id: 189bbdba1864
     pristine_git_object: 6e9064d3d9e8a4a2bbd379923bbd875d7fb53b65
@@ -1117,9 +1233,15 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/policyrepositorygpgkey.go:
     id: 6611ee958edf
     pristine_git_object: 0403fab49a64089d839c28a942481389a6031a84
+  tests/mockserver/internal/sdk/models/components/policyskillspackagetyped.go: {}
   tests/mockserver/internal/sdk/models/components/policyuploader.go:
     id: b68581d7104d
     pristine_git_object: 81a885a9b237c3491b40c11805609009cfa58425
+  tests/mockserver/internal/sdk/models/components/policyuploaderteam.go: {}
+  tests/mockserver/internal/sdk/models/components/policyvalidatefinding.go: {}
+  tests/mockserver/internal/sdk/models/components/policyvalidaterequest.go: {}
+  tests/mockserver/internal/sdk/models/components/policyvalidateresponse.go: {}
+  tests/mockserver/internal/sdk/models/components/policyvulnerabilitygroup.go: {}
   tests/mockserver/internal/sdk/models/components/policyworkspace.go:
     id: 456c5258f065
     pristine_git_object: a3ed1760327f4052413a1372f9c4e3b3ca00dbf4
@@ -1156,6 +1278,13 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/components/statusenum.go:
     id: b22815ee831e
     pristine_git_object: 811ef665d8c0d29d8a27e406c363860b78babe51
+  tests/mockserver/internal/sdk/models/components/webosvaffected.go: {}
+  tests/mockserver/internal/sdk/models/components/webosvseverity.go: {}
+  tests/mockserver/internal/sdk/models/components/webosvseveritycounts.go: {}
+  tests/mockserver/internal/sdk/models/components/webosvseveritytypeenum.go: {}
+  tests/mockserver/internal/sdk/models/components/webosvvulnerability.go: {}
+  tests/mockserver/internal/sdk/models/components/webpackagevulnerabilitysummary.go: {}
+  tests/mockserver/internal/sdk/models/operations/analyticslogspackagelist.go: {}
   tests/mockserver/internal/sdk/models/operations/metadatapackagescreate.go:
     id: afc673f84037
     pristine_git_object: ef2bfc384c584ce7bf2bb4fe347f84826554e01d
@@ -1174,6 +1303,9 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/operations/metadatavalidatecreate.go:
     id: 935905f6ed85
     pristine_git_object: 76453758c88b7bb2526e535480af340b3a29c464
+  tests/mockserver/internal/sdk/models/operations/packagesvulnerabilitiescountslist.go: {}
+  tests/mockserver/internal/sdk/models/operations/packagesvulnerabilitieslist.go: {}
+  tests/mockserver/internal/sdk/models/operations/workspacesdomainslist.go: {}
   tests/mockserver/internal/sdk/models/operations/workspacespoliciesactionscreate.go:
     id: ed7756d317b2
     pristine_git_object: 7634e0afebac5f276fcfbbd24315b00dbe3566e1
@@ -1219,6 +1351,9 @@ trackedFiles:
   tests/mockserver/internal/sdk/models/operations/workspacespoliciesupdate.go:
     id: 4a53e9cdb5fc
     pristine_git_object: 09795beea8ea82450a651e145ca110e7be405f93
+  tests/mockserver/internal/sdk/models/operations/workspacespoliciesvalidate.go: {}
+  tests/mockserver/internal/sdk/models/operations/workspacesvulnerabilitiespackageslist.go: {}
+  tests/mockserver/internal/sdk/models/operations/workspacesvulnerabilitiesrepopackageslist.go: {}
   tests/mockserver/internal/sdk/models/sdkerrors/errordetail.go:
     id: 5f48ffee4fad
     pristine_git_object: 5ab2594ff456ae7ab39ae1dba7bfcce651547d4f
@@ -1285,6 +1420,7 @@ trackedFiles:
   tests/mockserver/main.go:
     id: 2b32d316f0d2
     pristine_git_object: c67303cb9f5fbd7a6881054802bc1a27ca86e917
+  tests/packages_test.go: {}
   tests/testclient.go:
     id: 78d36c6e169c
     pristine_git_object: eea53e0baa973c411055f319314682954203835d
@@ -1330,7 +1466,7 @@ examples:
         path:
           package_slug_perm: "<value>"
       requestBody:
-        application/json: {"content": "<value>", "content_type": "<value>", "source_identity": "<value>"}
+        application/json: {"content": {"key": "<value>", "key1": "<value>"}, "content_type": "<value>", "source_identity": "<value>"}
       responses:
         "401":
           application/json: {"detail": "Authentication credentials were not provided."}
@@ -1339,10 +1475,10 @@ examples:
         path:
           package_slug_perm: "<value>"
       requestBody:
-        application/json: {"content": "<value>", "content_type": "<value>", "source_identity": "<value>"}
+        application/json: {"content": {"key": "<value>", "key1": "<value>"}, "content_type": "<value>", "source_identity": "<value>"}
       responses:
         "201":
-          application/json: {"slug_perm": "<value>", "content": "<value>", "content_type": "<value>", "source_identity": "<value>"}
+          application/json: {"content": {}, "content_type": "<value>", "source_identity": "<value>", "slug_perm": "<value>"}
         "401":
           application/json: {"detail": "<value>"}
   metadata_packages_retrieve:
@@ -1361,7 +1497,7 @@ examples:
           slug_perm: "<value>"
       responses:
         "200":
-          application/json: {"slug_perm": "<value>", "content": "<value>", "content_type": "<value>", "classification": "GENERIC", "source_kind": "THIRD_PARTY", "source_identity": "<value>", "is_canonical": false, "source_table": "<value>", "created_at": "2024-08-04T09:44:08.732Z"}
+          application/json: {"slug_perm": "<value>", "content": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "content_type": "<value>", "classification": "GENERIC", "source_kind": "THIRD_PARTY", "source_identity": "<value>", "is_canonical": false, "source_table": "<value>", "created_at": "2024-08-04T09:44:08.732Z"}
         "401":
           application/json: {"detail": "<value>"}
   metadata_packages_partial_update:
@@ -1380,7 +1516,7 @@ examples:
           slug_perm: "<value>"
       responses:
         "200":
-          application/json: {"slug_perm": "<value>", "content": "<value>", "content_type": "<value>", "source_identity": "<value>"}
+          application/json: {"content": {}, "content_type": "<value>", "source_identity": "<value>", "slug_perm": "<value>"}
         "401":
           application/json: {"detail": "<value>"}
   metadata_packages_destroy:
@@ -1403,13 +1539,13 @@ examples:
   metadata_validate_create:
     Unauthenticated:
       requestBody:
-        application/json: {"content": "<value>", "content_type": "<value>"}
+        application/json: {"content": {"key": "<value>", "key1": "<value>"}, "content_type": "<value>"}
       responses:
         "401":
           application/json: {"detail": "Authentication credentials were not provided."}
     speakeasy-default-metadata-validate-create:
       requestBody:
-        application/json: {"content": "<value>", "content_type": "<value>"}
+        application/json: {"content": {"key": "<value>", "key1": "<value>"}, "content_type": "<value>"}
       responses:
         "401":
           application/json: {"detail": "<value>"}
@@ -1547,7 +1683,7 @@ examples:
         application/json: {"name": "<value>", "rego": "<value>"}
       responses:
         "422":
-          application/json: {"detail": "Invalid input.", "fields": {"non_field_errors": ["{\"string\":\"Maximum number of policies reached.\",\"code\":\"max_policies_reached\"}"]}}
+          application/json: {"code": "invalid", "detail": "Invalid input.", "fields": {"non_field_errors": ["{\"string\":\"Maximum number of policies reached.\",\"code\":\"max_policies_reached\"}"]}}
     speakeasy-default-workspaces-policies-create:
       parameters:
         path:
@@ -1611,7 +1747,7 @@ examples:
           workspace: "<value>"
       responses:
         "422":
-          application/json: {"detail": "Invalid input.", "fields": {"non_field_errors": ["{\"string\":\"Maximum number of actions reached.\",\"code\":\"max_actions_reached\"}"]}}
+          application/json: {"code": "invalid", "detail": "Invalid input.", "fields": {"non_field_errors": ["{\"string\":\"Maximum number of actions reached.\",\"code\":\"max_actions_reached\"}"]}}
     speakeasy-default-workspaces-policies-actions-create:
       parameters:
         path:
@@ -1702,7 +1838,7 @@ examples:
           sort: "-id"
       responses:
         "400":
-          application/json: {"detail": "Invalid input.", "fields": {"created_after": ["value outside of legal range."]}}
+          application/json: {"code": "invalid", "detail": "Invalid input.", "fields": {"created_after": ["value outside of legal range."]}}
     InvalidCreatedBefore:
       parameters:
         path:
@@ -1712,7 +1848,7 @@ examples:
           sort: "-id"
       responses:
         "400":
-          application/json: {"detail": "Invalid input.", "fields": {"created_before": ["value outside of legal range."]}}
+          application/json: {"code": "invalid", "detail": "Invalid input.", "fields": {"created_before": ["value outside of legal range."]}}
     speakeasy-default-workspaces-policies-decision-logs-v1-list:
       parameters:
         path:
@@ -1744,6 +1880,86 @@ examples:
       responses:
         "200":
           application/json: {"correlation_id": "5d0374a7-0667-42d5-bbd3-e230e41cdfa4", "policy": {"created_at": "2026-11-11T07:45:14.285Z", "name": "<value>", "rego": "<value>", "read_only": false, "slug_perm": "<value>", "updated_at": "2025-04-09T19:29:36.919Z", "version": 526642}, "started_at": "2025-11-01T03:46:01.833Z", "ended_at": "2026-09-27T14:35:11.388Z", "policy_input": {"v0": {"package": {"format": "HuggingfacePackage", "architectures": [{"name": "<value>"}], "files": [{"file_extension": "<value>", "oid": "<id>", "size": 537019, "path": "/opt"}], "is_local": false, "last_downloaded_at": "2026-09-23T00:43:31.883Z", "license": {"raw_license_file_contents": {"sha256": "<value>", "raw_text": "<value>"}, "oss_license": {"full_name": "Karl Rau", "license_text": "<value>", "spdx_identifier": "<value>"}, "source": "AUTOMATIC", "match": "UNKNOWN", "similarity": 326595, "override": "IGNORED"}, "num_files": 382506, "package_type": "OTHER", "security_scan_status": "UNSUPPORTED_PACKAGE", "slug": "<value>", "tags": [{"name": "<value>", "source": "MANUAL", "tag_type": "SOME_VERSION"}]}, "repository": {"ecdsa_keys": [{"fingerprint_short": "<value>", "fingerprint": "<value>", "public_key": "<value>"}], "gpg_keys": [{"comment": "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support", "fingerprint_short": "<value>", "fingerprint": "<value>", "public_key": "<value>"}], "name": "<value>", "open_source_license": null, "repository_type": "PRIVATE", "storage_region": "<value>"}, "workspace": {"name": "<value>", "slug": "<value>", "slug_perm": "<value>"}}}, "policy_output": "<value>", "actions": [{"action_type": "RemovePackageTags", "slug_perm": "<value>", "created_at": "2025-04-14T10:55:17.857Z", "updated_at": "2026-12-10T21:36:06.359Z", "effect": "<value>", "tags": ["<value 1>"]}], "parsed_actions": "<value>"}
+  analytics_logs_package_list:
+    PackageNamedSemverOrAnyRuby-formatPackage:
+      parameters:
+        path:
+          workspace: "<value>"
+        query:
+          format: "json"
+          query: "package:semver OR package_format:ruby"
+      responses:
+        "200":
+          application/json: {"results": [{"event_at": "2025-10-05T07:29:58.002Z", "event_action": "RESYNC", "package": {"slug_perm": "<value>", "name": "<value>", "version": "<value>", "format": "BOWER", "size": 778198}, "was_deleted_by_retention_rule": true, "event_context": "<value>"}]}
+          text/csv: "<value>"
+    speakeasy-default-analytics-logs-package-list:
+      parameters:
+        path:
+          workspace: "<value>"
+        query:
+          format: "json"
+      responses:
+        "200":
+          application/json: {"results": [{"event_at": "2025-10-05T07:29:58.002Z", "event_action": "RESYNC", "package": {"slug_perm": "<value>", "name": "<value>", "version": "<value>", "format": "BOWER", "size": 778198}, "was_deleted_by_retention_rule": true, "event_context": "<value>"}]}
+          text/csv: "<value>"
+  packages_vulnerabilities_list:
+    speakeasy-default-packages-vulnerabilities-list:
+      parameters:
+        path:
+          package_slug_perm: "<value>"
+        query:
+          primary_records: true
+          sort: "-severity"
+      responses:
+        "200":
+          application/json: {"results": []}
+  packages_vulnerabilities_counts_list:
+    speakeasy-default-packages-vulnerabilities-counts-list:
+      parameters:
+        path:
+          package_slug_perm: "<value>"
+        query:
+          primary_records: true
+      responses:
+        "200":
+          application/json: [{"total": 8725, "malware": 468612, "critical": 753409, "high": 255790, "medium": 65328, "low": 90148, "unknown": 660873}]
+  workspaces_domains_list:
+    PreferredRepositoryDomain:
+      parameters:
+        path:
+          workspace: "<value>"
+      responses:
+        "200":
+          application/json: {"results": [{"domain_name": "python.example.com", "domain_type": "NATIVE_PYTHON", "repository": "my-repository", "domain_scope": "REPOSITORY"}]}
+  workspaces_policies_validate:
+    speakeasy-default-workspaces-policies-validate:
+      parameters:
+        path:
+          workspace: "<value>"
+      requestBody:
+        application/json: {"rego": "<value>"}
+      responses:
+        "200":
+          application/json: {"is_valid": false, "findings": [], "raw": "<value>"}
+        "422":
+          application/json: {"detail": "<value>"}
+  workspaces_vulnerabilities_repo_packages_list:
+    speakeasy-default-workspaces-vulnerabilities-repo-packages-list:
+      parameters:
+        path:
+          repo: "<value>"
+          workspace: "<value>"
+      responses:
+        "200":
+          application/json: {"results": []}
+  workspaces_vulnerabilities_packages_list:
+    speakeasy-default-workspaces-vulnerabilities-packages-list:
+      parameters:
+        path:
+          workspace: "<value>"
+      responses:
+        "200":
+          application/json: {"results": [{"slug_perm": "<value>", "repository": "<value>", "name": "<value>", "version": "<value>", "downloads": 130462, "format": "<value>", "status": "<value>", "uploaded_at": "2024-02-09T12:32:12.690Z", "vulnerability_counts": {"key": 504192, "key1": 269972, "key2": 156891}}]}
 examplesVersion: 1.0.2
 generatedTests:
   metadata_packages_list: "2026-05-25T14:51:11+01:00"
@@ -1771,3 +1987,11 @@ generatedTests:
   workspaces_policies_decision_logs_v1_list-ChronologicalOrder: "2026-05-25T14:51:11+01:00"
   workspaces_policies_decision_logs_v1_list: "2026-05-25T14:51:11+01:00"
   workspaces_policies_decision_logs_v1_retrieve: "2026-05-25T14:51:11+01:00"
+  analytics_logs_package_list-PackageNamedSemverOrAnyRuby-formatPackage: "2026-11-05T00:57:59Z"
+  analytics_logs_package_list: "2026-11-05T00:57:59Z"
+  packages_vulnerabilities_list: "2026-11-05T00:57:59Z"
+  packages_vulnerabilities_counts_list: "2026-11-05T00:57:59Z"
+  workspaces_domains_list-PreferredRepositoryDomain: "2026-11-05T00:57:59Z"
+  workspaces_policies_validate: "2026-11-05T00:57:59Z"
+  workspaces_vulnerabilities_repo_packages_list: "2026-11-05T00:57:59Z"
+  workspaces_vulnerabilities_packages_list: "2026-11-05T00:57:59Z"
