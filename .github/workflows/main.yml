@@ -24,13 +24,23 @@ jobs:
           cache: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Cache Go modules and build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum', 'mise.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
       - name: Cache SDK generator
         uses: actions/cache@v4
         with:
           path: ~/.cache/openapi-generation
           key: ${{ runner.os }}-openapi-generation-${{ hashFiles('scripts/install-generator.sh', 'mise.toml') }}
 
-      # The generator is built before the Cloudsmith GOPROXY is set, which does not serve all of its modules. The generator go.sum still verifies each module.
+      # Build the generator and fetch its staticcheck before the Cloudsmith GOPROXY is set. That proxy does not serve all of their modules. The Go checksum database still verifies each module.
       - name: Build SDK generator
         run: ./scripts/install-generator.sh
 
@@ -46,16 +56,6 @@ jobs:
             -d "{\"oidc_token\":\"$(echo "${OIDC_TOKEN}" | jq -r '.value')\",\"service_slug\":\"cloudsmith-go-v2-github-action\"}" \
             | jq -r '.token')
           echo "GOPROXY=https://token:${CLOUDSMITH_TOKEN}@${{ secrets.CLOUDSMITH_GOPROXY_DOMAIN }}/${{ secrets.CLOUDSMITH_GOPROXY_REPO }}/" >> "${GITHUB_ENV}"
-
-      - name: Cache Go modules and build cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum', 'mise.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
 
       - name: Generate SDK
         run: ./scripts/generate.sh
