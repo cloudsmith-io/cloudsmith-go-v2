@@ -64,7 +64,6 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_list",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -241,7 +240,7 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 
 			var out apierrors.ErrorDetail
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
+				return nil, apierrors.NewResponseValidationError("response did not match the declared error schema", httpRes.StatusCode, string(rawBody), httpRes, err)
 			}
 
 			out.HTTPMeta = components.HTTPMetadata{
@@ -282,7 +281,7 @@ func (s *Metadata) MetadataPackagesList(ctx context.Context, request operations.
 
 // MetadataPackagesCreate - Attach metadata to a package
 // Attach arbitrary metadata to a package.
-func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWriteRequest, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
+func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm string, body components.ArtifactMetadataWrite, opts ...operations.Option) (*operations.MetadataPackagesCreateResponse, error) {
 	request := operations.MetadataPackagesCreateRequest{
 		PackageSlugPerm: packageSlugPerm,
 		Body:            body,
@@ -317,7 +316,6 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_create",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Body", "json", `request:"mediaType=application/json"`)
@@ -468,12 +466,12 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -499,7 +497,7 @@ func (s *Metadata) MetadataPackagesCreate(ctx context.Context, packageSlugPerm s
 
 			var out apierrors.ErrorDetail
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
+				return nil, apierrors.NewResponseValidationError("response did not match the declared error schema", httpRes.StatusCode, string(rawBody), httpRes, err)
 			}
 
 			out.HTTPMeta = components.HTTPMetadata{
@@ -575,7 +573,6 @@ func (s *Metadata) MetadataPackagesRetrieve(ctx context.Context, packageSlugPerm
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_retrieve",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -746,7 +743,7 @@ func (s *Metadata) MetadataPackagesRetrieve(ctx context.Context, packageSlugPerm
 
 			var out apierrors.ErrorDetail
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
+				return nil, apierrors.NewResponseValidationError("response did not match the declared error schema", httpRes.StatusCode, string(rawBody), httpRes, err)
 			}
 
 			out.HTTPMeta = components.HTTPMetadata{
@@ -823,7 +820,6 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_partial_update",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Body", "json", `request:"mediaType=application/json"`)
@@ -974,12 +970,12 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 				return nil, err
 			}
 
-			var out components.ArtifactMetadataWrite
+			var out components.ArtifactMetadataEntry
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ArtifactMetadataWrite = &out
+			res.ArtifactMetadataEntry = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1005,7 +1001,7 @@ func (s *Metadata) MetadataPackagesPartialUpdate(ctx context.Context, packageSlu
 
 			var out apierrors.ErrorDetail
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
+				return nil, apierrors.NewResponseValidationError("response did not match the declared error schema", httpRes.StatusCode, string(rawBody), httpRes, err)
 			}
 
 			out.HTTPMeta = components.HTTPMetadata{
@@ -1081,7 +1077,6 @@ func (s *Metadata) MetadataPackagesDestroy(ctx context.Context, packageSlugPerm 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_packages_destroy",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1235,7 +1230,7 @@ func (s *Metadata) MetadataPackagesDestroy(ctx context.Context, packageSlugPerm 
 
 			var out apierrors.ErrorDetail
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
+				return nil, apierrors.NewResponseValidationError("response did not match the declared error schema", httpRes.StatusCode, string(rawBody), httpRes, err)
 			}
 
 			out.HTTPMeta = components.HTTPMetadata{
@@ -1306,7 +1301,6 @@ func (s *Metadata) MetadataValidateCreate(ctx context.Context, request component
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "metadata_validate_create",
-		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -1463,7 +1457,7 @@ func (s *Metadata) MetadataValidateCreate(ctx context.Context, request component
 
 			var out apierrors.ErrorDetail
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
+				return nil, apierrors.NewResponseValidationError("response did not match the declared error schema", httpRes.StatusCode, string(rawBody), httpRes, err)
 			}
 
 			out.HTTPMeta = components.HTTPMetadata{

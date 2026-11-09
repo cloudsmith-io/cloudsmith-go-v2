@@ -48,11 +48,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-v2-
 
-      - name: Start mock server
-        run: |
-          cd tests/mockserver && go run . &
-          until curl -sf http://localhost:18080/_mockserver/health; do sleep 1; done
-
       - name: Build
         run: go build ./...
 

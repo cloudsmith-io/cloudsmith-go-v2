@@ -3,6 +3,12 @@
 
 ## Supported Types
 
+### BlockPackagePolicyActionTyped
+
+```go
+policyAction := components.CreatePolicyActionBlockPackage(components.BlockPackagePolicyActionTyped{/* values here */})
+```
+
 ### SetPackageStatePolicyActionTyped
 
 ```go
@@ -27,6 +33,8 @@ Use the `Type` field to determine which variant is active, then access the corre
 
 ```go
 switch policyAction.Type {
+	case components.PolicyActionTypeBlockPackage:
+		// policyAction.BlockPackagePolicyActionTyped is populated
 	case components.PolicyActionTypeSetPackageState:
 		// policyAction.SetPackageStatePolicyActionTyped is populated
 	case components.PolicyActionTypeAddPackageTags:
