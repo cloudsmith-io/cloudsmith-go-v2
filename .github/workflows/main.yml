@@ -24,6 +24,10 @@ jobs:
           cache: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      # The Cloudsmith GOPROXY does not serve all staticcheck modules. Speakeasy lints the SDK with this version.
+      - name: Fetch staticcheck
+        run: go run honnef.co/go/tools/cmd/staticcheck@v0.8.1 -version
+
       - name: Configure Cloudsmith GOPROXY
         run: |
           set -o pipefail
