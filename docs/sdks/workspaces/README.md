@@ -4,6 +4,13 @@
 
 ### Available Operations
 
+* [WorkspacesDomainsList](#workspacesdomainslist) - List active custom and Cloudsmith-owned domains available to a workspace. Cloudsmith-owned domains are the shared hostnames every workspace can use; custom domains are listed when enabled and validated, regardless of subscription status. Workspace membership is required, including for service accounts. Discovering a domain does not grant repository access.
+
+For client setup, pass both `repository` and `domain_type`, then take the first result as the preferred domain for that repository and purpose. Without `repository`, the response is a workspace-wide inventory: a `REPOSITORY` domain must only be used for the repository named in that entry. The endpoint returns results in preference order: `REPOSITORY` domains come first, then `WORKSPACE` domains, then `GLOBAL` domains. Within each custom domain scope, primary domains come before the rest, then the oldest domain comes first.
+
+Responses contain a `results` array. Follow the `Link` header's `next` relation until absent to discover all domains; an empty array means no domains match the filters. A hostname can appear under multiple domain types. Native types are only listed for package formats enabled for the request. Clients should tolerate new domain types.
+
+This endpoint discovers hostnames, not complete package-manager URLs. URL paths and authentication depend on the format and domain scope; custom domains are not necessarily a hostname-only replacement in an existing URL.
 * [WorkspacesPoliciesList](#workspacespolicieslist) - List policies.
 * [WorkspacesPoliciesCreate](#workspacespoliciescreate) - Create a policy.
 * [WorkspacesPoliciesRetrieve](#workspacespoliciesretrieve) - Retrieve a policy.
@@ -30,6 +37,72 @@ Each log contains:
 No actions associated with the policy are executed. Instead, the endpoint reports what would happen to each package if the policy were active.
 * [WorkspacesPoliciesDecisionLogsV1List](#workspacespoliciesdecisionlogsv1list) - List policy evaluation decision logs.
 * [WorkspacesPoliciesDecisionLogsV1Retrieve](#workspacespoliciesdecisionlogsv1retrieve) - Retrieve the full decision log JSON from S3.
+* [WorkspacesPoliciesValidate](#workspacespoliciesvalidate) - Check that a Rego policy compiles, without creating or updating anything. Use this to catch syntax and type errors while authoring a policy, before submitting it to the create or update endpoints, which apply the same check.
+
+Returns `is_valid`, plus a `findings` list describing each problem with a code, a message and, where known, the line it occurs on. A policy is valid when `findings` contains nothing of severity `error`. The submitted Rego is not stored.
+* [WorkspacesVulnerabilitiesRepoPackagesList](#workspacesvulnerabilitiesrepopackageslist) - OSV advisory data for a specific repo.
+* [WorkspacesVulnerabilitiesPackagesList](#workspacesvulnerabilitiespackageslist) - OSV advisory data for a specific workspace.
+
+## WorkspacesDomainsList
+
+List active custom and Cloudsmith-owned domains available to a workspace. Cloudsmith-owned domains are the shared hostnames every workspace can use; custom domains are listed when enabled and validated, regardless of subscription status. Workspace membership is required, including for service accounts. Discovering a domain does not grant repository access.
+
+For client setup, pass both `repository` and `domain_type`, then take the first result as the preferred domain for that repository and purpose. Without `repository`, the response is a workspace-wide inventory: a `REPOSITORY` domain must only be used for the repository named in that entry. The endpoint returns results in preference order: `REPOSITORY` domains come first, then `WORKSPACE` domains, then `GLOBAL` domains. Within each custom domain scope, primary domains come before the rest, then the oldest domain comes first.
+
+Responses contain a `results` array. Follow the `Link` header's `next` relation until absent to discover all domains; an empty array means no domains match the filters. A hostname can appear under multiple domain types. Native types are only listed for package formats enabled for the request. Clients should tolerate new domain types.
+
+This endpoint discovers hostnames, not complete package-manager URLs. URL paths and authentication depend on the format and domain scope; custom domains are not necessarily a hostname-only replacement in an existing URL.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="workspaces_domains_list" method="get" path="/workspaces/{workspace}/domains/" example="PreferredRepositoryDomain" -->
+```go
+package main
+
+import(
+	"context"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := cloudsmith.New(
+        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Workspaces.WorkspacesDomainsList(ctx, operations.WorkspacesDomainsListRequest{
+        Workspace: "<value>",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.PaginatedDomainList != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                          | Type                                                                                               | Required                                                                                           | Description                                                                                        |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `ctx`                                                                                              | [context.Context](https://pkg.go.dev/context#Context)                                              | :heavy_check_mark:                                                                                 | The context to use for the request.                                                                |
+| `request`                                                                                          | [operations.WorkspacesDomainsListRequest](../../models/operations/workspacesdomainslistrequest.md) | :heavy_check_mark:                                                                                 | The request object to use for the request.                                                         |
+| `opts`                                                                                             | [][operations.Option](../../models/operations/option.md)                                           | :heavy_minus_sign:                                                                                 | The options for this request.                                                                      |
+
+### Response
+
+**[*operations.WorkspacesDomainsListResponse](../../models/operations/workspacesdomainslistresponse.md), error**
+
+### Errors
+
+| Error Type              | Status Code             | Content Type            |
+| ----------------------- | ----------------------- | ----------------------- |
+| apierrors.ErrorDetail   | 401, 403, 404, 422, 429 | application/json        |
+| apierrors.APIError      | 4XX, 5XX                | \*/\*                   |
 
 ## WorkspacesPoliciesList
 
@@ -499,6 +572,8 @@ func main() {
     }
     if res.PolicyAction != nil {
         switch res.PolicyAction.Type {
+            case components.PolicyActionTypeBlockPackage:
+                // res.PolicyAction.BlockPackagePolicyActionTyped is populated
             case components.PolicyActionTypeSetPackageState:
                 // res.PolicyAction.SetPackageStatePolicyActionTyped is populated
             case components.PolicyActionTypeAddPackageTags:
@@ -564,6 +639,8 @@ func main() {
     }
     if res.PolicyAction != nil {
         switch res.PolicyAction.Type {
+            case components.PolicyActionTypeBlockPackage:
+                // res.PolicyAction.BlockPackagePolicyActionTyped is populated
             case components.PolicyActionTypeSetPackageState:
                 // res.PolicyAction.SetPackageStatePolicyActionTyped is populated
             case components.PolicyActionTypeAddPackageTags:
@@ -628,6 +705,8 @@ func main() {
     }
     if res.PolicyAction != nil {
         switch res.PolicyAction.Type {
+            case components.PolicyActionTypeBlockPackage:
+                // res.PolicyAction.BlockPackagePolicyActionTyped is populated
             case components.PolicyActionTypeSetPackageState:
                 // res.PolicyAction.SetPackageStatePolicyActionTyped is populated
             case components.PolicyActionTypeAddPackageTags:
@@ -693,6 +772,8 @@ func main() {
     }
     if res.PolicyAction != nil {
         switch res.PolicyAction.Type {
+            case components.PolicyActionTypeBlockPackage:
+                // res.PolicyAction.BlockPackagePolicyActionTyped is populated
             case components.PolicyActionTypeSetPackageState:
                 // res.PolicyAction.SetPackageStatePolicyActionTyped is populated
             case components.PolicyActionTypeAddPackageTags:
@@ -984,6 +1065,173 @@ func main() {
 ### Response
 
 **[*operations.WorkspacesPoliciesDecisionLogsV1RetrieveResponse](../../models/operations/workspacespoliciesdecisionlogsv1retrieveresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| apierrors.APIError | 4XX, 5XX           | \*/\*              |
+
+## WorkspacesPoliciesValidate
+
+Check that a Rego policy compiles, without creating or updating anything. Use this to catch syntax and type errors while authoring a policy, before submitting it to the create or update endpoints, which apply the same check.
+
+Returns `is_valid`, plus a `findings` list describing each problem with a code, a message and, where known, the line it occurs on. A policy is valid when `findings` contains nothing of severity `error`. The submitted Rego is not stored.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="workspaces_policies_validate" method="post" path="/workspaces/{workspace}/policies/validate/" -->
+```go
+package main
+
+import(
+	"context"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/components"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := cloudsmith.New(
+        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Workspaces.WorkspacesPoliciesValidate(ctx, "<value>", components.PolicyValidateRequest{
+        Rego: "<value>",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.PolicyValidateResponse != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `ctx`                                                                                | [context.Context](https://pkg.go.dev/context#Context)                                | :heavy_check_mark:                                                                   | The context to use for the request.                                                  |
+| `workspace`                                                                          | `string`                                                                             | :heavy_check_mark:                                                                   | The `name` of the Workspace.                                                         |
+| `body`                                                                               | [components.PolicyValidateRequest](../../models/components/policyvalidaterequest.md) | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `opts`                                                                               | [][operations.Option](../../models/operations/option.md)                             | :heavy_minus_sign:                                                                   | The options for this request.                                                        |
+
+### Response
+
+**[*operations.WorkspacesPoliciesValidateResponse](../../models/operations/workspacespoliciesvalidateresponse.md), error**
+
+### Errors
+
+| Error Type            | Status Code           | Content Type          |
+| --------------------- | --------------------- | --------------------- |
+| apierrors.ErrorDetail | 422, 429              | application/json      |
+| apierrors.APIError    | 4XX, 5XX              | \*/\*                 |
+
+## WorkspacesVulnerabilitiesRepoPackagesList
+
+OSV advisory data for a specific repo.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="workspaces_vulnerabilities_repo_packages_list" method="get" path="/workspaces/{workspace}/repos/{repo}/vulnerabilities/packages/" -->
+```go
+package main
+
+import(
+	"context"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := cloudsmith.New(
+        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Workspaces.WorkspacesVulnerabilitiesRepoPackagesList(ctx, operations.WorkspacesVulnerabilitiesRepoPackagesListRequest{
+        Repo: "<value>",
+        Workspace: "<value>",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.PaginatedWebPackageVulnerabilitySummaryList != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                                                  | Type                                                                                                                                       | Required                                                                                                                                   | Description                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ctx`                                                                                                                                      | [context.Context](https://pkg.go.dev/context#Context)                                                                                      | :heavy_check_mark:                                                                                                                         | The context to use for the request.                                                                                                        |
+| `request`                                                                                                                                  | [operations.WorkspacesVulnerabilitiesRepoPackagesListRequest](../../models/operations/workspacesvulnerabilitiesrepopackageslistrequest.md) | :heavy_check_mark:                                                                                                                         | The request object to use for the request.                                                                                                 |
+| `opts`                                                                                                                                     | [][operations.Option](../../models/operations/option.md)                                                                                   | :heavy_minus_sign:                                                                                                                         | The options for this request.                                                                                                              |
+
+### Response
+
+**[*operations.WorkspacesVulnerabilitiesRepoPackagesListResponse](../../models/operations/workspacesvulnerabilitiesrepopackageslistresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| apierrors.APIError | 4XX, 5XX           | \*/\*              |
+
+## WorkspacesVulnerabilitiesPackagesList
+
+OSV advisory data for a specific workspace.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="workspaces_vulnerabilities_packages_list" method="get" path="/workspaces/{workspace}/vulnerabilities/packages/" -->
+```go
+package main
+
+import(
+	"context"
+	cloudsmith "github.com/cloudsmith-io/cloudsmith-go-v2"
+	"github.com/cloudsmith-io/cloudsmith-go-v2/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := cloudsmith.New(
+        cloudsmith.WithSecurity("<YOUR_API_KEY_HERE>"),
+    )
+
+    res, err := s.Workspaces.WorkspacesVulnerabilitiesPackagesList(ctx, operations.WorkspacesVulnerabilitiesPackagesListRequest{
+        Workspace: "<value>",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.PaginatedWebPackageVulnerabilitySummaryList != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                                          | Type                                                                                                                               | Required                                                                                                                           | Description                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `ctx`                                                                                                                              | [context.Context](https://pkg.go.dev/context#Context)                                                                              | :heavy_check_mark:                                                                                                                 | The context to use for the request.                                                                                                |
+| `request`                                                                                                                          | [operations.WorkspacesVulnerabilitiesPackagesListRequest](../../models/operations/workspacesvulnerabilitiespackageslistrequest.md) | :heavy_check_mark:                                                                                                                 | The request object to use for the request.                                                                                         |
+| `opts`                                                                                                                             | [][operations.Option](../../models/operations/option.md)                                                                           | :heavy_minus_sign:                                                                                                                 | The options for this request.                                                                                                      |
+
+### Response
+
+**[*operations.WorkspacesVulnerabilitiesPackagesListResponse](../../models/operations/workspacesvulnerabilitiespackageslistresponse.md), error**
 
 ### Errors
 

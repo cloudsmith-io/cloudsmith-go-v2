@@ -1,0 +1,10 @@
+# PolicyInputPreviewVulnerabilities
+
+Serializer for the preview package vulnerabilities policy input.
+
+
+## Fields
+
+| Field                                                                                                                                          | Type                                                                                                                                           | Required                                                                                                                                       | Description                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Groups`                                                                                                                                       | map[string][components.PolicyVulnerabilityGroup](../../models/components/policyvulnerabilitygroup.md)                                          | :heavy_check_mark:                                                                                                                             | The package's matched OSV records, grouped by the flaw they describe and keyed on the group key: a CVE where one exists, else the record's ID. |

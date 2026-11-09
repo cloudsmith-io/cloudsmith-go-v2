@@ -3,27 +3,19 @@
 
 package components
 
-// ArtifactMetadataWrite - Serializer for POST create and PATCH update on artifact metadata.
+// ArtifactMetadataWrite - Fields for creating or updating package metadata.
 type ArtifactMetadataWrite struct {
-	SlugPerm string `json:"slug_perm"`
 	// The metadata payload as a JSON object.
-	Content any `json:"content"`
+	Content map[string]any `json:"content"`
 	// The content type describing the structure of the metadata payload.
 	ContentType string `json:"content_type"`
 	// The identifier for the source of this metadata, for example 'upstream:npmjs'.
 	SourceIdentity string `json:"source_identity"`
 }
 
-func (a *ArtifactMetadataWrite) GetSlugPerm() string {
+func (a *ArtifactMetadataWrite) GetContent() map[string]any {
 	if a == nil {
-		return ""
-	}
-	return a.SlugPerm
-}
-
-func (a *ArtifactMetadataWrite) GetContent() any {
-	if a == nil {
-		return nil
+		return map[string]any{}
 	}
 	return a.Content
 }

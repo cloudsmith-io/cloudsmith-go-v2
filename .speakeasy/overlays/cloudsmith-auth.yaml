@@ -10,6 +10,8 @@ info:
     anonymous endpoints, so a blanket hoist is safe.
     Reference: https://www.speakeasy.com/docs/sdks/customize/authentication/configuration#global-security
 actions:
+  - target: $.security
+    remove: true
   - target: $
     update:
       security:

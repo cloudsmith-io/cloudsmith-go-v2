@@ -3,10 +3,30 @@
 
 package components
 
+import (
+	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
+)
+
 // PolicyInput - Serializer for policy input.
 type PolicyInput struct {
 	// Serializer for V0 policy input.
 	V0 PolicyInputV0 `json:"v0"`
+	// Serializer for preview policy input.
+	//
+	// Preview carries input that isn't in a versioned schema yet, and may change
+	// shape before it graduates into one.
+	Preview *PolicyInputPreview `json:"preview,omitzero"`
+}
+
+func (p PolicyInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PolicyInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PolicyInput) GetV0() PolicyInputV0 {
@@ -14,4 +34,11 @@ func (p *PolicyInput) GetV0() PolicyInputV0 {
 		return PolicyInputV0{}
 	}
 	return p.V0
+}
+
+func (p *PolicyInput) GetPreview() *PolicyInputPreview {
+	if p == nil {
+		return nil
+	}
+	return p.Preview
 }

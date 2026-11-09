@@ -11,14 +11,14 @@ package components
 // package slug to attach it to.
 type ArtifactMetadataValidate struct {
 	// The metadata payload as a JSON object.
-	Content any `json:"content"`
+	Content map[string]any `json:"content"`
 	// The content type describing the structure of the metadata payload.
 	ContentType string `json:"content_type"`
 }
 
-func (a *ArtifactMetadataValidate) GetContent() any {
+func (a *ArtifactMetadataValidate) GetContent() map[string]any {
 	if a == nil {
-		return nil
+		return map[string]any{}
 	}
 	return a.Content
 }
