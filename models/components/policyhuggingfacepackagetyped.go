@@ -6,6 +6,7 @@ package components
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/internal/utils"
 	"github.com/cloudsmith-io/cloudsmith-go-v2/optionalnullable"
 	"time"
@@ -386,6 +387,7 @@ func (u Card) IsUnknown() bool {
 }
 
 func (u *Card) UnmarshalJSON(data []byte) error {
+	*u = Card{}
 
 	var candidates []utils.UnionCandidate
 
@@ -415,6 +417,9 @@ func (u *Card) UnmarshalJSON(data []byte) error {
 	}
 
 	if len(candidates) == 0 {
+		if !json.Valid(data) {
+			return fmt.Errorf("could not unmarshal `%s` into any supported union types for Card", string(data))
+		}
 		u.UnknownRaw = json.RawMessage(data)
 		u.Type = CardTypeUnknown
 		return nil
@@ -442,6 +447,9 @@ func (u *Card) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
+	if !json.Valid(data) {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Card", string(data))
+	}
 	u.UnknownRaw = json.RawMessage(data)
 	u.Type = CardTypeUnknown
 	return nil

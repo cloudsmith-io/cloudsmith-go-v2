@@ -16,6 +16,8 @@ type PolicyUploader struct {
 	LastName  string                                    `json:"last_name"`
 	Slug      string                                    `json:"slug"`
 	SlugPerm  string                                    `json:"slug_perm"`
+	// The teams the uploader belongs to in the package's workspace. Only present when the policy reads it, and empty when the input is serialized without a workspace.
+	Teams []PolicyUploaderTeam `json:"teams"`
 }
 
 func (p PolicyUploader) MarshalJSON() ([]byte, error) {
@@ -62,4 +64,11 @@ func (p *PolicyUploader) GetSlugPerm() string {
 		return ""
 	}
 	return p.SlugPerm
+}
+
+func (p *PolicyUploader) GetTeams() []PolicyUploaderTeam {
+	if p == nil {
+		return []PolicyUploaderTeam{}
+	}
+	return p.Teams
 }
